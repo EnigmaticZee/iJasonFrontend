@@ -22,6 +22,7 @@ export default new VueRouter({
 
   routes: [
     { path: '/', component: load('Index') }, // Default
-    { path: '*', component: load('Error404') } // Not found
+    { path: '*', component: load('Error404') }, // Not found
+    { path: 'labs', component: load('Labs') }  // iJason unit Labs
   ]
 })
