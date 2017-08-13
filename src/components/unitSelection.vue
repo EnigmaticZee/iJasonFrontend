@@ -112,7 +112,7 @@ export default {
   width:300px;
   perspective: 800px;
   margin: top;
-  margin-top: -230px;
+  margin-top: -260px;
 }
 
 .logo {
@@ -172,7 +172,7 @@ export default {
 
     &:not(:last-child) {
       border-bottom: none;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
     }
 
     h2 {
