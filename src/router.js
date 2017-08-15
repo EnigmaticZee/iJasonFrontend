@@ -23,6 +23,7 @@ export default new VueRouter({
   routes: [
     { path: '/', component: load('Index') }, // Default
     { path: '/units', component: load('unitSelection') },
-    { path: '*', component: load('Error404') }
+    { path: '*', component: load('Error404') },
+    { path: '/labs', component: load('labsSelection') }
   ]
 })
