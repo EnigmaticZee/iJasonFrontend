@@ -39,9 +39,9 @@
         <div class="units-list">
           <button
             @click="() => handleUnitClick(unit)"
-            v-for="unit in units" 
+            v-for="unit in units"
             class="deep-purple single-unit">
-            
+
               <img :src="unit.img" alt="">
               <div class="single-unit-description">
                 <h2>{{ unit.title }}</h2>
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-      
+
       <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
         iJason - Virtual Labs for Networking Students
@@ -127,7 +127,7 @@ margin-top: -260px;
     max-width: 100%;
   }
 }
-    
+
 .units-selection-welcome-message {
   display: flex;
   flex-direction: column;
@@ -168,7 +168,7 @@ margin-top: -260px;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .single-unit {
     display: flex;
     justify-content: left;
