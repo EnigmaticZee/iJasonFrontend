@@ -7,6 +7,10 @@ function load (component) {
   return () => System.import(`components/${component}.vue`)
 }
 
+function loadLabsComponent (component) {
+  return () => System.import(`components/Labs/${component}.vue`)
+}
+
 export default new VueRouter({
   /*
    * NOTE! VueRouter "history" mode DOESN'T works for Cordova builds,
@@ -23,6 +27,8 @@ export default new VueRouter({
   routes: [
     { path: '/', component: load('Index') }, // Default
     { path: '/units', component: load('unitSelection') },
-    { path: '*', component: load('Error404') }
+    { path: '*', component: load('Error404') },
+    { path: '/labs', component: loadLabsComponent('labsSelectionContainer') },
+      { path: '/labsSelection', component: loadLabsComponent('labsSelectionDetail') }
   ]
 })

@@ -15,8 +15,6 @@
           </button>
 
         </div>
-
-
       </q-toolbar-title>
     </div>
 
@@ -52,6 +50,15 @@
           </button>
         </div>
       </div>
+    </div>
+      
+      <div slot="footer" class="toolbar">
+      <div class="auto flex justify-center within-iframe-hide">
+        iJason - Virtual Labs for Networking Students
+      </div>
+      <q-toolbar-title :padding="0" class="within-iframe-only">
+        Footer
+      </q-toolbar-title>
     </div>
   </q-layout>
 </template>
@@ -110,9 +117,9 @@ export default {
 
 .logo-container {
   width:300px;
-  perspective: 800px;
-  margin: top;
-  margin-top: -260px;
+perspective: 800px;
+margin: top;
+margin-top: -260px;
 }
 
 .logo {
