@@ -14,7 +14,7 @@
      <div>
       <ul class="breadcrumb">
         <li>
-          <a >
+          <a>
             <i>home</i> Units
           </a>
         </li>
@@ -37,11 +37,11 @@
       </div>
 
       <div class="list no-border platform-delimiter">
-        <q-drawer-link icon="view_week" to="/showcase/layout" exact>
+        <q-drawer-link icon="view_week" to="/labsSelection" exact>
           Week 1 
         </q-drawer-link>
-        <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/toolbar">
+          <hr>
+        <q-drawer-link icon="view_week" to="/showcase/layout/labsSelectionDetail">
           Week 2
         </q-drawer-link>
            <hr>
@@ -85,7 +85,9 @@
       </div>
     </q-drawer>
 
-    <router-view class="layout-view"></router-view>
+    <router-view class="layout-view">
+    
+    </router-view>
 
     <q-drawer right-side swipe-only ref="rightDrawer">
       <div class="toolbar light">
@@ -94,7 +96,12 @@
         </q-toolbar-title>
       </div>
     </q-drawer>
-
+    
+      
+    
+      
+    <labsSelectionDetail/>
+    
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
         iJason - Virtual Labs for Networking Students
@@ -108,4 +115,6 @@
 
 <script></script>
 
-<style></style>
+<style>
+
+</style>
