@@ -1,35 +1,34 @@
 <template>
-    <q-layout>
+    <div class="container">
             <!-- Banner logo (iJason) -->
-            <div class="row logo">
-                <div>
-                    <img v-bind:src="img">
-                </div>
+            <div>
+                <img v-bind:src="img" class="responsive">
             </div>
 
             <!-- Form Input -->
-            <div class="row formInput">
-                <div class="auto">
-                    <div class="row">
-                        <p><input type="text" placeholder="Username"/></p>
-                    </div>
-                    <div class="row">
-                        <p><input type="password" input placeholder="Password"/></p>
-                    </div>
-                    <div class="row">
-                        <p><button class="primary">Sign In</button></p>
-                    </div>
-                </div>
+            <div class="children">
+                <form>
+                    <p>
+                        <input type="text" class="full-width" placeholder="Username"/>
+                    </p>
+                    <p>
+                        <input type="password" class="full-width" input placeholder="Password"/>
+                    </p>
+                    <p>
+                        <button class="primary full-width" @click="testMethod">Sign In</button>
+                    </p>
+                </form>
           </div>
 
-          <div slot="footer" class="toolbar">
-              <div class="auto flex justify-center">
+          <!-- Footer-->
+          <div slot="footer">
+              <div class="auto flex">
                 <button @click="testMethod">
                   About iJason
                 </button>
               </div>
         </div>
-    </q-layout>
+    </div>
 </template>
 
 <script>
@@ -50,19 +49,19 @@
 
 <style scoped>
 
-    .formInput{
-        top: 45%;
-        left: 45%;
-        position:fixed;
-    }
-
-    .logo{
-        top: 10%;
-        left: 35%;
-        position:fixed;
-    }
-
     .container{
         display: flex;
+        flex-direction: column;
+        height:100vh;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .children{
+        width:300px;
+    }
+
+    .border{
+        border: 5px solid red;
     }
 </style>
