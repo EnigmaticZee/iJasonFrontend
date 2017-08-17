@@ -37,11 +37,11 @@
       </div>
 
       <div class="list no-border platform-delimiter">
-        <q-drawer-link icon="view_week" to="/labsSelection" exact>
+        <q-drawer-link icon="view_week" to="/" exact>
           Week 1 
         </q-drawer-link>
           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/labsSelectionDetail">
+        <q-drawer-link icon="view_week" to="/showcase/layout/">
           Week 2
         </q-drawer-link>
            <hr>
@@ -110,10 +110,19 @@
         Footer
       </q-toolbar-title>
     </div>
+      
+    <labs></labs>
   </q-layout>
 </template>
 
-<script></script>
+<script>
+    import LabsSelection from './labsSelectionDetail.vue';
+    export default {
+        components: {
+            'labs':LabsSelection
+        }
+    }
+</script>
 
 <style>
 
