@@ -116,7 +116,7 @@
               <i class="item-primary">build</i>
               <div class="item-content">
                 Check Configuration
-              </div>
+              </div> 
             </div>
           </q-collapsible>
             <q-collapsible icon="description" label="Practice Lab 04">
