@@ -1,6 +1,6 @@
 <template>
   <q-layout>
-      
+
     <div slot="header" class="toolbar">
       <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
         <i>menu</i>
@@ -9,7 +9,7 @@
           iJason Virtual Lab Supervisor
       </q-toolbar-title>
     </div>
-      
+
     <q-tabs slot="navigation">
      <div>
       <ul class="breadcrumb">
@@ -27,66 +27,29 @@
       </ul>
     </div>
     </q-tabs>
-      
+
 
     <q-drawer ref="leftDrawer">
       <div class="toolbar light">
         <q-toolbar-title :padding="1">
-            Semester Week   
+            Semester Week
         </q-toolbar-title>
       </div>
 
       <div class="list no-border platform-delimiter">
-        <q-drawer-link icon="view_week" to="/labsSelecntion" exact>
-          Week 1 
-        </q-drawer-link>
+        <q-btn icon="view_week" v-for="week in weeks" @click="loadWeeklyTask(week)">
+          Week {{ week }}
           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/labsSelectionDetail">
+      </q-btn>
+          <hr>
+        <q-drawer-link icon="view_week" @click="dummy()" exact>
           Week 2
         </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/tabs">
-          Week 3
-        </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 4
-        </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 5
-        </q-drawer-link>
-           <hr>
-         <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 6
-        </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 7
-        </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 8
-        </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 9
-        </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 10
-        </q-drawer-link>
-           <hr>
-        <q-drawer-link icon="view_week" to="/showcase/layout/drawer">
-          Week 11
-        </q-drawer-link>
-           <hr>
-     
-      </div>
+     </div>
     </q-drawer>
 
     <router-view class="layout-view">
-    
+
     </router-view>
 
     <q-drawer right-side swipe-only ref="rightDrawer">
@@ -96,12 +59,9 @@
         </q-toolbar-title>
       </div>
     </q-drawer>
-    
-      
-    
-      
+
     <labsSelectionDetail/>
-    
+
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
         iJason - Virtual Labs for Networking Students
@@ -110,15 +70,81 @@
         Footer
       </q-toolbar-title>
     </div>
-      
-    <labs></labs>
+
+    <labs :tasks="selectedTasks"></labs>
   </q-layout>
 </template>
 
 <script>
     import LabsSelection from './labsSelectionDetail.vue';
-    
+
     export default {
+        data: function()
+        {
+            return {
+                LAB_API_URL : '',
+                selectedWeek : {week: 1, totalTasks: 3},
+                selectedTasks: [{labID: 1, labTitle: 'Lab Task 1', week: 1} , {labID: 13, labTitle: 'Lab Task 13', week: 1}],
+                weeks : 12,
+                labTasks:[
+                {labID: 1, labTitle: 'Lab Task 1', week: 1},
+                {labID: 2, labTitle: 'Lab Task 2', week: 1},
+                {labID: 3, labTitle: 'Lab Task 3', week: 1},
+                {labID: 4, labTitle: 'Lab Task 4', week: 2},
+                {labID: 5, labTitle: 'Lab Task 5', week: 2},
+                {labID: 6, labTitle: 'Lab Task 6', week: 3},
+                {labID: 7, labTitle: 'Lab Task 7', week: 4},
+                {labID: 8, labTitle: 'Lab Task 8', week: 5},
+                {labID: 9, labTitle: 'Lab Task 9', week: 6},
+                {labID: 10, labTitle: 'Lab Task 10', week: 7},
+                {labID: 11, labTitle: 'Lab Task 11', week: 8},
+                {labID: 12, labTitle: 'Lab Task 12', week: 9},
+                {labID: 13, labTitle: 'Lab Task 13', week: 10},
+                {labID: 14, labTitle: 'Lab Task 14', week: 11},
+                {labID: 15, labTitle: 'Lab Task 15', week: 12}
+                ]
+            }
+        },
+        mounted()
+        {
+            // loadWeeklyTask();
+        },
+        methods: {
+            loadWeeklyTask : function(aWeek)
+            {
+                this.selectedTasks = [];
+
+                for (var i = 0; i < this.labTasks.length; i++)
+                {
+                    if(this.labTasks[i].week == aWeek)
+                        this.selectedTasks.push(this.labTasks[i]);
+                }
+            },
+            // downloadTasks : function()
+            // {
+            //     this.labTasks = [
+            //     {labID: 1, labTitle: 'Lab Task 1', week: 1},
+            //     {labID: 2, labTitle: 'Lab Task 2', week: 1},
+            //     {labID: 3, labTitle: 'Lab Task 3', week: 1},
+            //     {labID: 4, labTitle: 'Lab Task 4', week: 2},
+            //     {labID: 5, labTitle: 'Lab Task 5', week: 2},
+            //     {labID: 6, labTitle: 'Lab Task 6', week: 3},
+            //     {labID: 7, labTitle: 'Lab Task 7', week: 4},
+            //     {labID: 8, labTitle: 'Lab Task 8', week: 5},
+            //     {labID: 9, labTitle: 'Lab Task 9', week: 6},
+            //     {labID: 10, labTitle: 'Lab Task 10', week: 7},
+            //     {labID: 11, labTitle: 'Lab Task 11', week: 8},
+            //     {labID: 12, labTitle: 'Lab Task 12', week: 9},
+            //     {labID: 13, labTitle: 'Lab Task 13', week: 10},
+            //     {labID: 14, labTitle: 'Lab Task 14', week: 11},
+            //     {labID: 15, labTitle: 'Lab Task 15', week: 12},
+            // ]
+            // },
+            dummy : function()
+            {
+                alert('dummy');
+            }
+        },
         components: {
             'labs':LabsSelection
         }
@@ -127,7 +153,5 @@
 
 <style>
 
-    
+
 </style>
-
-
