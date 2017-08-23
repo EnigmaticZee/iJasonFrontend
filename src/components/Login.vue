@@ -15,7 +15,7 @@
                         <input type="password" class="full-width" input placeholder="Password"/>
                     </p>
                     <p>
-                        <button class="primary full-width" @click="testMethod">Sign In</button>
+                        <button class="primary full-width" @click="testMethod()">Sign In</button>
                     </p>
                 </form>
           </div>
@@ -33,7 +33,7 @@
 
 <script>
     export default{
-        data: function(){
+        data: function(){  
             return {
                 img: require('../assets/logo.jpg')
             };
