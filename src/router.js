@@ -11,6 +11,10 @@ function loadLabsComponent (component) {
   return () => System.import(`components/Labs/${component}.vue`)
 }
 
+function loadFeedbackComponent (component) {
+  return () => System.import(`components/Feedback/${component}.vue`)
+}
+
 export default new VueRouter({
   /*
    * NOTE! VueRouter "history" mode DOESN'T works for Cordova builds,
@@ -30,6 +34,7 @@ export default new VueRouter({
     { path: '*', component: load('Error404') },
     { path: '/labs', component: loadLabsComponent('labsSelectionContainer') },
     { path: '/labsSelection', component: loadLabsComponent('labsSelectionDetail') },
-    { path: '/login', component: load('Login') }
+    { path: '/login', component: load('Login') },
+    { path: '/feedback', component: loadFeedbackComponent('feedbackContainer') }
   ]
 })
