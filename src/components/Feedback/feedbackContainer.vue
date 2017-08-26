@@ -20,7 +20,7 @@
         </li>
 
         <li>
-          <a>
+          <a >
             <i>mail</i> Labs
           </a>
         </li>
@@ -34,16 +34,17 @@
     </div>
     </q-tabs>
         
-    <div>
-          <ul>
-            <li v-for="feedback in feedbacks">
-               - <span class="message">{{feedback.commit.message}}</span><br>
-              by <span class="author">{{feedback.commit.author.name}}</span>
-              at <span class="date">{{feedback.commit.author.date}}</span>
-            </li>
-        </ul>
-    
-    </div>    
+    <div  v-for="feedback in feedbacks"  class="card">
+      <div class="card-title bg-light-blue text-white">
+        Error 
+      </div>
+      <div class="card-content ">
+          {{feedback.commit.author.date}}
+          {{feedback.commit.message}}
+          {{feedback.commit.author.name}}
+      </div>
+    </div>
+        
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
         iJason - Virtual Labs for Networking Students
@@ -62,7 +63,7 @@
 
     export default {
         data: {
-    feedbacks: []
+    feedbacks: []    
   },
 
   created: function () {
