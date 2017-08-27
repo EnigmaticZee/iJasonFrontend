@@ -24,7 +24,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()" >
                 Check Configuration
               </div>
             </div>
@@ -44,7 +44,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
@@ -58,7 +58,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
@@ -72,7 +72,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
@@ -86,17 +86,53 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
           </q-collapsible>
         </div>
     </div>
+    <q-modal  ref="basicModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
+        <header class="modal-header">Configuration</header>
+        <div id="modal-content">
+            <div id="menu"class="row">
+              <ul class="menu">
+                <li class="menu__item menu__item--dropdown" v-on:click="toggle('ranking')" v-bind:class="{'open' : dropDowns.ranking.open}">
+                  <a class="menu__link menu__link--toggle">
+                      <span>Rooms></span>
+                      
+                  </a>
+
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-menu__item">
+                          <a class="dropdown-menu__link">328</a>
+                      </li>
+
+                      <li class="dropdown-menu__item">
+                          <a class="dropdown-menu__link">329</a>
+                      </li>
+
+                      <li class="dropdown-menu__item">
+                          <a class="dropdown-menu__link">330</a>
+                      </li>
+                  </ul>
+                </li>
+              </ul> 
+            </div>    
+            
+        </div>
+        <footer>
+          <button color="primary" @click="$refs.basicModal.close()">Close</button>  
+          <button color="primary">Get Feedback</button>  
+        </footer>
+    </q-modal>
   </div>
+  
 </template>
 
 <script>
+    
     export default {
         props: ['week','tasks'],
         data: function()
@@ -120,11 +156,90 @@
                     {labID: 15, labTitle: 'Lab Task 15'},
                     {labID: 16, labTitle: 'Lab Task 16'},
                 ],
+                dropDowns: {
+                  ranking: { open: false}  
+              }
             }
+            
         },
+        methods: {
+          showDialog: function (event) {
+          
+            return this.$refs.basicModal.open();
+          },
+          toggle: function(dropdownName) {
+            this.dropDowns[dropdownName].open = !this.dropDowns[dropdownName].open;
+            
+          }
+          
 
+        },
+        components: {
+         
+        }
 
     }
 </script>
 
-<style></style>
+<style>
+  #modal-content {
+    height: 45vh;
+  }
+  .modal-header {
+    color: black;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .menu__item {
+    position: relative;
+    padding-right: 3rem;
+  }
+  .menu__link {
+    color: red;
+    text-transform: uppercase;
+  }
+  .menu__link:hover {
+    color: gray;
+  }
+  .menu__icon {
+    margin: 0 !important;
+  }
+  .open .dropdown-menu {
+      display: block;
+  }
+
+  .dropdown-menu {
+      font-size: 0.9rem;
+      position: absolute;
+      min-width: 130px;
+      top: 2.2rem;
+      display: none;
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+  }
+
+  .dropdown-menu__item:first-child .dropdown-menu__link {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+  }
+
+  .dropdown-menu__item:last-child .dropdown-menu__link {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+  }
+
+  .dropdown-menu__link {
+      display: block;
+
+      padding: 1rem;
+      color: blue;
+      background-color: #fafafa;
+  }
+  .dropdown-menu__link:hover {
+          color: green;
+          background-color: #ccc;
+  }
+</style>
