@@ -37,17 +37,14 @@
       </div>
 
       <div class="list no-border platform-delimiter">
-        <q-btn icon="view_week" v-for="week in weeks" @click="loadWeeklyTask(week)">
-          Week {{ week }}
-          <hr>
-      </q-btn>
-          <hr>
-        <q-drawer-link icon="view_week" @click="dummy()" exact>
-          Week 2
-        </q-drawer-link>
+        <button class="primary big  outline full-width" icon="view_week" v-for="week in weeks" @click="loadWeeklyTask(week)">
+             <i class="on-left">view_week</i>  Week {{ week }}
+        </button>
+          
+      
      </div>
     </q-drawer>
-
+      
     <router-view class="layout-view">
 
     </router-view>
@@ -60,8 +57,7 @@
       </div>
     </q-drawer>
 
-    <labsSelectionDetail/>
-
+   
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
         iJason - Virtual Labs for Networking Students
