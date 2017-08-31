@@ -33,7 +33,7 @@
 
 <script>
     export default{
-        data: function(){  
+        data: function(){
             return {
                 img: require('../assets/logo.jpg')
             };

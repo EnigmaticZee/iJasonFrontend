@@ -24,7 +24,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showDialog()" >
+              <div class="item-content" v-on:click="showRoom()" >
                 Check Configuration
               </div>
             </div>
@@ -101,7 +101,7 @@
                 <li class="menu__item menu__item--dropdown" v-on:click="toggle('ranking')" v-bind:class="{'open' : dropDowns.ranking.open}">
                   <a class="menu__link menu__link--toggle">
                       <span>Select Rooms></span>
-                      
+
                   </a>
 
                   <ul class="dropdown-menu">
@@ -118,9 +118,9 @@
                       </li>
                   </ul>
                 </li>
-              </ul> 
+              </ul>
               <span>room number: {{roomNum}}</span>
-            </div>    
+            </div>
             <div v-show="isShow">
               <div>
                 <span>Switches</span>
@@ -145,8 +145,8 @@
             </div>
         </div>
         <footer>
-          <button color="primary" @click="$refs.basicModal.close()">Close</button>  
-          <button color="primary" v-on:click="getFeedback()">Get Feedback</button>  
+          <button color="primary" @click="$refs.basicModal.close()">Close</button>
+          <button color="primary" v-on:click="getFeedback()">Get Feedback</button>
         </footer>
     </q-modal>
     <q-modal  ref="feedbackModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
@@ -158,40 +158,23 @@
 				    <div>smartRackDeviceNickName:"mySwi"</div>
         </div>
         <footer>
-          <button color="primary" @click="$refs.feedbackModal.close()">Close</button>  
+          <button color="primary" @click="$refs.feedbackModal.close()">Close</button>
         </footer>
     </q-modal>
   </div>
-  
+
 </template>
 
 <script>
-    
+
     export default {
-        props: ['week','tasks'],
+        props: ['tasks'],
         data: function()
         {
             return {
-                labTasks: [
-                    {labID: 1, labTitle: 'Lab Task 1'},
-                    {labID: 2, labTitle: 'Lab Task 2'},
-                    {labID: 3, labTitle: 'Lab Task 3'},
-                    {labID: 4, labTitle: 'Lab Task 4'},
-                    {labID: 5, labTitle: 'Lab Task 5'},
-                    {labID: 6, labTitle: 'Lab Task 6'},
-                    {labID: 7, labTitle: 'Lab Task 7'},
-                    {labID: 8, labTitle: 'Lab Task 8'},
-                    {labID: 9, labTitle: 'Lab Task 9'},
-                    {labID: 10, labTitle: 'Lab Task 10'},
-                    {labID: 11, labTitle: 'Lab Task 11'},
-                    {labID: 12, labTitle: 'Lab Task 12'},
-                    {labID: 13, labTitle: 'Lab Task 13'},
-                    {labID: 14, labTitle: 'Lab Task 14'},
-                    {labID: 15, labTitle: 'Lab Task 15'},
-                    {labID: 16, labTitle: 'Lab Task 16'},
-                ],
+                labTasks: [],
                 dropDowns: {
-                  ranking: { open: false}  
+                  ranking: { open: false}
                 },
                 switches: [
                     {deviceName: 'Sw 1'},
@@ -206,19 +189,23 @@
                 isShow: false,
                 roomNum: ''
 
-                
+
             }
-            
+
         },
         methods: {
           showDialog: function (event) {
-          
+
             return this.$refs.basicModal.open();
+          },
+
+          showRoom: function() {
+              this.$emit('stateWasChanged', 'STATE_SHOW_ROOM');
           },
           toggle: function(dropdownName) {
             this.dropDowns[dropdownName].open = !this.dropDowns[dropdownName].open;
           },
-          selectRoom: function(roomNum) {      
+          selectRoom: function(roomNum) {
             this.roomNum = roomNum;
             this.isShow = true;
           },
@@ -228,7 +215,7 @@
 
         },
         components: {
-         
+
         }
 
     }
