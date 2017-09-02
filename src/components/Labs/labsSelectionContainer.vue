@@ -58,7 +58,7 @@
     </q-drawer>
 
     <labs v-if="currentState=='STATE_SHOW_LAB'" :tasks="selectedTasks" @stateWasChanged="currentState = $event"></labs>
-    <labRoom v-else :credentials="userCredentials" @stateWasChanged="currentState = $event"></labRoom>
+    <labRoom v-else :labID="selectedLabID" @stateWasChanged="currentState = $event"></labRoom>
 
 
     <div slot="footer" class="toolbar">
@@ -86,6 +86,7 @@
 
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
+                selectedLabID: 0,
                 userCredentials:{username:'student', password: 'password'},
                 selectedTasks: [{labID: 1, labTitle: 'Lab Task 1', week: 1} , {labID: 13, labTitle: 'Lab Task 13', week: 1}],
                 labTasks:[
