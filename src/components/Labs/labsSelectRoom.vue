@@ -1,42 +1,69 @@
 <template>
   <div class="layout-view">
     <!-- Select Room (Radio Button) -->
-    <h2>Select Room</h2>
-     <div>
-       <label>
-         <q-radio v-model="room" val="atc 328" @input="downloadDevices()"></q-radio>
-         ATC 328
-       </label>
-       <label>
-         <q-radio v-model="room" val="atc 329" @input="downloadDevices()"></q-radio>
-         ATC 329
-       </label>
-       <label>
-         <q-radio v-model="room" val="atc 330" @input="downloadDevices()"></q-radio>
-         ATC 330
-       </label>
+    <div class="row">
+        <span class="label bg-primary text-white full-width justify-center">Select Room</span>
     </div>
-    <br/>
-    <br/>
-
+    <div class="row justify-center rooms">
+        <div class="row">
+        <label class="item">
+            <div class="item-primary">
+              <q-radio v-model="room" val="atc 328" @input="downloadDev()"></q-radio>
+            </div>
+            <div class="item-content">
+              ATC 328
+            </div>
+        </label>
+        <label class="item">
+            <div class="item-primary">
+              <q-radio v-model="room" val="atc 329" @input="downloadDevices()"></q-radio>
+            </div>
+            <div class="item-content">
+              ATC 329
+            </div>
+        </label>
+            
+         <label class="item">
+            <div class="item-primary">
+              <q-radio v-model="room" val="atc 330" @input="downloadDevices()"></q-radio>
+            </div>
+            <div class="item-content">
+              ATC 330
+            </div>
+        </label>
+        </div>
+    </div>   
+      
+      
     <!-- Show Required Device in INI File -->
-
-    <div v-if="iniDevices != null" class="list" v-for="(iniDevice,index) in iniDevices">
-      <q-collapsible icon="description" :label=" iniDevice.deviceType + ' : ' + iniDevice.deviceName">
+      
+    <div class="col justify-center">
+    <div  v-if="iniDevices != null" class="list" v-for="(iniDevice,index) in iniDevices">
+      <q-collapsible icon="description" :label="'Configured ' +  iniDevice.deviceType + ' : ' + iniDevice.deviceName">
           <div  class="item">
             <div class="item-content">
-                <ul>
-                Map This Device Into:  <q-select type="radio" v-model="select[index]"  :options="populateSelectOption"></q-select>
-                </ul>
+                <q-select class="full-width" type="radio" v-model="select[index]"  :options="populateSelectOption"></q-select>
             </div>
           </div>
       </q-collapsible>
     </div>
-
-    <br/>
-    <br/>
-    <!-- Collect Device Button -->
-    <button button class="primary" @click="collectWork()">Collect Work</button>
+    </div>
+     
+    
+  
+    <!-- Collect and Cancel Device Button -->
+    <div class="buttons">
+       <div class="col justify-center">
+        <button  class="warning full-width" @click="cancelCollectWork()">Cancel</button>
+    </div>
+      <div class="col justify-center">
+          
+        <button  class="primary full-width" @click="collectWork()">Collect Work</button>
+    </div>
+    </div>
+ 
+      
+      
   </div>
 
 </template>
@@ -167,13 +194,13 @@
                         })
             },
             
-        /*    
+            
             downloadDev: function()
             {
                 this.bookedDevices = this.showBookedDevice();
                 this.iniDevices = this.showINIDevices();
                 this.populateSelectOption();
-            },*/
+            },
             
             collectWork: function() {
                 
@@ -189,11 +216,22 @@
                           console.log(error);
                         })
 //                 this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
+            },
+            cancelCollectWork: function(){
+                this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
             }
         }
     }
 </script>
 
 <style>
-
+    .label {
+        font-size: 2em;
+    }
+    .rooms {
+        padding:2em;
+    }
+    .buttons {
+        padding: 2em 0em 2em 0em;
+    }
 </style>
