@@ -23,7 +23,7 @@
 
     <div v-if="iniDevices != null" class="list" v-for="(iniDevice,index) in iniDevices">
       <q-collapsible icon="description" :label=" iniDevice.deviceType + ' : ' + iniDevice.deviceName">
-          <div v-if="bookedDevices != null" class="item">
+          <div  class="item">
             <div class="item-content">
                 <ul>
                 Map This Device Into:  <q-select type="radio" v-model="select[index]"  :options="populateSelectOption"></q-select>
@@ -63,7 +63,7 @@
                     for (var i = 0 ; i < this.bookedDevices.length ; i++) {
                         bookedDev.push({label: this.bookedDevices[i].deviceName, value: i});
                     }
-                  return bookDev;
+                  return bookedDev;
             }
             
         },
