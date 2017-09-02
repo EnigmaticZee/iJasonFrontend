@@ -26,7 +26,7 @@
           <div v-if="bookedDevices != null" class="item">
             <div class="item-content">
                 <ul>
-                Map This Device Into:  <q-select type="radio" v-model="select[index]"  :options="selectOptions"></q-select>
+                Map This Device Into:  <q-select type="radio" v-model="select[index]"  :options="populateSelectOption"></q-select>
                 </ul>
             </div>
           </div>
@@ -51,12 +51,21 @@
         props:['labID'],
         data: function() {
             return {
-                room: null,
+                room: '',
                 select: [],
-                bookedDevices: null,
-                iniDevices: null,
-                selectOptions: null
+                bookedDevices: [],
+                iniDevices: []
             }
+        },
+        computed: {
+              populateSelectOption: function() {
+                  var bookedDev=[];                 
+                    for (var i = 0 ; i < this.bookedDevices.length ; i++) {
+                        bookedDev.push({label: this.bookedDevices[i].deviceName, value: i});
+                    }
+                  return bookDev;
+            }
+            
         },
         methods: {
             dummy: function() {
@@ -78,18 +87,7 @@
                                 {deviceType: 'Router', deviceName: 'R2'},
                                 {deviceType: 'Switch', deviceName: 'S1'} ]
             },
-            populateSelectOption: function() {
-
-                if (this.bookedDevices != null) {
-                    this.selectOptions = [];
-                    for (var i = 0 ; i < this.bookedDevices.length ; i++) {
-                        this.selectOptions.push({label: this.bookedDevices[i].deviceName, value: i});
-                    }
-                }
-                else {
-                    alert('null');
-                }
-            },
+          
            
             constructCollectRequest: function() {
                 
@@ -145,7 +143,7 @@
             },
             downloadDevices: function() {  
                 
-                    var iniURL = iniCall(this.labID);
+                    var iniURL = iniCall();
                     var bookedDevicesURL = bookedDevicesCall();
                     var self = this;
                     
@@ -167,8 +165,6 @@
                         .catch(function(error){
                           console.log(error);
                         })
-                
-                this.populateSelectOption();
             },
             
         /*    
