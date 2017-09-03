@@ -28,7 +28,6 @@
     </div>
     </q-tabs>
 
-
     <q-drawer ref="leftDrawer">
       <div class="toolbar light">
         <q-toolbar-title :padding="1">
@@ -37,16 +36,18 @@
       </div>
 
       <div class="list no-border platform-delimiter">
-        <button class="primary big  outline full-width" icon="view_week" v-for="week in weeks" @click="loadWeeklyTask(week)">
-             <i class="on-left">view_week</i>  Week {{ week }}
+        <button
+          class="primary big  outline full-width"
+          icon="view_week"
+          v-for="week in weeks"
+          @click="loadWeeklyTask(week)">
+
+          <i class="on-left">view_week</i>  Week {{ week }}
         </button>
-
-
      </div>
     </q-drawer>
 
     <router-view class="layout-view">
-
     </router-view>
 
     <q-drawer right-side swipe-only ref="rightDrawer">
@@ -57,9 +58,12 @@
       </div>
     </q-drawer>
 
-    <labs v-if="currentState=='STATE_SHOW_LAB'" :tasks="selectedTasks" @stateWasChanged="currentState = $event"></labs>
-    <labRoom v-else :labID="selectedLabID" @stateWasChanged="currentState = $event"></labRoom>
+    <labs
+      v-if="currentState=='STATE_SHOW_LAB'"
+      :tasks="selectedTasks"
+      @stateWasChanged="currentState = $event"></labs>
 
+    <labRoom v-else :labID="selectedLabID" @stateWasChanged="currentState = $event"></labRoom>
 
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
@@ -69,7 +73,6 @@
         Footer
       </q-toolbar-title>
     </div>
-
   </q-layout>
 </template>
 
@@ -78,8 +81,7 @@
     import LabSelectRoom from './labsSelectRoom.vue';
 
     export default {
-        data: function()
-        {
+        data() {
             return {
                 //Constant
                 LAB_API_URL : '',
@@ -108,13 +110,12 @@
                 ]
             }
         },
-        mounted()
-        {
+
+        mounted() {
             // loadWeeklyTask();
         },
         methods: {
-            loadWeeklyTask : function(aWeek)
-            {
+            loadWeeklyTask : function(aWeek) {
                 this.currentState = 'STATE_SHOW_LAB'
                 this.selectedTasks = [];
 

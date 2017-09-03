@@ -9,7 +9,12 @@ export function bookedDevicesCall () {
 }
 
 export function collectCall () {
-  var url = '../../IJasonBackend/api/collect_work.php' 
+  var url = '../../IJasonBackend/api/collect_work.php'
+  return url
+}
+
+export function collectStatusCall () {
+  var url = '../../IJasonBackend/api/collect_status.php'
   return url
 }
 
