@@ -273,24 +273,25 @@ export default{
       self.work_collection_response = false;
 
       axios.post(collectURL, reqBody)
-        .then(function({ data: { result, duration, collectID, username }}) {
+        .then(function(response) {
+          console.log(response);
           if (result !== 'success') return;
 
           self.$refs.collectWorkStatusModal.open();
 
-          setTimeout(
-            () => {
-              // Here
-              axios.post(collectStatusCall(), {
-                username, collectID
-              }).then(function ({ data }) {
-                self.work_collection_response = data;
-              }).catch(function (error) {console.log(error)});
-            },
+          // setTimeout(
+          //   () => {
+          //     // Here
+          //     axios.post(collectStatusCall(), {
+          //       username, collectID
+          //     }).then(function ({ data }) {
+          //       self.work_collection_response = data;
+          //     }).catch(function (error) {console.log(error)});
+          //   },
 
-            // convert seconds to milliseconds
-            parseInt(duration, 10) * 1000
-          );
+          //   // convert seconds to milliseconds
+          //   parseInt(duration, 10) * 1000
+          // );
         })
         .catch(function(error) {
           console.log(error);
