@@ -184,7 +184,7 @@ export default{
         var device=this.iniDevices[i];
         var devicemapping={};
 
-        devicemapping.inFileDevice=device.deviceName;
+        devicemapping.iniFileDevice=device.deviceName;
         devicemapping.deviceType=device.deviceType;
 
         // console.log("bookeddevices",this.bookedDevices);
