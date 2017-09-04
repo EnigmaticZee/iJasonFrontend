@@ -40,11 +40,11 @@
         <button class="primary big  outline full-width" icon="view_week" v-for="week in weeks" @click="loadWeeklyTask(week)">
              <i class="on-left">view_week</i>  Week {{ week }}
         </button>
-          
-      
+
+
      </div>
     </q-drawer>
-      
+
     <router-view class="layout-view">
 
     </router-view>
@@ -57,7 +57,10 @@
       </div>
     </q-drawer>
 
-   
+    <labs v-if="currentState=='STATE_SHOW_LAB'" :tasks="selectedTasks" @stateWasChanged="currentState = $event"></labs>
+    <labRoom v-else :labID="selectedLabID" @stateWasChanged="currentState = $event"></labRoom>
+
+
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
         iJason - Virtual Labs for Networking Students
@@ -67,21 +70,25 @@
       </q-toolbar-title>
     </div>
 
-    <labs :tasks="selectedTasks"></labs>
   </q-layout>
 </template>
 
 <script>
     import LabsSelection from './labsSelectionDetail.vue';
+    import LabSelectRoom from './labsSelectRoom.vue';
 
     export default {
         data: function()
         {
             return {
+                //Constant
                 LAB_API_URL : '',
-                selectedWeek : {week: 1, totalTasks: 3},
-                selectedTasks: [{labID: 1, labTitle: 'Lab Task 1', week: 1} , {labID: 13, labTitle: 'Lab Task 13', week: 1}],
+
+                currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
+                selectedLabID: 0,
+                userCredentials:{username:'student', password: 'password'},
+                selectedTasks: [{labID: 1, labTitle: 'Lab Task 1', week: 1} , {labID: 13, labTitle: 'Lab Task 13', week: 1}],
                 labTasks:[
                 {labID: 1, labTitle: 'Lab Task 1', week: 1},
                 {labID: 2, labTitle: 'Lab Task 2', week: 1},
@@ -108,6 +115,7 @@
         methods: {
             loadWeeklyTask : function(aWeek)
             {
+                this.currentState = 'STATE_SHOW_LAB'
                 this.selectedTasks = [];
 
                 for (var i = 0; i < this.labTasks.length; i++)
@@ -142,7 +150,8 @@
             }
         },
         components: {
-            'labs':LabsSelection
+            'labs':LabsSelection,
+            'labRoom': LabSelectRoom
         }
     }
 </script>

@@ -24,7 +24,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showRoom()" >
                 Check Configuration
               </div>
             </div>
@@ -44,7 +44,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
@@ -58,7 +58,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
@@ -72,7 +72,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
@@ -86,45 +86,204 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="showDialog()">
                 Check Configuration
               </div>
             </div>
           </q-collapsible>
         </div>
     </div>
+    <q-modal  ref="basicModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
+        <header class="modal-header">Select Configuration</header>
+        <div id="modal-content">
+            <div id="menu"class="row">
+              <ul class="menu">
+                <li class="menu__item menu__item--dropdown" v-on:click="toggle('ranking')" v-bind:class="{'open' : dropDowns.ranking.open}">
+                  <a class="menu__link menu__link--toggle">
+                      <span>Select Rooms></span>
+
+                  </a>
+
+                  <ul class="dropdown-menu">
+                      <li class="dropdown-menu__item" v-on:click="selectRoom('328')">
+                          <a class="dropdown-menu__link">328</a>
+                      </li>
+
+                      <li class="dropdown-menu__item" v-on:click="selectRoom('329')">
+                          <a class="dropdown-menu__link">329</a>
+                      </li>
+
+                      <li class="dropdown-menu__item" v-on:click="selectRoom('330')">
+                          <a class="dropdown-menu__link">330</a>
+                      </li>
+                  </ul>
+                </li>
+              </ul>
+              <span>room number: {{roomNum}}</span>
+            </div>
+            <div v-show="isShow">
+              <div>
+                <span>Switches</span>
+                <div class="list" v-for="t in switches">
+                    <div class="item" >
+                      <div class="item-content">
+                        {{t.deviceName}}
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div>
+                <span>Routers</span>
+                <div class="list" v-for="t in routers">
+                    <div class="item" >
+                      <div class="item-content">
+                        {{t.deviceName}}
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <footer>
+          <button color="primary" @click="$refs.basicModal.close()">Close</button>
+          <button color="primary" v-on:click="getFeedback()">Get Feedback</button>
+        </footer>
+    </q-modal>
+    <q-modal  ref="feedbackModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
+        <header class="modal-header">Feedback</header>
+        <div id="modal-content">
+            <div>iniFileDevice:"sw"</div>
+				    <div>deviceType:"Switch"</div>
+    				<div>smartRackDevice:"Enclosure"</div>
+				    <div>smartRackDeviceNickName:"mySwi"</div>
+        </div>
+        <footer>
+          <button color="primary" @click="$refs.feedbackModal.close()">Close</button>
+        </footer>
+    </q-modal>
   </div>
+
 </template>
 
 <script>
+
     export default {
-        props: ['week','tasks'],
+        props: ['tasks'],
         data: function()
         {
             return {
-                labTasks: [
-                    {labID: 1, labTitle: 'Lab Task 1'},
-                    {labID: 2, labTitle: 'Lab Task 2'},
-                    {labID: 3, labTitle: 'Lab Task 3'},
-                    {labID: 4, labTitle: 'Lab Task 4'},
-                    {labID: 5, labTitle: 'Lab Task 5'},
-                    {labID: 6, labTitle: 'Lab Task 6'},
-                    {labID: 7, labTitle: 'Lab Task 7'},
-                    {labID: 8, labTitle: 'Lab Task 8'},
-                    {labID: 9, labTitle: 'Lab Task 9'},
-                    {labID: 10, labTitle: 'Lab Task 10'},
-                    {labID: 11, labTitle: 'Lab Task 11'},
-                    {labID: 12, labTitle: 'Lab Task 12'},
-                    {labID: 13, labTitle: 'Lab Task 13'},
-                    {labID: 14, labTitle: 'Lab Task 14'},
-                    {labID: 15, labTitle: 'Lab Task 15'},
-                    {labID: 16, labTitle: 'Lab Task 16'},
+                labTasks: [],
+                dropDowns: {
+                  ranking: { open: false}
+                },
+                switches: [
+                    {deviceName: 'Sw 1'},
+                    {deviceName: 'Sw 2'},
+                    {deviceName: 'Sw 3'}
                 ],
-            }
-        },
+                routers: [
+                    {deviceName: 'router 1'},
+                    {deviceName: 'router 2'},
+                    {deviceName: 'router 3'}
+                ],
+                isShow: false,
+                roomNum: ''
 
+
+            }
+
+        },
+        methods: {
+          showDialog: function (event) {
+
+            return this.$refs.basicModal.open();
+          },
+
+          showRoom: function() {
+              this.$emit('stateWasChanged', 'STATE_SHOW_ROOM');
+          },
+          toggle: function(dropdownName) {
+            this.dropDowns[dropdownName].open = !this.dropDowns[dropdownName].open;
+          },
+          selectRoom: function(roomNum) {
+            this.roomNum = roomNum;
+            this.isShow = true;
+          },
+          getFeedback: function() {
+            return this.$refs.feedbackModal.open();
+          }
+
+        },
+        components: {
+
+        }
 
     }
 </script>
 
-<style></style>
+<style>
+  #modal-content {
+    height: 45vh;
+    overflow-y: auto;
+  }
+  .modal-header {
+    color: black;
+  }
+
+  ul {
+    list-style: none;
+  }
+  #menu {
+    z-index: 999;
+  }
+  .menu__item {
+    position: relative;
+    padding-right: 3rem;
+  }
+  .menu__link {
+    color: red;
+    text-transform: uppercase;
+  }
+  .menu__link:hover {
+    color: gray;
+  }
+  .menu__icon {
+    margin: 0 !important;
+  }
+  .open .dropdown-menu {
+      display: block;
+  }
+
+  .dropdown-menu {
+      font-size: 0.9rem;
+      position: absolute;
+      min-width: 130px;
+      top: 2.2rem;
+      display: none;
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      z-index: 999;
+  }
+
+  .dropdown-menu__item:first-child .dropdown-menu__link {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+  }
+
+  .dropdown-menu__item:last-child .dropdown-menu__link {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+  }
+
+  .dropdown-menu__link {
+      display: block;
+
+      padding: 1rem;
+      color: blue;
+      background-color: #fafafa;
+  }
+  .dropdown-menu__link:hover {
+          color: green;
+          background-color: #ccc;
+  }
+</style>
