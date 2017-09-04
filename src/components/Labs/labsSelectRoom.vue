@@ -99,7 +99,7 @@
     </div>
  
       <!-- Modal -->
-    <q-modal class="noBackdropDismiss" ref="collectWorkStatusModal">
+    <q-modal @open="timer()"class="noBackdropDismiss" ref="collectWorkStatusModal">
       
         <div class="row">
             <span class="label bg-primary text-white full-width justify-center">Collecting Work</span>
@@ -159,9 +159,9 @@ export default{
       bookedDevices: [],
       iniDevices: [],
         feedbacks:[],
-        work_collection_status_response: [],
+        work_collection_status_response: {},
 
-      work_collection_response: []
+      work_collection_response: {}
     }
   },
 
@@ -297,13 +297,15 @@ export default{
 
           console.log(response.data);
           self.work_collection_response=response.data;
-          if (this.work_collection_response.result === 'Failure'){
+          console.log("im here");
+          
+          if (self.work_collection_response.result === 'Failure'){
               console.log("Collection Failure");
               return;
           }
           else{    
             console.log("Collection success");
-             timer();
+             self.$refs.collectWorkStatusModal.open();
           }
 
 
@@ -316,13 +318,12 @@ export default{
       // this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
     },
     timer: function() {
+        console.log("here");
         
-        self.$refs.collectWorkStatusModal.open();
         var seconds = this.work_collection_response.duration;
         
-        while (this.work_collection_status_response.result === 'Success' || this.work_collection_status_response.result === 'Fail' ) {  
-                setTimeout(checkStatus, seconds*1000);
-        }
+        setTimeout(this.checkStatus, seconds*1000);
+        
         
     },
     checkStatus: function() 
@@ -330,8 +331,8 @@ export default{
           console.log("Checking status after a while!!");
           var checkStatusURL = collectStatusCall();
           var self = this;
-
-          axios.post(checkStatusURL, {labID: this.labID, username: user.credentials.username})
+          var reqBody={collectID:this.work_collection_response.collectID,username:user.credentials.username};
+          axios.post(checkStatusURL, reqBody)
             .then(function(response){
               console.log(response.data);
               self.work_collection_status_response=response.data;
