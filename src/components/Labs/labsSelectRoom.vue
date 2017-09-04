@@ -83,6 +83,23 @@
         </button>
       </div>
     </div>
+      
+    <!-- Feedback container -->
+      
+    <div class="full-width" v-if="feedbacks.labName != null" >
+        <div class="row">
+            <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
+        </div>
+        <div  v-for="feedback in feedbacks"  class="card">
+          <div class="card-title bg-light-blue text-white">
+            {{feedback.errors.error}} 
+          </div>
+          <div class="card-content ">
+              {{feedback.errors.details}}
+          </div>
+        </div>
+    </div>
+ 
 
     <q-modal ref="collectWorkStatusModal">
       <h4>Collecting work...</h4>
@@ -92,7 +109,7 @@
         v-if="! work_collection_response"
         class="indeterminate stripe" ></q-progress>
 
-      <template v-if="work_collection_response">
+      <div v-if="work_collection_response">
         <button
           @click="getFeedback"
           v-if="work_collection_response.result === 'Success'"
@@ -115,8 +132,10 @@
             OK
           </button>
         </div>
-      </template>
+      </div>
     </q-modal>
+      
+   
   </div>
 
 </template>
@@ -127,6 +146,7 @@ import axios from 'axios'
 import {iniCall} from '../../api'
 import {bookedDevicesCall} from '../../api'
 import {collectCall, collectStatusCall} from '../../api'
+import {feedbackCall} from '../../api'
 
 export default{
   props:['labID'],
@@ -137,6 +157,7 @@ export default{
       select: [],
       bookedDevices: [],
       iniDevices: [],
+        feedbacks:[],
 
       work_collection_response: false
     }
@@ -306,6 +327,21 @@ export default{
     },
 
     getFeedback () {
+        
+        var feedbackURL = feedbackCall();
+     
+      var self = this;
+
+      axios.post(feedbackURL, {labID: this.labID, username: user.credentials.username})
+        .then(function(response){
+          console.log(response.data);
+          self.feedbacks=response.data;
+        })
+        .catch(function(error){
+          console.log(error);
+        })
+
+        
       console.log('get feedback');
     }
   }
