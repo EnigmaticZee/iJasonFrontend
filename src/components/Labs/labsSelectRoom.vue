@@ -74,11 +74,9 @@
 
       <div class="col justify-center">
         <button
-          class="primary full-width"
-          v-if="work_collection_response && work_collection_response.result === 'Success'"
-
+          class="secondary full-width"
+          v-if="work_collection_response.result && work_collection_status_response.result === 'Success'" 
           @click="getFeedback">
-
           Get Feedback
         </button>
       </div>
@@ -100,31 +98,36 @@
         </div>
     </div>
  
-
-    <q-modal ref="collectWorkStatusModal">
-      <h4>Collecting work...</h4>
+      <!-- Modal -->
+    <q-modal class="noBackdropDismiss" ref="collectWorkStatusModal">
+      
+        <div class="row">
+            <span class="label bg-primary text-white full-width justify-center">Collecting Work</span>
+        </div>
 
       <q-progress
-        style="height: 45px"
-        v-if="! work_collection_response"
-        class="indeterminate stripe" ></q-progress>
+        style="height: 25px"
+        class="indeterminate stripe" >
+        </q-progress>
 
-      <div v-if="work_collection_response">
+      <div>
         <button
           @click="getFeedback"
-          v-if="work_collection_response.result === 'Success'"
+          v-if="work_collection_status_response.result === 'Success'"
           class="primary">
-
           Get Feedback
         </button>
 
-        <div v-if="work_collection_response.result === 'Fail'">
-          <h4>Some tasks failed during collection...</h4>
+        <div v-if="work_collection_status_response.result === 'Fail'">
+         <div>
+              <h4>Some tasks failed during collection...</h4>
           <ul>
-            <li v-for="device in work_collection_response.devices">
-              {device}
+            <li v-for="device in work_collection_status_response.devices">
+              {{device}}
             </li>
           </ul>
+        </div>
+         
 
           <!-- You could close the modal here like that:-->
           <!-- @click="$refs.collectWorkStatusModal.close()" -->
@@ -133,9 +136,7 @@
           </button>
         </div>
       </div>
-    </q-modal>
-      
-   
+    </q-modal> 
   </div>
 
 </template>
@@ -158,8 +159,9 @@ export default{
       bookedDevices: [],
       iniDevices: [],
         feedbacks:[],
+        work_collection_status_response: [],
 
-      work_collection_response: false
+      work_collection_response: []
     }
   },
 
@@ -289,39 +291,58 @@ export default{
       var reqBody=this.constructCollectRequest();
       var collectURL = collectCall();
       var self = this;
-
-      // on next collect work, reset work_collection_response status variable
-      self.work_collection_response = false;
-
+        
       axios.post(collectURL, reqBody)
         .then(function(response) {
-          console.log(response);
-          if (result !== 'success') return;
 
-          self.$refs.collectWorkStatusModal.open();
+          console.log(response.data);
+          self.work_collection_response=response.data;
+          if (this.work_collection_response.result === 'Failure'){
+              console.log("Collection Failure");
+              return;
+          }
+          else{    
+            console.log("Collection success");
+             timer();
+          }
 
-          // setTimeout(
-          //   () => {
-          //     // Here
-          //     axios.post(collectStatusCall(), {
-          //       username, collectID
-          //     }).then(function ({ data }) {
-          //       self.work_collection_response = data;
-          //     }).catch(function (error) {console.log(error)});
-          //   },
 
-          //   // convert seconds to milliseconds
-          //   parseInt(duration, 10) * 1000
-          // );
         })
         .catch(function(error) {
           console.log(error);
-          self.$refs.collectWorkStatusModal.open();
+          //self.$refs.collectWorkStatusModal.open();
         })
 
       // this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
     },
+    timer: function() {
+        
+        self.$refs.collectWorkStatusModal.open();
+        var seconds = this.work_collection_response.duration;
+        
+        while (this.work_collection_status_response.result === 'Success' || this.work_collection_status_response.result === 'Fail' ) {  
+                setTimeout(checkStatus, seconds*1000);
+        }
+        
+    },
+    checkStatus: function() 
+      {
+          console.log("Checking status after a while!!");
+          var checkStatusURL = collectStatusCall();
+          var self = this;
 
+          axios.post(checkStatusURL, {labID: this.labID, username: user.credentials.username})
+            .then(function(response){
+              console.log(response.data);
+              self.work_collection_status_response=response.data;
+            })
+            .catch(function(error){
+              console.log(error);
+            })
+
+          
+      },
+      
     cancelCollectWork: function(){
       this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
     },
@@ -336,6 +357,7 @@ export default{
         .then(function(response){
           console.log(response.data);
           self.feedbacks=response.data;
+          
         })
         .catch(function(error){
           console.log(error);
@@ -358,4 +380,5 @@ export default{
     .buttons {
         padding: 2em 0em 2em 0em;
     }
+   
 </style>

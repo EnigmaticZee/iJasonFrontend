@@ -19,7 +19,7 @@ export function collectStatusCall () {
 }
 
 export function feedbackCall () {
-  var url = '../../IJasonBackend/api/assess_work.php'
+  var url = '/api/assess_work.php'
   return url
 }
 
