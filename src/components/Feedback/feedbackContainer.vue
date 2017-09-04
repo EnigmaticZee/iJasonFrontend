@@ -9,8 +9,7 @@
           iJason Virtual Lab Supervisor
       </q-toolbar-title>
     </div>  
-    
-    <q-tabs slot="navigation">
+        <q-tabs slot="navigation">
      <div>
       <ul class="breadcrumb">
         <li>
@@ -33,17 +32,20 @@
       </ul>
     </div>
     </q-tabs>
-        
-    <div  v-for="feedback in feedbacks"  class="card">
+ 
+    <div class="full-width">
+       <div  v-for="feedback in feedbacks"  class="card">
       <div class="card-title bg-light-blue text-white">
         Error 
       </div>
       <div class="card-content ">
-          {{feedback.commit.author.date}}
+          {{feedback.commit.author}}
           {{feedback.commit.message}}
           {{feedback.commit.author.name}}
       </div>
     </div>
+    </div>
+ 
         
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
