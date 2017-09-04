@@ -9,7 +9,7 @@
       <div class="row">
         <label class="item">
           <div class="item-primary">
-            <q-radio v-model="room" val="atc 328" @input="downloadDev()"></q-radio>
+            <q-radio v-model="room" val="atc 328" @input="downloadDevices()"></q-radio>
           </div>
           <div class="item-content">
             ATC 328
