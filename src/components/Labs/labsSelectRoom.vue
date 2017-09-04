@@ -294,6 +294,7 @@ export default{
         
       axios.post(collectURL, reqBody)
         .then(function(response) {
+
           console.log(response.data);
           self.work_collection_response=response.data;
           if (this.work_collection_response.result === 'Failure'){
@@ -304,6 +305,7 @@ export default{
             console.log("Collection success");
              timer();
           }
+
 
         })
         .catch(function(error) {

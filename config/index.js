@@ -44,8 +44,17 @@ module.exports = {
     // Proxy your API if using any.
     // Also see /build/script.dev.js and search for "proxy api requests"
     // https://github.com/chimurai/http-proxy-middleware
-    proxyTable: {}
-  }
+   proxyTable: {
+        // proxy all requests starting with /api
+        '/api': {
+          target: 'http://localhost/IJasonBackend/api',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api': ''
+          }
+        }
+      }
+}
 }
 
 /*
