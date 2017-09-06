@@ -62,8 +62,10 @@
       v-if="currentState=='STATE_SHOW_LAB'"
       :tasks="selectedTasks"
       @stateWasChanged="currentState = $event"></labs>
+      
 
     <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
+
     <feedBack v-else :feedbacks="feedbacks"></feedBack>
 
     <div slot="footer" class="toolbar">
@@ -81,6 +83,7 @@
     import LabsSelection from './labsSelectionDetail.vue';
     import LabSelectRoom from './labsSelectRoom.vue';
     import FeedbackContainer from '../Feedback/FeedbackContainer.vue'
+
 
     export default {
         data() {

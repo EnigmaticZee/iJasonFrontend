@@ -25,7 +25,7 @@
             <div class="item" >
               <i class="item-primary">build</i>
               <div class="item-content" v-on:click="showRoom()" >
-                Check Configuration
+                Check Lab Work
               </div>
             </div>
           </q-collapsible>

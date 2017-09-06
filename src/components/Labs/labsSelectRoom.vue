@@ -2,9 +2,12 @@
   <div class="layout-view">
     <!-- Select Room (Radio Button) -->
     <div class="row">
-      <span class="label bg-primary text-white full-width justify-center">Select Room</span>
+      <span class="label bg-primary text-white full-width justify-center">Collection Process</span>
     </div>
 
+    <div class="row">
+      <span class="sublabel bg-primary text-white full-width">Select Room</span>
+    </div>
     <div class="row justify-center rooms">
       <div class="row">
         <label class="item">
@@ -36,7 +39,9 @@
     </div>
 
     <!-- Show Required Device in INI File -->
-
+    <div class="row">
+      <span class="sublabel bg-primary text-white full-width">Map Configured Devices to Lab</span>
+    </div>
     <div class="col justify-center">
       <div  v-if="iniDevices != null" class="list" v-for="(iniDevice,index) in iniDevices">
         <q-collapsible
@@ -66,7 +71,8 @@
       <div class="col justify-center">
         <button
           class="primary full-width"
-          @click="collectWork()">
+          @click="collectWork()"
+        :disabled="room==null">
 
           Collect Work
         </button>
@@ -156,7 +162,7 @@ export default{
 
   data: function() {
     return {
-      room: '',
+      room: null,
       select: [],
       bookedDevices: [],
       iniDevices: [],
@@ -384,6 +390,9 @@ export default{
 <style>
     .label {
         font-size: 2em;
+    }
+    .sublabel {
+        font-size: 1.5em;
     }
     .rooms {
         padding:2em;
