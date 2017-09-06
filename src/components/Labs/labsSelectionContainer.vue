@@ -63,7 +63,8 @@
       :tasks="selectedTasks"
       @stateWasChanged="currentState = $event"></labs>
 
-    <labRoom v-else :labID="selectedLabID" @stateWasChanged="currentState = $event"></labRoom>
+    <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
+    <feedBack v-else :feedbacks="feedbacks"></feedBack>
 
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
@@ -79,6 +80,7 @@
 <script>
     import LabsSelection from './labsSelectionDetail.vue';
     import LabSelectRoom from './labsSelectRoom.vue';
+    import FeedbackContainer from '../Feedback/FeedbackContainer.vue'
 
     export default {
         data() {
@@ -86,6 +88,7 @@
                 //Constant
                 LAB_API_URL : '',
 
+                feedbacks:[],
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
                 selectedLabID: 0,
@@ -152,7 +155,8 @@
         },
         components: {
             'labs':LabsSelection,
-            'labRoom': LabSelectRoom
+            'labRoom': LabSelectRoom,
+            'feedBack': FeedbackContainer
         }
     }
 </script>
