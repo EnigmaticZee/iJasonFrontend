@@ -72,35 +72,37 @@
         </button>
       </div>
 
+<!--  v-if="work_collection_response.result && work_collection_status_response.result === 'Success'" -->
+
       <div class="col justify-center">
         <button
           class="secondary full-width"
-          v-if="work_collection_response.result && work_collection_status_response.result === 'Success'" 
+
           @click="getFeedback">
           Get Feedback
         </button>
       </div>
     </div>
-      
+
     <!-- Feedback container -->
-      
+
     <div class="full-width" v-if="feedbacks.labName != null" >
         <div class="row">
             <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
         </div>
         <div  v-for="feedback in feedbacks"  class="card">
           <div class="card-title bg-light-blue text-white">
-            {{feedback.errors.error}} 
+            {{feedback.errors.error}}
           </div>
           <div class="card-content ">
               {{feedback.errors.details}}
           </div>
         </div>
     </div>
- 
+
       <!-- Modal -->
     <q-modal @open="timer()"class="noBackdropDismiss" ref="collectWorkStatusModal">
-      
+
         <div class="row">
             <span class="label bg-primary text-white full-width justify-center">Collecting Work</span>
         </div>
@@ -127,7 +129,7 @@
             </li>
           </ul>
         </div>
-         
+
 
           <!-- You could close the modal here like that:-->
           <!-- @click="$refs.collectWorkStatusModal.close()" -->
@@ -136,7 +138,7 @@
           </button>
         </div>
       </div>
-    </q-modal> 
+    </q-modal>
   </div>
 
 </template>
@@ -198,7 +200,6 @@ export default{
         {deviceType: 'Router', deviceName: 'R2'},
         {deviceType: 'Switch', deviceName: 'S1'} ]
     },
-
     constructCollectRequest() {
       console.log(this._data);
       var mappedDevices=[];
@@ -291,19 +292,19 @@ export default{
       var reqBody=this.constructCollectRequest();
       var collectURL = collectCall();
       var self = this;
-        
+
       axios.post(collectURL, reqBody)
         .then(function(response) {
 
           console.log(response.data);
           self.work_collection_response=response.data;
           console.log("im here");
-          
+
           if (self.work_collection_response.result === 'Failure'){
               console.log("Collection Failure");
               return;
           }
-          else{    
+          else{
             console.log("Collection success");
              self.$refs.collectWorkStatusModal.open();
           }
@@ -319,14 +320,14 @@ export default{
     },
     timer: function() {
         console.log("here");
-        
+
         var seconds = this.work_collection_response.duration;
-        
+
         setTimeout(this.checkStatus, seconds*1000);
-        
-        
+
+
     },
-    checkStatus: function() 
+    checkStatus: function()
       {
           console.log("Checking status after a while!!");
           var checkStatusURL = collectStatusCall();
@@ -341,30 +342,39 @@ export default{
               console.log(error);
             })
 
-          
+
       },
-      
+
     cancelCollectWork: function(){
       this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
     },
 
     getFeedback () {
-        
+
+
+
         var feedbackURL = feedbackCall();
-     
+
       var self = this;
 
       axios.post(feedbackURL, {labID: this.labID, username: user.credentials.username})
         .then(function(response){
           console.log(response.data);
           self.feedbacks=response.data;
-          
+
+          //State change will occur after the feedbacks is collected, since if we emit outside the callback,
+          //the feedbacks may not be collected yet , but we already changed the state.
+
+          this.$emit('stateWasChanged', 'STATE_SHOW_FEEDBACK');
+          this.$emit('feedbacksWereCollected' , this.feedbacks);
+
         })
         .catch(function(error){
           console.log(error);
         })
 
-        
+
+
       console.log('get feedback');
     }
   }
@@ -381,5 +391,5 @@ export default{
     .buttons {
         padding: 2em 0em 2em 0em;
     }
-   
+
 </style>

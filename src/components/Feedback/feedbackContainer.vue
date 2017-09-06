@@ -6,7 +6,7 @@
         </div>
         <div  v-for="feedback in feedbacks"  class="card">
           <div class="card-title bg-light-blue text-white">
-            {{feedback.errors.error}} 
+            {{feedback.errors.error}}
           </div>
           <div class="card-content ">
               {{feedback.errors.details}}
@@ -14,11 +14,29 @@
         </div>
     </div>
     </q-layout>
+
+    <!-- <div>
+        <button @click="dummy()">Check Feedback</button>
+    </div> -->
 </template>
 
 <script>
+    export default {
+        props: ['feedbacks'],
+
+        data: function() {
+            return
+        },
+
+        methods: {
+            dummy : function () {
+                console.log(this.feedbacks);
+                alert(this.feedbacks);
+            }
+        }
+    }
 </script>
 
 <style>
-    
+
 </style>
