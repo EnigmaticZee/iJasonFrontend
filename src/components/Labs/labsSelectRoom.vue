@@ -6,7 +6,7 @@
     </div>
 
     <div class="row">
-      <span class="sublabel bg-primary text-white full-width">Select Room</span>
+      <span class="sublabel bg-secondary text-white full-width">Select Room</span>
     </div>
     <div class="row justify-center rooms">
       <div class="row">
@@ -40,9 +40,28 @@
 
     <!-- Show Required Device in INI File -->
     <div class="row">
-      <span class="sublabel bg-primary text-white full-width">Map Configured Devices to Lab</span>
+      <span class="sublabel bg-secondary text-white full-width">Map Configured Devices to Lab</span>
     </div>
-    <div class="col justify-center">
+
+    <div class="list" v-if="iniDevices != null" v-for="(iniDevice,index) in iniDevices">
+      <div class="item" >
+        <div class="item-content">
+          Lab Device  {{iniDevice.deviceType}} : {{iniDevice.deviceName}}  
+          <div>
+            <q-select
+                class="full-width"
+                type="radio" v-model="select[index]"
+                :options="populateSelectOption">
+                  
+                </q-select>
+          </div>  
+        
+        </div>
+      </div>
+    </div>
+
+
+  <!--   <div class="col justify-center">
       <div  v-if="iniDevices != null" class="list" v-for="(iniDevice,index) in iniDevices">
         <q-collapsible
           icon="description"
@@ -58,7 +77,7 @@
           </div>
         </q-collapsible>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- Collect and Cancel Device Button -->
@@ -98,39 +117,44 @@
     <q-modal @open="timer()"class="noBackdropDismiss" ref="collectWorkStatusModal">
 
         <div class="row">
-            <span class="label bg-primary text-white full-width justify-center">Collecting Work</span>
+            <span class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
         </div>
 
       <q-progress
         style="height: 25px"
-        class="indeterminate stripe" >
+        class="indeterminate stripe" color="teal-4">
         </q-progress>
 
       <div>
-        <button
-          @click="getFeedback"
-          v-if="work_collection_status_response.result === 'Success'"
-          class="primary">
-          Get Feedback
-        </button>
-
-        <div v-if="work_collection_status_response.result === 'Fail'">
-         <div>
-              <h4>Some tasks failed during collection...</h4>
-          <ul>
-            <li v-for="device in work_collection_status_response.devices">
-              {{device}}
-            </li>
-          </ul>
-        </div>
+          <div v-if="work_collection_status_response.result === 'Success'"> 
+            <div>
+              {{work_collection_status_response.details}}
+            </div>
+            <button
+              @click="getFeedback"
+              class="primary">
+              Get Feedback
+            </button>
+          </div>
 
 
-          <!-- You could close the modal here like that:-->
-          <!-- @click="$refs.collectWorkStatusModal.close()" -->
-          <button class="primary">
-            OK
-          </button>
-        </div>
+          <div v-if="work_collection_status_response.result === 'Fail'">
+           <div>
+              {{work_collection_status_response.details}}
+            </div>
+            <div>
+              <ul>
+                <li v-for="device in work_collection_status_response.devices">
+                {{device}}
+                </li>
+              </ul>
+            </div>
+            <!-- You could close the modal here like that:-->
+            <!-- @click="$refs.collectWorkStatusModal.close()" -->
+            <button class="primary">
+              OK
+            </button>
+          </div>
       </div>
     </q-modal>
   </div>

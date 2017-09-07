@@ -29,7 +29,7 @@ export default new VueRouter({
    */
 
   routes: [
-    { path: '/', component: load('Index') }, // Default
+    { path: '/', component: load('Login') }, // Default
     { path: '/units', component: load('unitSelection') },
     { path: '*', component: load('Error404') },
     { path: '/labs', component: loadLabsComponent('labsSelectionContainer') },

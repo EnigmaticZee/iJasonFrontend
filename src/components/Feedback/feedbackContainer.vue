@@ -4,7 +4,7 @@
             <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
         </div>
         <div  v-for="feedback in feedbacks.errors"  class="card">
-          <div class="card-title bg-light-blue text-white">
+          <div class="card-title bg-red-5 text-white">
             {{feedback.error}}
           </div>
           <div v-for="detail in feedback.details" class="card-content ">
