@@ -99,7 +99,7 @@
       </div>
 
 <!--   -->
-
+<!-- 
       <div class="col justify-center" v-if="work_collection_response.result && work_collection_status_response.result === 'Success'">
         <button
           class="secondary full-width"
@@ -107,34 +107,33 @@
           @click="getFeedback">
           Get Feedback
         </button>
-      </div>
+      </div> -->
     </div>
 
     <!-- Feedback container -->
 
 
       <!-- Modal -->
-    <q-modal @open="timer()"class="noBackdropDismiss" ref="collectWorkStatusModal">
+    <q-modal @open="timer()" noEscDismiss="true"  noBackdropDismiss="true" ref="collectWorkStatusModal">
 
         <div class="row">
             <span class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
         </div>
-
-      <q-progress
-        style="height: 25px"
-        class="indeterminate stripe" color="teal-4">
-        </q-progress>
-
       <div>
+           <q-progress class="indeterminate stripe"
+      :percentage="progressBuffer"
+      :buffer="buffer"
+      style="height: 25px"
+    />  
+
+      </div>
+    
+      <div class="row">
           <div v-if="work_collection_status_response.result === 'Success'"> 
             <div>
               {{work_collection_status_response.details}}
             </div>
-            <button
-              @click="getFeedback"
-              class="primary">
-              Get Feedback
-            </button>
+            
           </div>
 
 
@@ -151,11 +150,18 @@
             </div>
             <!-- You could close the modal here like that:-->
             <!-- @click="$refs.collectWorkStatusModal.close()" -->
-            <button class="primary">
-              OK
-            </button>
           </div>
       </div>
+      <div class="row">
+        <button  class="warning full-width " @click="cancelCollectWork()">
+          Cancel
+        </button>
+      <button class="primary full-width" @click="getFeedback" v-if="work_collection_status_response.result === 'Success'">
+          Get Feedback
+        </button>
+      
+      </div>
+     
     </q-modal>
   </div>
 
