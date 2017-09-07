@@ -91,7 +91,8 @@
                 //Constant
                 LAB_API_URL : '',
 
-                feedbacks:[],
+                feedbacks:{                  
+                },
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
                 selectedLabID: 0,

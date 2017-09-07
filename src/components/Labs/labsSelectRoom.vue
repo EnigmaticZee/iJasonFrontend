@@ -92,19 +92,6 @@
 
     <!-- Feedback container -->
 
-    <div class="full-width" v-if="feedbacks.labName != null" >
-        <div class="row">
-            <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
-        </div>
-        <div  v-for="feedback in feedbacks"  class="card">
-          <div class="card-title bg-light-blue text-white">
-            {{feedback.errors.error}}
-          </div>
-          <div class="card-content ">
-              {{feedback.errors.details}}
-          </div>
-        </div>
-    </div>
 
       <!-- Modal -->
     <q-modal @open="timer()"class="noBackdropDismiss" ref="collectWorkStatusModal">
@@ -166,7 +153,7 @@ export default{
       select: [],
       bookedDevices: [],
       iniDevices: [],
-        feedbacks:[],
+        feedbacks:{},
         work_collection_status_response: {},
 
       work_collection_response: {}
@@ -363,7 +350,7 @@ export default{
 
       var self = this;
 
-      axios.post(feedbackURL, {labID: this.labID, username: user.credentials.username})
+      axios.post(feedbackURL, {labID: self.labID, username: user.credentials.username})
         .then(function(response){
           console.log(response.data);
           self.feedbacks=response.data;
@@ -371,15 +358,15 @@ export default{
           //State change will occur after the feedbacks is collected, since if we emit outside the callback,
           //the feedbacks may not be collected yet , but we already changed the state.
 
-          this.$emit('stateWasChanged', 'STATE_SHOW_FEEDBACK');
-          this.$emit('feedbacksWereCollected' , this.feedbacks);
+        self.$emit('feedbacksWereCollected' , self.feedbacks);
+        self.$emit('stateWasChanged', 'STATE_SHOW_FEEDBACK');
 
         })
         .catch(function(error){
           console.log(error);
         })
 
-
+        
 
       console.log('get feedback');
     }
