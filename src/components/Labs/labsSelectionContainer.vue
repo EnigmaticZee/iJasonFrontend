@@ -82,7 +82,7 @@
 <script>
     import LabsSelection from './labsSelectionDetail.vue';
     import LabSelectRoom from './labsSelectRoom.vue';
-    import FeedbackContainer from '../Feedback/FeedbackContainer.vue'
+    import FeedbackContainer from '../Feedback/feedbackContainer.vue'
 
 
     export default {
