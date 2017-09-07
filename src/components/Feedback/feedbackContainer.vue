@@ -1,6 +1,5 @@
 <template>
-    <q-layout>
-      <div class="full-width">
+  <div class="layout-view">
         <div class="row">
             <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
         </div>
@@ -13,8 +12,6 @@
           </div>
         </div>
     </div>
-    </q-layout>
-
     <!-- <div>
         <button @click="dummy()">Check Feedback</button>
     </div> -->

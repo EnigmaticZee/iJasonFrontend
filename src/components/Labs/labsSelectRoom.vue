@@ -46,7 +46,7 @@
       <div  v-if="iniDevices != null" class="list" v-for="(iniDevice,index) in iniDevices">
         <q-collapsible
           icon="description"
-          :label="'Configured ' +  iniDevice.deviceType + ' : ' + iniDevice.deviceName">
+          :label="'Lab Device ' +  iniDevice.deviceType + ' : ' + iniDevice.deviceName">
 
           <div  class="item">
             <div class="item-content">
@@ -59,6 +59,7 @@
         </q-collapsible>
       </div>
     </div>
+
 
     <!-- Collect and Cancel Device Button -->
     <div class="buttons">
@@ -78,9 +79,9 @@
         </button>
       </div>
 
-<!--  v-if="work_collection_response.result && work_collection_status_response.result === 'Success'" -->
+<!--   -->
 
-      <div class="col justify-center">
+      <div class="col justify-center" v-if="work_collection_response.result && work_collection_status_response.result === 'Success'">
         <button
           class="secondary full-width"
 
