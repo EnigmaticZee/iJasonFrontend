@@ -95,7 +95,7 @@
                 },
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
-                selectedLabID: 0,
+                selectedLabID: 1,
                 userCredentials:{username:'student', password: 'password'},
                 selectedTasks: [{labID: 1, labTitle: 'Lab Task 1', week: 1} , {labID: 13, labTitle: 'Lab Task 13', week: 1}],
                 labTasks:[
