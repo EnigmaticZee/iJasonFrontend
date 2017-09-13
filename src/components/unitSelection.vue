@@ -1,7 +1,7 @@
 <template>
   <q-layout>
     <div slot="header" class="toolbar">
-      <q-toolbar-title :padding="0">
+      <q-toolbar-title :padding="1">
         <div>
           <img src="~assets/logo.jpg">
           iJason Virtual Lab Supervisor
@@ -18,16 +18,10 @@
       </q-toolbar-title>
     </div>
 
-    <div class="layout-view">
-      <div class="logo-container non-selectable no-pointer-events">
-        <div class="logo">
-          <img src="~assets/logo.png">
-        </div>
 
-      </div>
-      <div class="units-selection-welcome-message">
+    <div class="layout-view col">
+      <div class="units-selection-welcome-message col">
         <h1>iJason Virtual Lab Supervisor</h1>
-        <br><br><br><br>
         <p>Welcome back, student</p>
       </div>
 
@@ -40,7 +34,7 @@
           <button
             @click="() => handleUnitClick(unit)"
             v-for="unit in units"
-            class="deep-purple single-unit">
+            class="primary single-unit">
 
               <img :src="unit.img" alt="">
               <div class="single-unit-description">
@@ -111,9 +105,6 @@ export default {
 </script>
 
 <style lang="scss">
-.toolbar {
-  background: #7342bf;
-}
 
 .logo-container {
   width:300px;

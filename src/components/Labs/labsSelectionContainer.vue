@@ -1,12 +1,23 @@
 <template>
   <q-layout>
-
     <div slot="header" class="toolbar">
       <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
         <i>menu</i>
       </button>
       <q-toolbar-title :padding="1">
+      <div>
+          <img src="~assets/logo.jpg">
           iJason Virtual Lab Supervisor
+      </div>
+
+      <div>
+          Student
+          |
+          <button @click="performSignOut" class="primary">
+            Sign Out
+          </button>
+
+        </div>
       </q-toolbar-title>
     </div>
 
