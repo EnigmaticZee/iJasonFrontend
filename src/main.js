@@ -10,6 +10,7 @@ import Vue from 'vue'
 import Quasar from 'quasar'
 import router from './router'
 
+
 export const eventBus = new Vue();
 Vue.use(Quasar) // Install Quasar Framework
 

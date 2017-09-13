@@ -1,5 +1,5 @@
 <template>
-  <q-layout>
+  <q-layout class="background">
     <div slot="header" class="toolbar">
       <q-toolbar-title :padding="1">
         <div>
@@ -18,35 +18,37 @@
       </q-toolbar-title>
     </div>
 
-
     <div class="layout-view col">
+    <br><br><br><br>
       <div class="units-selection-welcome-message col">
-        <h1>iJason Virtual Lab Supervisor</h1>
-        <p>Welcome back, student</p>
+        <h1 class="text-primary">iJason Virtual Lab Supervisor</h1>
+        <p class="text-primary">Welcome back, student</p>
       </div>
-
-      <div class="units-container">
-        <h3 class="units-heading">
+      <br><br><br>
+      <div class="units-container col">
+        <div class="units-heading  bg-secondary">
           Units You study
-        </h3>
-
+        </div>
         <div class="units-list">
           <button
             @click="() => handleUnitClick(unit)"
             v-for="unit in units"
             class="primary single-unit">
-
-              <img :src="unit.img" alt="">
-              <div class="single-unit-description">
-                <h2>{{ unit.title }}</h2>
-                <p>{{ unit.type}}</p>
+              <div class="row">
+                <img :src="unit.img" alt="">
+              </div>
+              
+              <div class="single-unit-description col">
+              <br><br>
+                <div class="row">{{ unit.title }}</div>
+                <div class="row">{{ unit.type}}</div>
               </div>
           </button>
         </div>
       </div>
     </div>
 
-      <div slot="footer" class="toolbar">
+    <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
         iJason - Virtual Labs for Networking Students
       </div>
@@ -58,7 +60,6 @@
 </template>
 
 <script>
-
 export default {
   data () {
     return {
@@ -107,7 +108,7 @@ export default {
 <style lang="scss">
 
 .logo-container {
-  width:300px;
+  width:3px;
 perspective: 800px;
 margin: top;
 margin-top: -260px;
@@ -127,6 +128,7 @@ margin-top: -260px;
 
   h1 {
     font-size: 23px;
+    font-weight:bolder;
 
     p {
       color: #ccc;
@@ -149,7 +151,6 @@ margin-top: -260px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     color: #fff;
-    background: #7342bf;
     padding: 10px 0;
   }
 
@@ -192,7 +193,7 @@ margin-top: -260px;
 
 .toolbar-content {
   img {
-    max-width: 100%;
+    max-width: 150%;
     width: 66.66665px;
     height: 50px;
     margin-right: 5px;
@@ -211,6 +212,11 @@ margin-top: -260px;
       }
     }
   }
+}
+
+.background {
+  background-image: url("../assets/background2.jpg");
+  opacity: 20px;
 }
 
 </style>

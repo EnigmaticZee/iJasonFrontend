@@ -31,7 +31,7 @@
         </li>
 
         <li>
-          <a>
+          <a >
             <i>mail</i> Labs
           </a>
         </li>
