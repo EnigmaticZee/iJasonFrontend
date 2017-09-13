@@ -6,7 +6,7 @@
     </div>
 
     <div class="row">
-      <span class="sublabel bg-secondary text-white full-width">Select Room</span>
+      <span class="sublabel bg-secondary text-white full-width">Select Room {{labID}}</span>
     </div>
     <div class="row justify-center rooms">
       <div class="row">
@@ -130,6 +130,13 @@
     
       <div class="row">
           <div v-if="work_collection_status_response.result === 'Success'"> 
+            <div>
+              {{work_collection_status_response.details}}
+            </div>
+            
+          </div>
+
+           <div v-if="work_collection_status_response.result === 'Pending'"> 
             <div>
               {{work_collection_status_response.details}}
             </div>

@@ -61,7 +61,8 @@
     <labs
       v-if="currentState=='STATE_SHOW_LAB'"
       :tasks="selectedTasks"
-      @stateWasChanged="currentState = $event"></labs>
+      @stateWasChanged="currentState = $event"
+      @chosenlabID="selectedLabID = $event"></labs>
       
 
     <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
@@ -83,6 +84,8 @@
     import LabsSelection from './labsSelectionDetail.vue';
     import LabSelectRoom from './labsSelectRoom.vue';
     import FeedbackContainer from '../Feedback/feedbackContainer.vue'
+    import axios from 'axios'
+    import {labsCall} from '../../api'
 
 
     export default {
@@ -91,30 +94,13 @@
                 //Constant
                 LAB_API_URL : '',
 
-                feedbacks:{                  
-                },
+                feedbacks:{},
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
                 selectedLabID: 1,
                 userCredentials:{username:'student', password: 'password'},
-                selectedTasks: [{labID: 1, labTitle: 'Lab Task 1', week: 1} , {labID: 13, labTitle: 'Lab Task 13', week: 1}],
-                labTasks:[
-                {labID: 1, labTitle: 'Lab Task 1', week: 1},
-                {labID: 2, labTitle: 'Lab Task 2', week: 1},
-                {labID: 3, labTitle: 'Lab Task 3', week: 1},
-                {labID: 4, labTitle: 'Lab Task 4', week: 2},
-                {labID: 5, labTitle: 'Lab Task 5', week: 2},
-                {labID: 6, labTitle: 'Lab Task 6', week: 3},
-                {labID: 7, labTitle: 'Lab Task 7', week: 4},
-                {labID: 8, labTitle: 'Lab Task 8', week: 5},
-                {labID: 9, labTitle: 'Lab Task 9', week: 6},
-                {labID: 10, labTitle: 'Lab Task 10', week: 7},
-                {labID: 11, labTitle: 'Lab Task 11', week: 8},
-                {labID: 12, labTitle: 'Lab Task 12', week: 9},
-                {labID: 13, labTitle: 'Lab Task 13', week: 10},
-                {labID: 14, labTitle: 'Lab Task 14', week: 11},
-                {labID: 15, labTitle: 'Lab Task 15', week: 12}
-                ]
+                selectedTasks: [],
+                unit: 'TNE10011'
             }
         },
 
@@ -123,39 +109,47 @@
         },
         methods: {
             loadWeeklyTask : function(aWeek) {
-                this.currentState = 'STATE_SHOW_LAB'
-                this.selectedTasks = [];
 
-                for (var i = 0; i < this.labTasks.length; i++)
+
+                console.log("Chosen week is", aWeek);
+                console.log("chosen unit is", this.unit);
+
+                var labsURL = labsCall();
+                var reqBody=this.constructLabRequest(aWeek);
+                var self = this;
+
+                axios.post(labsURL, reqBody)
+                  .then(function(response){
+                    console.log(response.data);
+                    self.selectedTasks=response.data;
+                  })
+                  .catch(function(error){
+                    console.log(error);
+                  })
+
+                console.log(this.selectedTasks);
+
+                this.currentState = 'STATE_SHOW_LAB'
+
+              /*  for (var i = 0; i < this.labTasks.length; i++)
                 {
                     if(this.labTasks[i].week == aWeek)
                         this.selectedTasks.push(this.labTasks[i]);
-                }
+                }*/
             },
-            // downloadTasks : function()
-            // {
-            //     this.labTasks = [
-            //     {labID: 1, labTitle: 'Lab Task 1', week: 1},
-            //     {labID: 2, labTitle: 'Lab Task 2', week: 1},
-            //     {labID: 3, labTitle: 'Lab Task 3', week: 1},
-            //     {labID: 4, labTitle: 'Lab Task 4', week: 2},
-            //     {labID: 5, labTitle: 'Lab Task 5', week: 2},
-            //     {labID: 6, labTitle: 'Lab Task 6', week: 3},
-            //     {labID: 7, labTitle: 'Lab Task 7', week: 4},
-            //     {labID: 8, labTitle: 'Lab Task 8', week: 5},
-            //     {labID: 9, labTitle: 'Lab Task 9', week: 6},
-            //     {labID: 10, labTitle: 'Lab Task 10', week: 7},
-            //     {labID: 11, labTitle: 'Lab Task 11', week: 8},
-            //     {labID: 12, labTitle: 'Lab Task 12', week: 9},
-            //     {labID: 13, labTitle: 'Lab Task 13', week: 10},
-            //     {labID: 14, labTitle: 'Lab Task 14', week: 11},
-            //     {labID: 15, labTitle: 'Lab Task 15', week: 12},
-            // ]
-            // },
-            dummy : function()
+  
+            constructLabRequest : function(aWeek)
             {
-                alert('dummy');
+              var requestBody={
+              unitCode: this.unit,
+              weekNo: aWeek
+              };
+
+              console.log(requestBody);
+
+              return requestBody;
             }
+
         },
         components: {
             'labs':LabsSelection,

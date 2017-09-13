@@ -24,3 +24,8 @@ export function feedbackCall () {
 }
 
 
+export function labsCall () {
+  var url = '/api/get_labs.php'
+  return url
+}
+

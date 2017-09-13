@@ -15,7 +15,8 @@
     <!-- Targets -->
     <div ref="tab-1">
         <div class="list" v-for="t in tasks">
-          <q-collapsible icon="description" :label="t.labTitle">
+        <div v-if="t.labType=='Regular'">
+        <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
               <div class="item-content">
@@ -24,18 +25,19 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showRoom()" >
+              <div class="item-content" v-on:click="showRoom(t.labID)" >
                 Check Lab Work
               </div>
             </div>
           </q-collapsible>
         </div>
+        </div>
     </div>
 
-
     <div ref="tab-2">
-        <div class="list">
-          <q-collapsible icon="description" label="Practice Lab 01">
+        <div class="list" v-for="t in tasks">
+        <div v-if="t.labType=='Practice'">
+        <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
               <div class="item-content">
@@ -44,55 +46,15 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showDialog()">
-                Check Configuration
-              </div>
-            </div>
-          </q-collapsible>
-            <q-collapsible icon="description" label="Practice Lab 02">
-            <div class="item" >
-              <i class="item-primary">file_download</i>
-              <div class="item-content">
-                Download
-              </div>
-            </div>
-            <div class="item" >
-              <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showDialog()">
-                Check Configuration
-              </div>
-            </div>
-          </q-collapsible>
-            <q-collapsible icon="description" label="Practice Lab 03">
-            <div class="item" >
-              <i class="item-primary">file_download</i>
-              <div class="item-content">
-                Download
-              </div>
-            </div>
-            <div class="item" >
-              <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showDialog()">
-                Check Configuration
-              </div>
-            </div>
-          </q-collapsible>
-            <q-collapsible icon="description" label="Practice Lab 04">
-            <div class="item" >
-              <i class="item-primary">file_download</i>
-              <div class="item-content">
-                Download
-              </div>
-            </div>
-            <div class="item" >
-              <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showDialog()">
-                Check Configuration
+              <div class="item-content" v-on:click="showRoom(t.labID)" >
+                Check Lab Work
               </div>
             </div>
           </q-collapsible>
         </div>
+        </div>
     </div>
+
     <q-modal  ref="basicModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
         <header class="modal-header">Select Configuration</header>
         <div id="modal-content">
@@ -199,8 +161,10 @@
             return this.$refs.basicModal.open();
           },
 
-          showRoom: function() {
+          showRoom: function(labID) {
+
               this.$emit('stateWasChanged', 'STATE_SHOW_ROOM');
+              this.$emit('chosenlabID', labID);
           },
           toggle: function(dropdownName) {
             this.dropDowns[dropdownName].open = !this.dropDowns[dropdownName].open;
