@@ -2,11 +2,11 @@
   <div class="layout-view">
     <!-- Select Room (Radio Button) -->
     <div class="row">
-      <span class="label bg-primary text-white full-width justify-center">Collection Process</span>
+      <span class="label bg-primary text-white full-width justify-center">Feedback Process</span>
     </div>
 
     <div class="row">
-      <span class="sublabel bg-secondary text-white full-width">Select Room {{labID}}</span>
+      <span class="sublabel bg-secondary text-white full-width">Select Room</span>
     </div>
     <div class="row justify-center rooms">
       <div class="row">
@@ -39,24 +39,34 @@
     </div>
 
     <!-- Show Required Device in INI File -->
-    <div class="row">
-      <span class="sublabel bg-secondary text-white full-width">Map Configured Devices to Lab</span>
-    </div>
+    <div v-if="bookedDevices.length != 0">
+       <div class="row">
+        <span class="sublabel bg-secondary text-white full-width">Map Configured Lab Devices</span>
+      </div>
 
-    <div class="list" v-if="iniDevices != null" v-for="(iniDevice,index) in iniDevices">
-      <div class="item" >
-        <div class="item-content">
-          Lab Device  {{iniDevice.deviceType}} : {{iniDevice.deviceName}}  
-          <div>
-            <q-select
-                class="full-width"
-                type="radio" v-model="select[index]"
-                :options="populateSelectOption">
-                  
-                </q-select>
-          </div>  
-        
+      <div class="list" v-for="(iniDevice,index) in iniDevices">
+        <div class="item" :device="iniDevice.deviceType" >
+            Configured Lab {{iniDevice.deviceType}} : {{iniDevice.deviceName}}  
+            <div v-if="iniDevice.deviceType == 'Switch'" >
+              <q-select
+                  :label="'Booked ' + iniDevice.deviceType"
+                  class="full-width"
+                  type="radio" 
+                  v-model="select[index]"
+                  :options="populateSelectOptionSwitch">
+              </q-select>
+            </div> 
+            <div v-if="iniDevice.deviceType == 'Router'" >
+              <q-select
+                  :label="'Booked ' + iniDevice.deviceType"
+                  class="full-width"
+                  type="radio" 
+                  v-model="select[index]"
+                  :options="populateSelectOptionRouter">
+              </q-select>
+            </div>        
         </div>
+        </br></br>
       </div>
     </div>
 
@@ -92,14 +102,14 @@
         <button
           class="primary full-width"
           @click="collectWork()"
-        :disabled="room==null">
+        :disabled="bookedDevices.length == 0">
 
           Collect Work
         </button>
       </div>
 
 <!--   -->
-<!-- 
+
       <div class="col justify-center" v-if="work_collection_response.result && work_collection_status_response.result === 'Success'">
         <button
           class="secondary full-width"
@@ -107,7 +117,7 @@
           @click="getFeedback">
           Get Feedback
         </button>
-      </div> -->
+      </div>
     </div>
 
     <!-- Feedback container -->
@@ -181,6 +191,7 @@ import {iniCall} from '../../api'
 import {bookedDevicesCall} from '../../api'
 import {collectCall, collectStatusCall} from '../../api'
 import {feedbackCall} from '../../api'
+import { Dialog } from 'quasar'
 
 export default{
   props:['labID'],
@@ -199,13 +210,28 @@ export default{
   },
 
   computed: {
-    populateSelectOption() {
+    populateSelectOptionSwitch() {
       var bookedDev=[];
 
       for (var i = 0 ; i < this.bookedDevices.length ; i++) {
-        bookedDev.push({label: this.bookedDevices[i].deviceName, value: i});
+        if (this.bookedDevices[i].deviceType === 'Switch'){
+            bookedDev.push({label: this.bookedDevices[i].deviceName, value: i, type:this.bookedDevices[i].deviceType});
+        }
       }
+      console.log("Booked Switches array");
+      console.log(bookedDev);
+      return bookedDev;
+    },
+    populateSelectOptionRouter() {
+      var bookedDev=[];
 
+      for (var i = 0 ; i < this.bookedDevices.length ; i++) {
+        if (this.bookedDevices[i].deviceType === 'Router'){
+            bookedDev.push({label: this.bookedDevices[i].deviceName, value: i, type:this.bookedDevices[i].deviceType});
+        }
+      }
+      console.log("Booked Routers array");
+      console.log(bookedDev);
       return bookedDev;
     }
   },
@@ -306,17 +332,29 @@ export default{
         .then(function(response){
           console.log(response.data);
           self.bookedDevices=response.data;
+          if (self.bookedDevices.length == 0)
+            {
+              Dialog.create({
+                title: 'No Bookings Found!',
+                message: 'No bookings found in room ' + self.room + ' for your credentials',
+                buttons: [
+                  'Cancel'
+                ]
+              })
+            }
 
         })
         .catch(function(error){
           console.log(error);
         })
+
     },
 
     downloadDev() {
       this.bookedDevices = this.showBookedDevice();
       this.iniDevices = this.showINIDevices();
-      this.populateSelectOption();
+      this.populateSelectOptionSwitch();
+      this.populateSelectOptionRouter();
     },
 
     collectWork() {

@@ -29,7 +29,7 @@
                 Check Lab Work
               </div>
             </div>
-          </q-collapsible>
+        </q-collapsible>
         </div>
         </div>
     </div>
