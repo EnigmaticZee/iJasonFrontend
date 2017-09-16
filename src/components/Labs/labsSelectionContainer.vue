@@ -74,7 +74,7 @@
       :tasks="selectedTasks"
       @stateWasChanged="currentState = $event"
       @chosenlabID="selectedLabID = $event"></labs>
-      
+
 
     <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
 
@@ -92,85 +92,83 @@
 </template>
 
 <script>
-    import LabsSelection from './labsSelectionDetail.vue';
-    import LabSelectRoom from './labsSelectRoom.vue';
-    import FeedbackContainer from '../Feedback/feedbackContainer.vue'
-    import axios from 'axios'
-    import {labsCall} from '../../api'
+import LabsSelection from './labsSelectionDetail.vue';
+import LabSelectRoom from './labsSelectRoom.vue';
+import FeedbackContainer from '../Feedback/feedbackContainer.vue'
+import axios from 'axios'
+import {labsCall} from '../../api'
 
+export default {
+  data() {
+    return {
+      //Constant
+      LAB_API_URL : '',
 
-    export default {
-        data() {
-            return {
-                //Constant
-                LAB_API_URL : '',
+      feedbacks:{},
+      currentState: 'STATE_SHOW_LAB',
+      weeks : 12,
+      selectedLabID: 1,
+      userCredentials:{username:'student', password: 'password'},
+      selectedTasks: [],
+      unit: 'TNE10011'
+    }
+  },
 
-                feedbacks:{},
-                currentState: 'STATE_SHOW_LAB',
-                weeks : 12,
-                selectedLabID: 1,
-                userCredentials:{username:'student', password: 'password'},
-                selectedTasks: [],
-                unit: 'TNE10011'
-            }
-        },
+  mounted() {
+    // loadWeeklyTask();
+  },
+  methods: {
+    performSignOut () {
+      console.log('Implement logic for signout here.')
 
-        mounted() {
-            // loadWeeklyTask();
-        },
-        methods: {
-            loadWeeklyTask : function(aWeek) {
+    },
+    loadWeeklyTask : function(aWeek) {
+      console.log("Chosen week is", aWeek);
+      console.log("chosen unit is", this.unit);
 
+      var labsURL = labsCall();
+      var reqBody=this.constructLabRequest(aWeek);
+      var self = this;
 
-                console.log("Chosen week is", aWeek);
-                console.log("chosen unit is", this.unit);
+      axios.post(labsURL, reqBody)
+        .then(function(response){
+          console.log(response.data);
+          self.selectedTasks=response.data;
+        })
+        .catch(function(error){
+          console.log(error);
+        })
 
-                var labsURL = labsCall();
-                var reqBody=this.constructLabRequest(aWeek);
-                var self = this;
+      console.log(this.selectedTasks);
 
-                axios.post(labsURL, reqBody)
-                  .then(function(response){
-                    console.log(response.data);
-                    self.selectedTasks=response.data;
-                  })
-                  .catch(function(error){
-                    console.log(error);
-                  })
+      this.currentState = 'STATE_SHOW_LAB'
 
-                console.log(this.selectedTasks);
-
-                this.currentState = 'STATE_SHOW_LAB'
-
-              /*  for (var i = 0; i < this.labTasks.length; i++)
+      /*  for (var i = 0; i < this.labTasks.length; i++)
                 {
                     if(this.labTasks[i].week == aWeek)
                         this.selectedTasks.push(this.labTasks[i]);
                 }*/
-            },
-  
-            constructLabRequest : function(aWeek)
-            {
-              var requestBody={
-              unitCode: this.unit,
-              weekNo: aWeek
-              };
+    },
 
-              console.log(requestBody);
+    constructLabRequest (aWeek) {
+      var requestBody={
+        unitCode: this.unit,
+        weekNo: aWeek
+      };
 
-              return requestBody;
-            }
+      console.log(requestBody);
 
-        },
-        components: {
-            'labs':LabsSelection,
-            'labRoom': LabSelectRoom,
-            'feedBack': FeedbackContainer
-        }
+      return requestBody;
     }
+  },
+  components: {
+
+    'labs':LabsSelection,
+    'labRoom': LabSelectRoom,
+    'feedBack': FeedbackContainer
+  }
+}
 </script>
 
 <style>
-
-
 </style>
