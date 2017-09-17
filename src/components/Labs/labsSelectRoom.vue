@@ -131,8 +131,6 @@
         </div>
       <div>
            <q-progress class="indeterminate stripe"
-      :percentage="progressBuffer"
-      :buffer="buffer"
       style="height: 25px"
     />  
 
