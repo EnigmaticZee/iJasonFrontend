@@ -5,8 +5,8 @@
         <i>menu</i>
       </button>
       <q-toolbar-title :padding="1">
-      <div>
-          <img src="~assets/logo.jpg">
+      <div class="ij-labs-logo-container">
+          <img class="ij-labs-logo" src="~assets/logo.jpg">
           iJason Virtual Lab Supervisor
       </div>
 
@@ -74,7 +74,7 @@
       :tasks="selectedTasks"
       @stateWasChanged="currentState = $event"
       @chosenlabID="selectedLabID = $event"></labs>
-      
+
 
     <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
 
@@ -153,7 +153,7 @@
             {
 
             },
-  
+
             constructLabRequest : function(aWeek)
             {
               var requestBody={
@@ -176,6 +176,15 @@
 </script>
 
 <style>
+.ij-labs-logo {
+  display: block;
+  max-width: 100px;
+  margin-bottom: 10px;
+}
 
-
+.ij-labs-logo-container {
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
+}
 </style>
