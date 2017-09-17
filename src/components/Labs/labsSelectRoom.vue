@@ -124,7 +124,7 @@
 
 
       <!-- Modal -->
-    <q-modal @open="timer()" noEscDismiss="true"  noBackdropDismiss="true" ref="collectWorkStatusModal">
+    <q-modal @open="timer()" noEscDismiss  noBackdropDismiss ref="collectWorkStatusModal">
 
         <div class="row">
             <span class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>

@@ -148,6 +148,11 @@
                         this.selectedTasks.push(this.labTasks[i]);
                 }*/
             },
+
+            performSignOut: function ()
+            {
+
+            },
   
             constructLabRequest : function(aWeek)
             {
