@@ -91,22 +91,23 @@
 
 
     <!-- Collect and Cancel Device Button -->
-    <div class="buttons">
-      <div class="col justify-center">
-        <button  class="warning full-width" @click="cancelCollectWork()">
-          Cancel
-        </button>
-      </div>
-
-      <div class="col justify-center">
+    <div class="row">
+      <div class="auto flex justify-center">
         <button
           class="primary full-width"
-          @click="collectWork()"
+          @click="collectWork();"
         :disabled="bookedDevices.length == 0">
-
           Collect Work
         </button>
       </div>
+
+      <div class="auto flex justify-center">
+        <button  class="warning full-width" @click="cancelCollectWork()">
+          Cancel
+        </button>
+      </div>    
+    </div>
+
 
 <!--   -->
 
@@ -118,7 +119,6 @@
           Get Feedback
         </button>
       </div>
-    </div>
 
     <!-- Feedback container -->
 
@@ -129,16 +129,17 @@
         <div class="row">
             <span class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
         </div>
-      <div>
-           <q-progress class="indeterminate stripe"
-      style="height: 25px"
-    />  
 
-      </div>
-    
+        
+        <div v-if="progressBarStatus.active == 'yes'">
+             <q-progress :percentage="progressBarStatus.percentage"class="animate stripe"
+              style="height: 25px"
+        /> 
+        </div>       
       <div class="row">
           <div v-if="work_collection_status_response.result === 'Success'"> 
             <div>
+              <p> Status : {{ work_collection_status_response.result }} </p>
               {{work_collection_status_response.details}}
             </div>
             
@@ -146,6 +147,7 @@
 
            <div v-if="work_collection_status_response.result === 'Pending'"> 
             <div>
+              <p> Status : {{ work_collection_status_response.result }} </p>
               {{work_collection_status_response.details}}
             </div>
             
@@ -154,6 +156,7 @@
 
           <div v-if="work_collection_status_response.result === 'Fail'">
            <div>
+              <p> Status : {{ work_collection_status_response.result }} </p>
               {{work_collection_status_response.details}}
             </div>
             <div>
@@ -198,6 +201,8 @@ export default{
     return {
       room: null,
       select: [],
+      timerInterval: null,
+      progressBarStatus: {seconds: 0, percentage: 0, active:'yes'},
       bookedDevices: [],
       iniDevices: [],
         feedbacks:{},
@@ -367,6 +372,7 @@ export default{
           self.work_collection_response=response.data;
           console.log("im here");
 
+          
           if (self.work_collection_response.result === 'Failure'){
               console.log("Collection Failure");
               return;
@@ -391,7 +397,27 @@ export default{
         var seconds = this.work_collection_response.duration;
 
         setTimeout(this.checkStatus, seconds*1000);
+        this.timerInterval = setInterval(this.updateProgressBar,100)
 
+
+    },
+    updateProgressBar: function ()  {
+
+      // console.log("test test ");
+      if (this.progressBarStatus.percentage >= 100 || this.progressBarStatus.seconds >= this.work_collection_response.duration)
+      {
+        console.log("clear timer");
+        this.progressBarStatus.active = 'no';
+        console.log("stats " + this.progressBarStatus.active);
+        clearInterval(this.timerInterval);
+      }
+      else
+      {
+        console.log("timer going");
+        this.progressBarStatus.active = 'yes';
+        this.progressBarStatus.seconds+= 0.1;
+        this.progressBarStatus.percentage = ((this.progressBarStatus.seconds) / this.work_collection_response.duration) * 100
+      }
 
     },
     checkStatus: function()
