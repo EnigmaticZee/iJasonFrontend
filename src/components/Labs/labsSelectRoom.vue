@@ -433,7 +433,7 @@ export default{
             .then(function(response){
               console.log(response.data);
               self.work_collection_status_response=response.data;
-              if (self.work_collection_status_response.result != "Success" || self.work_collection_status_response.result != "Fail")
+             if(self.work_collection_status_response.result == "Pending")
               {
                 self.checkStatus();
               }
