@@ -93,19 +93,19 @@
     <!-- Collect and Cancel Device Button -->
     <div class="row">
       <div class="auto flex justify-center">
+        <button  class="warning full-width" @click="cancelCollectWork()">
+          Cancel
+        </button>
+      </div>  
+
+      <div class="auto flex justify-center">
         <button
           class="primary full-width"
           @click="collectWork();"
         :disabled="bookedDevices.length == 0">
           Collect Work
         </button>
-      </div>
-
-      <div class="auto flex justify-center">
-        <button  class="warning full-width" @click="cancelCollectWork()">
-          Cancel
-        </button>
-      </div>    
+      </div>  
     </div>
 
 
@@ -139,16 +139,16 @@
       <div class="row">
           <div v-if="work_collection_status_response.result === 'Success'"> 
             <div>
-              <p> Status : {{ work_collection_status_response.result }} </p>
-              {{work_collection_status_response.details}}
+              <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
+              <p>{{work_collection_status_response.details}}</p>
             </div>
             
           </div>
 
            <div v-if="work_collection_status_response.result === 'Pending'"> 
             <div>
-              <p> Status : {{ work_collection_status_response.result }} </p>
-              {{work_collection_status_response.details}}
+              <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
+              <p>{{work_collection_status_response.details}}</p>
             </div>
             
           </div>
@@ -156,8 +156,8 @@
 
           <div v-if="work_collection_status_response.result === 'Fail'">
            <div>
-              <p> Status : {{ work_collection_status_response.result }} </p>
-              {{work_collection_status_response.details}}
+              <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
+              <p>{{work_collection_status_response.details}}</p>
             </div>
             <div>
               <ul>
@@ -404,12 +404,15 @@ export default{
     updateProgressBar: function ()  {
 
       // console.log("test test ");
-      if (this.progressBarStatus.percentage >= 100 || this.progressBarStatus.seconds >= this.work_collection_response.duration)
+      if (this.progressBarStatus.percentage >= 100 || this.progressBarStatus.seconds >= this.work_collection_response.duration || this.work_collection_status_response.result == "Success" || this.work_collection_status_response.result == "Fail")
       {
-        console.log("clear timer");
-        this.progressBarStatus.active = 'no';
-        console.log("stats " + this.progressBarStatus.active);
-        clearInterval(this.timerInterval);
+        if (this.work_collection_status_response.result != "Pending"){
+          console.log("clear timer");
+          this.progressBarStatus.active = 'no';
+          console.log("stats " + this.progressBarStatus.active);
+          clearInterval(this.timerInterval);
+        }
+       
       }
       else
       {
@@ -430,6 +433,10 @@ export default{
             .then(function(response){
               console.log(response.data);
               self.work_collection_status_response=response.data;
+              if (self.work_collection_status_response.result != "Success" || self.work_collection_status_response.result != "Fail")
+              {
+                self.checkStatus();
+              }
             })
             .catch(function(error){
               console.log(error);
