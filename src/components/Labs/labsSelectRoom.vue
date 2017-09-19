@@ -139,8 +139,11 @@
       <div class="row">
           <div v-if="work_collection_status_response.result === 'Success'"> 
             <div>
+              
+            </div>
+            <div>
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <p>{{work_collection_status_response.details}}</p>
+              <span>{{work_collection_status_response.details}}</span>
             </div>
             
           </div>
@@ -148,7 +151,7 @@
            <div v-if="work_collection_status_response.result === 'Pending'"> 
             <div>
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <p>{{work_collection_status_response.details}}</p>
+              <span>{{work_collection_status_response.details}}</span>
             </div>
             
           </div>
@@ -157,7 +160,7 @@
           <div v-if="work_collection_status_response.result === 'Fail'">
            <div>
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <p>{{work_collection_status_response.details}}</p>
+              <span>{{work_collection_status_response.details}}</span>
             </div>
             <div>
               <ul>
@@ -435,7 +438,7 @@ export default{
               self.work_collection_status_response=response.data;
              if(self.work_collection_status_response.result == "Pending")
               {
-                self.checkStatus();
+                setTimeout(self.checkStatus, 3000);
               }
             })
             .catch(function(error){
