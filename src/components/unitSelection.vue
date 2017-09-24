@@ -3,7 +3,7 @@
     <div slot="header" class="toolbar">
       <q-toolbar-title :padding="1">
         <div>
-          <img src="~assets/logo.jpg">
+          <img src="~assets/ijason-logo.png">
           iJason Virtual Lab Supervisor
         </div>
 
@@ -109,10 +109,17 @@ export default {
 
 .logo-container {
   width:3px;
-perspective: 800px;
-margin: top;
-margin-top: -260px;
+  perspective: 800px;
+  margin: top;
+  margin-top: -260px;
 }
+
+.toolbar-content .toolbar-title > div {
+   @media(max-width: 560px) {
+     align-items: flex-start !important;
+     flex-flow: column;
+   }
+ }
 
 .logo {
   img {
@@ -217,6 +224,8 @@ margin-top: -260px;
 .background {
   background-image: url("../assets/background2.jpg");
   opacity: 20px;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 </style>

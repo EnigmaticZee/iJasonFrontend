@@ -1,25 +1,23 @@
 <template>
   <q-layout>
     <div slot="header" class="toolbar">
-      <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
-        <i>menu</i>
-      </button>
       <q-toolbar-title :padding="1">
-      <div class="ij-labs-logo-container">
-          <img class="ij-labs-logo" src="~assets/logo.jpg">
-          iJason Virtual Lab Supervisor
-      </div>
+          <div>
+            <img src="~assets/ijason-logo.png">
+            iJason Virtual Lab Supervisor
+          </div>
 
-      <div>
-          Student
-          |
-          <button @click="performSignOut" class="primary">
-            Sign Out
-          </button>
+          <div>
+            Student
+            |
+            <button @click="performSignOut" class="primary">
+              Sign Out
+            </button>
 
-        </div>
+          </div>
       </q-toolbar-title>
     </div>
+
 
     <q-tabs slot="navigation">
      <div>
@@ -175,16 +173,118 @@
     }
 </script>
 
-<style>
-.ij-labs-logo {
-  display: block;
-  max-width: 100px;
-  margin-bottom: 10px;
-}
+<style lang="scss">
+  .logo-container {
+    width:3px;
+    perspective: 800px;
+    margin: top;
+    margin-top: -260px;
+  }
 
-.ij-labs-logo-container {
-  display: flex;
-  flex-direction: column;
-  // align-items: center;
-}
+ .toolbar-content .toolbar-title > div {
+   @media(max-width: 560px) {
+     align-items: flex-start !important;
+     flex-flow: column;
+   }
+ }
+
+  .logo {
+    img {
+      max-width: 100%;
+    }
+  }
+
+  .units-selection-welcome-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
+      font-size: 23px;
+      font-weight:bolder;
+
+      p {
+        color: #ccc;
+      }
+    }
+  }
+
+  .units-container {
+    img  {
+      width: 100px;
+      height: 100px;
+    }
+
+    .units-heading {
+      text-align: center;
+      width: 400px;
+      margin: auto;
+      font-size: 25px;
+      border-bottom: none;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      color: #fff;
+      padding: 10px 0;
+    }
+
+    .units-list {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .single-unit {
+      display: flex;
+      justify-content: left;
+      width: 400px;
+      border: 1px solid #ccc;
+      border-top: none;
+
+
+      &:not(:last-child) {
+        border-bottom: none;
+        margin-bottom: 2px;
+      }
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 16px;
+        color: #ccc;
+      }
+
+      .single-unit-description {
+        padding-top: 10px;
+      }
+    }
+  }
+
+  .toolbar-content {
+    img {
+      max-width: 150%;
+      width: 66.66665px;
+      height: 50px;
+      margin-right: 5px;
+    }
+
+    .toolbar-title {
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        > div:first-child {
+        display: flex;
+        align-items: center;
+
+        }
+      }
+    }
+  }
 </style>
