@@ -29,3 +29,9 @@ export function labsCall () {
   return url
 }
 
+export function unitsCall () {
+  var url = '/api/get_units.php'
+  return url
+}
+
+

@@ -71,10 +71,10 @@
       v-if="currentState=='STATE_SHOW_LAB'"
       :tasks="selectedTasks"
       @stateWasChanged="currentState = $event"
-      @chosenlabID="selectedLabID = $event"></labs>
+      @chosenlabID="selectedLabID = $event" @chosenlabTitle="selectedLabName = $event"></labs>
 
 
-    <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
+    <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" :labName="selectedLabName" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
 
     <feedBack v-else :feedbacks="feedbacks"></feedBack>
 
@@ -107,6 +107,7 @@
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
                 selectedLabID: 1,
+                selectedLabName: null,
                 userCredentials:{username:'student', password: 'password'},
                 selectedTasks: [],
                 unit: 'TNE10011'

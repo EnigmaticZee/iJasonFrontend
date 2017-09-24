@@ -35,13 +35,13 @@
             v-for="unit in units"
             class="primary single-unit">
               <div class="row">
-                <img :src="unit.img" alt="">
+                <img src="../assets/units-icon.png" alt="">
               </div>
               
               <div class="single-unit-description col">
               <br><br>
-                <div class="row">{{ unit.title }}</div>
-                <div class="row">{{ unit.type}}</div>
+                <div class="row">{{ unit.unitTitle }}</div>
+                <div class="row">{{ unit.unitCode}}</div>
               </div>
           </button>
         </div>
@@ -60,11 +60,14 @@
 </template>
 
 <script>
+import axios from 'axios'
+import {unitsCall} from '../api'
+
 export default {
   data () {
     return {
       units: [
-        {
+      /*  {
           title: 'Networking',
           type: 'COS80002',
           img: require('../assets/units-icon.png')
@@ -80,8 +83,11 @@ export default {
           title: 'Advance Routing',
           type: 'COS80004',
           img: require('../assets/units-icon.png')
-        }
-      ]
+        }*/
+      ],
+      studentId : 1,
+      semester :2,
+      year: 2017
     }
   },
 
@@ -95,16 +101,48 @@ export default {
 
     handleUnitClick (unit) {
       console.log(unit)
+    }, 
+    constructUnitsReqBody (){
+
+      var requestBody={
+        username: this.studentId,
+        semester:this.semester,
+        year:this.year
+      };
+
+      console.log(requestBody);
+
+      return requestBody;
+    },
+
+    downloadUnits() {
+
+      var unitsURL = unitsCall();
+      var reqBody=this.constructUnitsReqBody();
+      var self = this;
+
+      axios.post(unitsURL, reqBody)
+        .then(function(response){
+          console.log(response.data);
+          self.units=response.data;
+          console.log(self.units[0].unitTitle);
+          console.log(self.units[0].unitCode);
+        })
+        .catch(function(error){
+          console.log(error);
+        })
     }
+
+
 
   },
 
-  mounted () {
+  beforeMount () {
+    this.downloadUnits();
   }
 
 }
 </script>
-
 <style lang="scss">
 
 .logo-container {
