@@ -15,7 +15,7 @@
     <!-- Targets -->
     <div ref="tab-1">
         <div class="list" v-for="t in tasks">
-        <div v-if="t.labType=='Weekly'">
+        <div v-if="t.labType=='Regular'">
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
