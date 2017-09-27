@@ -112,7 +112,7 @@
 
 <!--   -->
 
-      <div class="col justify-center" v-if="work_collection_response.result && work_collection_status_response.result === 'Success'">
+     <!--  <div class="col justify-center" v-if="work_collection_response.result && work_collection_status_response.result === 'Success'">
         <button
           class="secondary full-width"
 
@@ -120,7 +120,7 @@
           Get Feedback
         </button>
       </div>
-
+ -->
     <!-- Feedback container -->
 
 

@@ -4,13 +4,13 @@
             <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
         </div>
         <div class=" card feedback">
-        <div class="right">
-        <button class="primary circular"  @click="downloadFeedback()">
-              <i>file_download</i>
-        </button>
-         <button class="primary circular" @click="sendEmail()">
-              <i>email</i>
-        </button>
+        <div slot="right">
+          <button class="primary circular"  @click="downloadFeedback()">
+                <i>file_download</i>
+          </button>
+           <button class="primary circular" @click="sendEmail()">
+                <i>email</i>
+          </button>
         </div>
         <div  v-for="feedback in feedbacks.errors"  class="card">
           <div class="card-title bg-red-5 text-white">
