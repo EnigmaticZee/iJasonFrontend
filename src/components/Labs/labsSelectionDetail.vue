@@ -25,7 +25,7 @@
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showRoom(t.labID)" >
+              <div class="item-content" v-on:click="showRoom(t.labID,t.labTitle)" >
                 Check Lab Work
               </div>
             </div>
@@ -161,10 +161,11 @@
             return this.$refs.basicModal.open();
           },
 
-          showRoom: function(labID) {
+          showRoom: function(labID,labTitle) {
 
               this.$emit('stateWasChanged', 'STATE_SHOW_ROOM');
               this.$emit('chosenlabID', labID);
+              this.$emit('chosenlabTitle', labTitle);
           },
           toggle: function(dropdownName) {
             this.dropDowns[dropdownName].open = !this.dropDowns[dropdownName].open;

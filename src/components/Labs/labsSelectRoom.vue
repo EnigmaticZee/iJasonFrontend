@@ -2,9 +2,10 @@
   <div class="layout-view">
     <!-- Select Room (Radio Button) -->
     <div class="row">
-      <span class="label bg-primary text-white full-width justify-center">Feedback Process</span>
+      <span class="label bg-primary text-white full-width justify-center">Feedback for {{labName}}</span>
     </div>
 
+    <div class="room">
     <div class="row">
       <span class="sublabel bg-secondary text-white full-width">Select Room</span>
     </div>
@@ -37,14 +38,15 @@
         </label>
       </div>
     </div>
+    </div>
 
     <!-- Show Required Device in INI File -->
-    <div v-if="bookedDevices.length != 0">
+    <div  class="room" v-if="bookedDevices.length != 0">
        <div class="row">
-        <span class="sublabel bg-secondary text-white full-width">Map Configured Lab Devices</span>
+        <span class="sublabel bg-secondary text-white full-width">Choose Configured Lab Devices</span>
       </div>
 
-      <div class="list" v-for="(iniDevice,index) in iniDevices">
+      <div class="list booking" v-for="(iniDevice,index) in iniDevices">
         <div class="item" :device="iniDevice.deviceType" >
             Configured Lab {{iniDevice.deviceType}} : {{iniDevice.deviceName}}  
             <div v-if="iniDevice.deviceType == 'Switch'" >
@@ -90,7 +92,7 @@
 
 
     <!-- Collect and Cancel Device Button -->
-    <div class="row">
+    <div class="row room">
       <div class="auto flex justify-center">
         <button  class="warning full-width" @click="cancelCollectWork()">
           Cancel
@@ -196,7 +198,7 @@ import {collectCall, collectStatusCall} from '../../api'
 import {feedbackCall} from '../../api'
 import { Dialog } from 'quasar'
 export default{
-  props:['labID'],
+  props:['labID','labName'],
   data: function() {
     return {
       room: null,
@@ -435,11 +437,18 @@ export default{
     }
     .sublabel {
         font-size: 1.5em;
+        padding-left: 1em;
     }
     .rooms {
         padding:2em;
     }
     .buttons {
         padding: 2em 0em 2em 0em;
+    }
+    .room {
+      padding: 2em;
+    }
+    .booking {
+      padding: 2em;
     }
 </style>
