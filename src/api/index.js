@@ -40,3 +40,9 @@ export function downloadFeedbackCall()
    return url
 }
 
+export function sendEmailCall()
+{
+   var url = '/api/send_email.php'
+   return url
+}
+

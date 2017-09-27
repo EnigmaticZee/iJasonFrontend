@@ -8,7 +8,7 @@
         <button class="primary circular"  @click="downloadFeedback()">
               <i>file_download</i>
         </button>
-         <button class="primary circular" >
+         <button class="primary circular" @click="sendEmail()">
               <i>email</i>
         </button>
         </div>
@@ -33,6 +33,7 @@
       import axios from 'axios'
       import user from '../../auth';
       import {downloadFeedbackCall} from '../../api'
+      import {sendEmailCall} from '../../api'
     export default {
         props: ['feedbacks'],
 
@@ -58,6 +59,22 @@
                     console.log(error);
                     //self.$refs.collectWorkStatusModal.open();
                   })
+
+            },
+            sendEmail: function()
+            {
+
+              var sendEmailUrl = sendEmailCall();
+
+              console.log(this.feedbacks);
+              var self = this;
+              axios.post(sendEmailUrl, {username: user.credentials.username, feedback: this.feedbacks})
+                .then(function(response){
+                  console.log(response.data);
+                })
+                .catch(function(error){
+                  console.log(error);
+                })
 
             }
         }
