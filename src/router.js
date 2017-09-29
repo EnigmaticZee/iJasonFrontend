@@ -31,6 +31,7 @@ export default new VueRouter({
   routes: [
     { path: '/', component: load('Login') }, // Default
     { path: '/units', component: load('unitSelection') },
+    { path: '/staff-units', component: load('Staff/staffUnits') },
     { path: '*', component: load('Error404') },
     { path: '/units/labs', component: loadLabsComponent('labsSelectionContainer') },
     { path: '/login', component: load('Login') }
