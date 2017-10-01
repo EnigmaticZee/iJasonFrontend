@@ -21,8 +21,8 @@
     <div class="layout-view col">
     <br><br><br><br>
       <div class="units-selection-welcome-message col">
-        <h1 class="text-primary">iJason Virtual Lab Supervisor</h1>
-        <p class="text-primary">Welcome back, student</p>
+        <h1 class="text-primary">iJason Virtual Lab Supervisor [Staff Page]</h1>
+        <p class="text-primary">Welcome back </p>
       </div>
       <br><br><br>
       <div class="units-container col">
@@ -42,7 +42,7 @@
               <div class="single-unit-description col">
                 <br><br>
                 <div class="row">{{ unit.unitTitle }}</div>
-                <div class="row">{{ unit.unitCode}}</div>
+                <div class="row">{{ unit.unitCode }}</div>
               </div>
 
               <div class="single-unit-edit" @click="openModal(true, { unitTitle: unit.unitTitle, unitCode: unit.unitCode })">
@@ -93,25 +93,7 @@ export default {
       isEdit: false,
       codeInput: '',
       nameInput: '',
-      units: [
-      {
-          unitTitle: 'Networking',
-          unitCode: 'COS80002',
-          img: require('../../assets/units-icon.png')
-        },
-
-        {
-          unitTitle: 'Advance123 Switching',
-          unitCode: 'COS80003',
-          img: require('../../assets/units-icon.png')
-        },
-
-        {
-          unitTitle: 'Advance Routing',
-          unitCode: 'COS80004',
-          img: require('../../assets/units-icon.png')
-        }
-      ],
+      units: [],
       studentId : 1,
       semester :2,
       year: 2017
@@ -190,9 +172,6 @@ export default {
           console.log(error);
         })
     }
-
-
-
   },
 
   beforeMount () {
