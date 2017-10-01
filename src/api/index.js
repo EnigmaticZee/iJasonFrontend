@@ -47,3 +47,20 @@ export function sendEmailCall()
 }
 
 
+export function addUnit()
+{
+   var url = '/api/add_unit.php'
+   return url
+}
+
+export function editUnit()
+{
+   var url = '/api/edit_unit.php'
+   return url
+}
+
+export function addLab()
+{
+   var url = '/api/add_lab.php'
+   return url
+}

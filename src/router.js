@@ -11,6 +11,10 @@ function loadLabsComponent (component) {
   return () => System.import(`components/Labs/${component}.vue`)
 }
 
+function loadStaffLabsComponent (component) {
+  return () => System.import(`components/Staff/${component}.vue`)
+}
+
 function loadFeedbackComponent (component) {
   return () => System.import(`components/Feedback/${component}.vue`)
 }
@@ -31,6 +35,8 @@ export default new VueRouter({
   routes: [
     { path: '/', component: load('Login') }, // Default
     { path: '/units', component: load('unitSelection') },
+    { path: '/staff-units', component: load('Staff/staffUnits') },
+    { path: '/staff-units/labs', component: loadStaffLabsComponent('labsSelectionContainer') },
     { path: '*', component: load('Error404') },
     { path: '/units/labs', component: loadLabsComponent('labsSelectionContainer') },
     { path: '/login', component: load('Login') }
