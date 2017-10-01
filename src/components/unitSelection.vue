@@ -8,7 +8,7 @@
         </div>
 
         <div>
-          Student
+          {{userDetails.name}}
           |
           <button @click="performSignOut" class="primary">
             Sign Out
@@ -22,7 +22,7 @@
     <br><br><br><br>
       <div class="units-selection-welcome-message col">
         <h1 class="text-primary">iJason Virtual Lab Supervisor</h1>
-        <p class="text-primary">Welcome back, student</p>
+        <p class="text-primary">Welcome back, {{userDetails.name}} </p>
       </div>
       <br><br><br>
       <div class="units-container col">
@@ -31,7 +31,7 @@
         </div>
         <div class="units-list">
           <button
-            @click="() => handleUnitClick(unit)"
+            @click="() => handleUnitClick(unit.unitCode)"
             v-for="unit in units"
             class="primary single-unit">
               <div class="row">
@@ -62,32 +62,17 @@
 <script>
 import axios from 'axios'
 import {unitsCall} from '../api'
+import auth from '../auth';
+import nav from '../nav'
 
 export default {
   data () {
     return {
-      units: [
-      /*  {
-          title: 'Networking',
-          type: 'COS80002',
-          img: require('../assets/units-icon.png')
-        },
-
-        {
-          title: 'Advance123 Switching',
-          type: 'COS80003',
-          img: require('../assets/units-icon.png')
-        },
-
-        {
-          title: 'Advance Routing',
-          type: 'COS80004',
-          img: require('../assets/units-icon.png')
-        }*/
-      ],
+      units: [],
       studentId : 1,
       semester :2,
-      year: 2017
+      year: 2017,
+      userDetails: auth.userDetails[0]
     }
   },
 
@@ -96,11 +81,13 @@ export default {
 
   methods: {
     performSignOut () {
-      console.log('Implement logic for signout here.')
+      auth.logout(this);
+     
     },
 
     handleUnitClick (unit) {
-      console.log(unit)
+      console.log(unit);
+      nav.unitToLab(this,unit);
     }, 
     constructUnitsReqBody (){
 
@@ -138,7 +125,10 @@ export default {
   },
 
   beforeMount () {
+    console.log(nav.unitClicked);
+    nav.unitClicked = false;
     this.downloadUnits();
+
   }
 
 }

@@ -19,7 +19,7 @@
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="downloadLab(t.labSheetLink)">
                 Download
               </div>
             </div>
@@ -40,7 +40,7 @@
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content">
+              <div class="item-content" v-on:click="downloadLab(t.labSheetLink)">
                 Download
               </div>
             </div>
@@ -129,6 +129,7 @@
 
 <script>
 
+
     export default {
         props: ['tasks'],
         data: function()
@@ -176,6 +177,10 @@
           },
           getFeedback: function() {
             return this.$refs.feedbackModal.open();
+          },
+          downloadLab: function (labDownloadableLink)
+          {
+            window.location.href = (labDownloadableLink);
           }
 
         },

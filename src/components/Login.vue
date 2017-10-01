@@ -9,39 +9,39 @@
             <div class="children">
                 <form>
                     <p>
-                        <input type="text" class="full-width" placeholder="Username"/>
+                        <input type="text" class="full-width" v-model.trim="credentials.username" placeholder="Username"/>
                     </p>
                     <p>
-                        <input type="password" class="full-width" input placeholder="Password"/>
+                        <input type="password" class="full-width" v-model="credentials.password" placeholder="Password"/>
                     </p>
                     <p>
-                        <button class="primary full-width" @click="testMethod()">Sign In</button>
+                        <button class="primary full-width" @click="login()">Sign In</button>
                     </p>
                 </form>
           </div>
-
-          <!-- Footer-->
-          <div slot="footer">
-              <div class="auto flex">
-                <button @click="testMethod">
-                  About iJason
-                </button>
-              </div>
-        </div>
     </div>
 </template>
 
 <script>
+
+    import auth from '../auth'
     export default{
         data: function(){
             return {
-                img: require('../assets/logo.jpg')
+                img: require('../assets/logo.jpg'),
+                credentials: {
+                    username: '',
+                    password: ''
+                }
             };
         },
         methods: {
-            testMethod: function()
+            login: function()
             {
-                alert("TBA");
+                var credentials = {username: this.credentials.username,
+                    password: this.credentials.password}
+
+                auth.login(this, credentials, 'units')
             }
         }
     }

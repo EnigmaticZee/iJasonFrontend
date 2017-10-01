@@ -8,7 +8,7 @@
           </div>
 
           <div>
-            Student
+            {{userDetails.name}}
             |
             <button @click="performSignOut" class="primary">
               Sign Out
@@ -93,8 +93,11 @@
     import LabsSelection from './labsSelectionDetail.vue';
     import LabSelectRoom from './labsSelectRoom.vue';
     import FeedbackContainer from '../Feedback/feedbackContainer.vue'
-    import axios from 'axios'
     import {labsCall} from '../../api'
+    import auth from '../../auth';
+    import nav from '../../nav';
+    import axios from 'axios'
+
 
 
     export default {
@@ -108,9 +111,9 @@
                 weeks : 12,
                 selectedLabID: 1,
                 selectedLabName: null,
-                userCredentials:{username:'student', password: 'password'},
+                /*userCredentials:{username:'student', password: 'password'},*/
                 selectedTasks: [],
-                unit: 'TNE10011'
+                userDetails: auth.userDetails[0]
             }
         },
 
@@ -118,11 +121,16 @@
             // loadWeeklyTask();
         },
         methods: {
+           performSignOut: function () {
+              auth.logout(this);
+             
+            },
             loadWeeklyTask : function(aWeek) {
 
 
                 console.log("Chosen week is", aWeek);
-                console.log("chosen unit is", this.unit);
+                console.log("chosen unit is", nav.unitCode);
+
 
                 var labsURL = labsCall();
                 var reqBody=this.constructLabRequest(aWeek);
@@ -132,6 +140,8 @@
                   .then(function(response){
                     console.log(response.data);
                     self.selectedTasks=response.data;
+                    console.log(self.selectedTasks.labTitle);
+                    console.log(self.selectedTasks.labSheetLink);
                   })
                   .catch(function(error){
                     console.log(error);
@@ -147,16 +157,10 @@
                         this.selectedTasks.push(this.labTasks[i]);
                 }*/
             },
-
-            performSignOut: function ()
-            {
-
-            },
-
             constructLabRequest : function(aWeek)
             {
               var requestBody={
-              unitCode: this.unit,
+              unitCode: nav.unitCode,
               weekNo: aWeek
               };
 

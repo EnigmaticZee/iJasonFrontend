@@ -316,7 +316,7 @@ export default{
           console.log(response.data);
           self.bookedDevices=response.data;
           if (self.bookedDevices.length == 0)
-            {
+            { 
               Dialog.create({
                 title: 'No Bookings Found!',
                 message: 'No bookings found in room ' + self.room + ' for your credentials',
