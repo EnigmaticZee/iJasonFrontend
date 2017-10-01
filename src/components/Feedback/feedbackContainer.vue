@@ -4,13 +4,19 @@
             <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
         </div>
         <div class=" card feedback">
-        <div slot="right">
-          <button class="primary circular"  @click="downloadFeedback()">
+        <div class="row feedbackButtons">
+          <button class="primary full-width">Download Configuaration
                 <i>file_download</i>
           </button>
-           <button class="primary circular" @click="sendEmail()">
+
+          <button class="secondary full-width"  @click="downloadFeedback()">Download PDF
+                <i>file_download</i>
+          </button>
+          
+           <button class="default full-width" @click="sendEmail()">Email 
                 <i>email</i>
           </button>
+         
         </div>
         <div  v-for="feedback in feedbacks.errors"  class="card">
           <div class="card-title bg-red-5 text-white">
@@ -53,7 +59,7 @@
               axios.get(downloadFeedbackUrl+"username="+ user.credentials.username)
                   .then(function(response) {
                     console.log(response.data);
-                    window.location.href = (downloadFeedbackUrl+"username="+ user.credentials.username);
+                    window.open(downloadFeedbackUrl+"username="+ user.credentials.username, '_blank');
                   })
                   .catch(function(error) {
                     console.log(error);
@@ -84,6 +90,9 @@
 <style>
   .feedback {
       padding: 2em;
+    }
+    .feedbackButtons{
+      padding-bottom: 1em;
     }
 
 </style>

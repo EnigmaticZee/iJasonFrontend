@@ -31,7 +31,7 @@
         </div>
         <div class="units-list">
           <button
-            @click="() => handleUnitClick(unit.unitCode)"
+            @click="() => handleUnitClick(unit.unitCode, unit.unitTitle)"
             v-for="unit in units"
             class="primary single-unit">
               <div class="row">
@@ -85,9 +85,9 @@ export default {
      
     },
 
-    handleUnitClick (unit) {
+    handleUnitClick (unit, title) {
       console.log(unit);
-      nav.unitToLab(this,unit);
+      nav.unitToLab(this,unit, title);
     }, 
     constructUnitsReqBody (){
 

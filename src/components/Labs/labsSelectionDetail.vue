@@ -4,10 +4,10 @@
     <q-tabs :refs="$refs" class="justified" default-tab="tab-1">
 
       <q-tab name="tab-1" icon="description">
-        Tutorial Labs
+        Tutorial Labs 
       </q-tab>
       <q-tab name="tab-2" icon="dns">
-        Extra Practice Labs
+        Extra Practice Labs 
       </q-tab>
 
     </q-tabs>
@@ -129,7 +129,7 @@
 
 <script>
 
-
+    import nav from '../../nav'
     export default {
         props: ['tasks'],
         data: function()
@@ -180,7 +180,7 @@
           },
           downloadLab: function (labDownloadableLink)
           {
-            window.location.href = (labDownloadableLink);
+            window.open = (labDownloadableLink, '_blank');
           }
 
         },
