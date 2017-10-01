@@ -30,12 +30,14 @@
 
         <li>
           <a >
-            <i>mail</i> Labs
+            <i>mail</i> Labs - {{unitDetails.unitCode}}
           </a>
         </li>
       </ul>
     </div>
     </q-tabs>
+
+    
 
     <q-drawer ref="leftDrawer">
       <div class="toolbar light">
@@ -57,6 +59,7 @@
     </q-drawer>
 
     <router-view class="layout-view">
+
     </router-view>
 
     <q-drawer right-side swipe-only ref="rightDrawer">
@@ -113,7 +116,9 @@
                 selectedLabName: null,
                 /*userCredentials:{username:'student', password: 'password'},*/
                 selectedTasks: [],
-                userDetails: auth.userDetails[0]
+                userDetails: auth.userDetails[0],
+                unitDetails: nav.unitsDetails
+
             }
         },
 
@@ -291,5 +296,6 @@
         }
       }
     }
+
   }
 </style>
