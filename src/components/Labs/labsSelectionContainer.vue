@@ -131,11 +131,11 @@
              
             },
             loadWeeklyTask : function(aWeek) {
-
-
+                console.log("Authentication", auth);
+                console.log("Nav in Labs", nav);
                 console.log("Chosen week is", aWeek);
-                console.log("chosen unit is", nav.unitCode);
-
+                console.log("chosen unit is", this.unitDetails.unitCode);
+                console.log ("unit Details", this.unitDetails);
 
                 var labsURL = labsCall();
                 var reqBody=this.constructLabRequest(aWeek);
@@ -145,8 +145,9 @@
                   .then(function(response){
                     console.log(response.data);
                     self.selectedTasks=response.data;
-                    console.log(self.selectedTasks.labTitle);
-                    console.log(self.selectedTasks.labSheetLink);
+                    console.log("selected task title", self.selectedTasks.labTitle);
+                    //console.log(self.selectedTasks.labSheetLink);
+                    console.log("For some reason the selected task is undefined ???");  
                   })
                   .catch(function(error){
                     console.log(error);
@@ -165,7 +166,7 @@
             constructLabRequest : function(aWeek)
             {
               var requestBody={
-              unitCode: nav.unitCode,
+              unitCode: nav.unitsDetails.unitCode,
               weekNo: aWeek
               };
 

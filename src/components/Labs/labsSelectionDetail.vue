@@ -1,9 +1,7 @@
 <template>
   <div class="layout-view">
     <!-- Tabs -->
-     <div class="unitDetail">
-        {{unitDetails.unitCode}} - {{unitDetails.unitName}} 
-     </div>
+    
     <q-tabs :refs="$refs" class="justified" default-tab="tab-1">
 
       <q-tab name="tab-1" icon="description">

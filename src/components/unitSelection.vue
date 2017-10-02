@@ -87,7 +87,7 @@ export default {
 
     handleUnitClick (unit, title) {
       console.log(unit);
-      nav.unitToLab(this,unit, title);
+      nav.unitToLab(this, unit, title);
     }, 
     constructUnitsReqBody (){
 
@@ -127,6 +127,8 @@ export default {
   beforeMount () {
     console.log(nav.unitClicked);
     nav.unitClicked = false;
+
+    console.log("Nav Object" , nav);
     this.downloadUnits();
 
   }
