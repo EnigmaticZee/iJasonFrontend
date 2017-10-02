@@ -128,7 +128,11 @@
     <q-modal @open="timer()" noEscDismiss  noBackdropDismiss ref="collectWorkStatusModal">
 
         <div class="row">
-            <span class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
+           
+
+            <span v-if="work_collection_status_response.result === 'Success'" class="label bg-primary text-white full-width justify-center">{{work_collection_status_response.details}}</span>
+            <span v-else class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
+
         </div>
 
         
@@ -137,39 +141,47 @@
               style="height: 25px"
         /> 
         </div>       
-      <div class="row">
+      <div class="col">
           <div v-if="work_collection_status_response.result === 'Success'"> 
-            <div>
-              
-            </div>
-            <div>
+            <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <span>{{work_collection_status_response.details}}</span>
+              
+              <div class="row statusButton  justify-center"> <img src="~assets/success.png"></div>
+              <div class="col statusButton full-width ">
+                 <div class="row statusButton full-width ">You are all set to get your feedback!</div>
+              </div>
             </div>
-            
           </div>
 
            <div v-if="work_collection_status_response.result === 'Pending'"> 
-            <div>
+            <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <span>{{work_collection_status_response.details}}</span>
+              
+              <div class="row statusButton  justify-center"> <img src="~assets/warning.png"></div>
+              <div class="col statusButton full-width ">
+                 <div class="row statusButton full-width ">{{work_collection_status_response.details}}</div>
+              </div>
             </div>
             
           </div>
 
 
           <div v-if="work_collection_status_response.result === 'Fail'">
-           <div>
+           <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <span>{{work_collection_status_response.details}}</span>
+              
+              <div class="col statusButton  justify-center"> <img src="~assets/error.png"></div>
+              <div class="col statusButton full-width ">
+                 <div class="col statusButton full-width ">{{work_collection_status_response.details}}!
+                     <ul class="row">
+                          <li v-for="device in work_collection_status_response.devices">
+                          Device: {{device}}
+                        </li>
+                     </ul>
+               </div>
+              </div>
             </div>
-            <div>
-              <ul>
-                <li v-for="device in work_collection_status_response.devices">
-                {{device}}
-                </li>
-              </ul>
-            </div>
+         
             <!-- You could close the modal here like that:-->
             <!-- @click="$refs.collectWorkStatusModal.close()" -->
           </div>
@@ -450,5 +462,8 @@ export default{
     }
     .booking {
       padding: 2em;
+    }
+    .statusButton{
+      padding: 1em;
     }
 </style>
