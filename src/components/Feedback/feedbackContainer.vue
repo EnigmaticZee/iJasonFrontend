@@ -1,8 +1,8 @@
 <template>
   <div class="layout-view">
-        <div class="row">
-            <span class="label bg-primary text-white full-width justify-center">Feedback for {{feedbacks.labName}}</span>
-        </div>
+        
+         <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{feedbacks.labName}}</div>
+
         <div class=" card feedback">
         <div class="row feedbackButtons">
           <button class="primary full-width">Download Configuaration
@@ -94,5 +94,10 @@
     .feedbackButtons{
       padding-bottom: 1em;
     }
+    .feedbackTitleStyle {
+    color: white;
+    font-size: 1.4em;
+    padding: 0.5em;
+  }
 
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="layout-view">
     <!-- Select Room (Radio Button) -->
-    <div class="row">
-      <span class="label bg-primary text-white full-width justify-center">Feedback for {{labName}}</span>
-    </div>
+  
+    <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>
+
 
     <div class="room">
     <div class="row">
@@ -466,4 +466,9 @@ export default{
     .statusButton{
       padding: 1em;
     }
+     .feedbackTitleStyle {
+    color: white;
+    font-size: 1.4em;
+    padding: 0.5em;
+  }
 </style>

@@ -37,6 +37,10 @@
     </div>
     </q-tabs>
 
+    <div class="justify-center full-width row unitTitleStyle" slot="navigation">{{unitDetails.unitCode}} - {{unitDetails.unitName}}
+    </div>
+
+
     
 
     <q-drawer ref="leftDrawer">
@@ -298,5 +302,10 @@
       }
     }
 
+  }
+  .unitTitleStyle {
+    color: white;
+    font-size: 1.4em;
+    padding-bottom: 1.5em;
   }
 </style>
