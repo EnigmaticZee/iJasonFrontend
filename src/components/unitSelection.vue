@@ -92,7 +92,7 @@ export default {
     constructUnitsReqBody (){
 
       var requestBody={
-        username: this.studentId,
+        username: auth.credentials.username,
         semester:this.semester,
         year:this.year
       };

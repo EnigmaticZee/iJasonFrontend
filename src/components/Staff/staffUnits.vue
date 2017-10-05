@@ -85,6 +85,7 @@ import {unitsCall} from '../../api'
 import {addUnit} from '../../api'
 import {editUnit} from '../../api'
 import { QInput } from 'quasar';
+import auth from '../../auth';
 
 export default {
   data () {
@@ -93,25 +94,7 @@ export default {
       isEdit: false,
       codeInput: '',
       nameInput: '',
-      units: [
-      {
-          unitTitle: 'Networking',
-          unitCode: 'COS80002',
-          img: require('../../assets/units-icon.png')
-        },
-
-        {
-          unitTitle: 'Advance123 Switching',
-          unitCode: 'COS80003',
-          img: require('../../assets/units-icon.png')
-        },
-
-        {
-          unitTitle: 'Advance Routing',
-          unitCode: 'COS80004',
-          img: require('../../assets/units-icon.png')
-        }
-      ],
+      units: [ ],
       studentId : 1,
       semester :2,
       year: 2017
@@ -146,6 +129,7 @@ export default {
 
       axios.post(unitsURL, reqBody)
         .then(function(response){
+          console.log(response.data);
           self.downloadUnits()
         })
         .catch(function(error){
@@ -163,7 +147,7 @@ export default {
     constructUnitsReqBody (){
 
       var requestBody={
-        username: this.studentId,
+        username: auth.credentials.username,
         semester:this.semester,
         year:this.year
       };

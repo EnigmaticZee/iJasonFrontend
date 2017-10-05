@@ -9,7 +9,7 @@ export default {
   // User object will let us check authentication status
   credentials: {
     username: "",
-    password:"Asd258456"
+    password: ""
   },
 
   user: {
@@ -28,6 +28,7 @@ export default {
                 	if(response.data[0].result === "Success")
                 	{
                 		self.credentials.username = credentials.username;
+                    self.credentials.password = credentials.password;
                 		self.userDetails = response.data;
                 		console.log(self.userDetails);
                     console.log(self.credentials.role)
@@ -61,6 +62,7 @@ export default {
   {
   	this.user.authenticated = false;
   	this.userDetails = [];
+    this.credentials = {};
   	console.log(this.userDetails);
   	context.$router.push('login');
   }
