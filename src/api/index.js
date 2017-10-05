@@ -47,7 +47,7 @@ export function sendEmailCall()
 }
 
 
-export function add_unit()
+export function addUnit()
 {
    var url = '/api/add_unit.php'
    return url

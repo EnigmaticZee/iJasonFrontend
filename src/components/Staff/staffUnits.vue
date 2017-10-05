@@ -95,7 +95,6 @@ export default {
       codeInput: '',
       nameInput: '',
       units: [ ],
-      studentId : 1,
       semester :2,
       year: 2017
     }
@@ -119,6 +118,7 @@ export default {
     },
     submitModal () {
       var unitsURL =  this.isEdit ? editUnit() : addUnit();
+      console.log("Units URL" , unitsURL);
       var reqBody= {
         unit: {
           Code: this.codeInput,

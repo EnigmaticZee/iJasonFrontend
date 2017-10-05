@@ -69,7 +69,6 @@ export default {
   data () {
     return {
       units: [],
-      studentId : 1,
       semester :2,
       year: 2017,
       userDetails: auth.userDetails[0]
