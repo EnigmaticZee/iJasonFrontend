@@ -2,7 +2,9 @@
   <div class="layout-view">
     <!-- Tabs -->
     <q-tabs :refs="$refs" class="justified" default-tab="tab-1">
-
+      <q-tab name="tab-3" icon="add">
+        Add Labs
+      </q-tab>
       <q-tab name="tab-1" icon="description">
         Tutorial Labs
       </q-tab>

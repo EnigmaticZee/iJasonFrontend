@@ -31,6 +31,11 @@ router.beforeEach(function(to,from,next){
 		next('/units');
 	}
 
+	if (auth.user.authenticated && to.path == "/login")
+	{
+		next('/units');
+	}
+
 })
 
 

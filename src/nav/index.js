@@ -15,5 +15,11 @@ export default {
 		console.log(this.unitsDetails.unitCode);
 		console.log(this.unitsDetails.unitName);
 		context.$router.push('/units/labs');
+	},
+	toUnit(context)
+	{	
+		console.log("Going to unit page");
+		var self = context;
+		self.$router.replace('/units');
 	}
 }

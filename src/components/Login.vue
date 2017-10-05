@@ -15,6 +15,9 @@
                         <input type="password" class="full-width" v-model="credentials.password" placeholder="Password"/>
                     </p>
                     <p>
+                        <span class="error"> {{error}}</span>
+                    </p>
+                    <p>
                         <button class="primary full-width" @click="login()">Sign In</button>
                     </p>
                 </form>
@@ -32,7 +35,8 @@
                 credentials: {
                     username: '',
                     password: ''
-                }
+                },
+                error: ""
             };
         },
         methods: {
@@ -41,7 +45,7 @@
                 var credentials = {username: this.credentials.username,
                     password: this.credentials.password}
 
-                auth.login(this, credentials, 'units')
+                auth.login(this, credentials)
             }
         }
     }
@@ -63,5 +67,10 @@
 
     .border{
         border: 5px solid red;
+    }
+    .error {
+        color : #D8000C;
+        background-color: #FFBABA;
+
     }
 </style>

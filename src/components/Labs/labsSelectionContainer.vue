@@ -22,7 +22,7 @@
     <q-tabs slot="navigation">
      <div>
       <ul class="breadcrumb">
-        <li>
+        <li @click="goToUnitPage">
           <a>
             <i>home</i> Units
           </a>
@@ -52,7 +52,7 @@
 
       <div class="list no-border platform-delimiter">
         <button
-          class="primary big  outline full-width"
+          class="primary big  outline full-width" 
           icon="view_week"
           v-for="week in weeks"
           @click="loadWeeklyTask(week)">
@@ -134,7 +134,12 @@
               auth.logout(this);
              
             },
+            goToUnitPage: function() 
+            {
+              nav.toUnit(this);
+            },
             loadWeeklyTask : function(aWeek) {
+
                 console.log("Authentication", auth);
                 console.log("Nav in Labs", nav);
                 console.log("Chosen week is", aWeek);
@@ -149,6 +154,7 @@
                   .then(function(response){
                     console.log(response.data);
                     self.selectedTasks=response.data;
+                    
                     console.log("selected task title", self.selectedTasks.labTitle);
                     //console.log(self.selectedTasks.labSheetLink);
                     console.log("For some reason the selected task is undefined ???");  
@@ -184,6 +190,10 @@
             'labs':LabsSelection,
             'labRoom': LabSelectRoom,
             'feedBack': FeedbackContainer
+        },
+
+        beforeMount () {
+          this.loadWeeklyTask(1);
         }
     }
 </script>

@@ -2,7 +2,7 @@
   <div class="layout-view">
     <!-- Tabs -->
     
-    <q-tabs :refs="$refs" class="justified" default-tab="tab-1">
+    <q-tabs :refs="$refs" class="justified" default-tab="tab-1" >
 
       <q-tab name="tab-1" icon="description">
         Tutorial Labs 
@@ -15,18 +15,23 @@
 
     <!-- Targets -->
     <div ref="tab-1">
-        <div class="list" v-for="t in tasks">
+        <div v-if="tasks.length === 0" class="col ">
+            <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
+
+            <div class="row full-width justify-center">No labs available at the moment for this week...</div>
+        </div>
+        <div v-else class="list" v-for="t in tasks">
         <div v-if="t.labType=='Regular'">
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content" v-on:click="downloadLab(t.labSheetLink)">
+              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labSheetLink)">
                 Download
               </div>
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showRoom(t.labID,t.labTitle)" >
+              <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID,t.labTitle)" >
                 Check Lab Work
               </div>
             </div>
@@ -36,18 +41,23 @@
     </div>
 
     <div ref="tab-2">
+        <div v-if="tasks.length === 0" class="col ">
+            <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
+
+            <div class="row full-width justify-center">No practice labs available at the moment for this week...</div>
+        </div>
         <div class="list" v-for="t in tasks">
         <div v-if="t.labType=='Practice'">
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content" v-on:click="downloadLab(t.labSheetLink)">
+              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labSheetLink)">
                 Download
               </div>
             </div>
             <div class="item" >
               <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showRoom(t.labID)" >
+              <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID)" >
                 Check Lab Work
               </div>
             </div>
@@ -126,6 +136,8 @@
     </q-modal>
   </div>
 
+  
+
 </template>
 
 <script>
@@ -183,6 +195,7 @@
           {
             window.open = (labDownloadableLink, '_blank');
           }
+
 
         },
         components: {
@@ -256,5 +269,8 @@
   .dropdown-menu__link:hover {
           color: green;
           background-color: #ccc;
+  }
+  .noLabs {
+    margin: 10% 10% 2% 10%;
   }
 </style>

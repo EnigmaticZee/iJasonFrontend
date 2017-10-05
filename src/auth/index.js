@@ -19,7 +19,7 @@ export default {
   userDetails: {},
 
 
-  login: function(context, credentials, units){
+  login: function(context, credentials){
   	
   	  var self = this;
 
@@ -30,11 +30,27 @@ export default {
                 		self.credentials.username = credentials.username;
                 		self.userDetails = response.data;
                 		console.log(self.userDetails);
+                    console.log(self.credentials.role)
                 		self.user.authenticated = true;
                 		console.log("Authenticated!");
+                    console.log(self.userDetails[0].role);
                 		console.log(self.user.authenticated);
-                		context.$router.push(units);
+
+                    if (self.userDetails[0].role === "Student")
+                    {
+                      context.$router.push('units');
+                    }
+                    else if (self.userDetails[0].role === "Staff")
+                    {
+                      context.$router.push('staff-units');
+                    }
+                		
                 	}
+
+                  if(response.data[0].result === "Fail")
+                  {
+                    context.error = "Login failed: Invalid id or password!";
+                  }
                 })
                 .catch(function(error){
                   console.log(error);
