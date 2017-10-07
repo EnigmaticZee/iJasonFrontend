@@ -7,14 +7,18 @@
             iJason Virtual Lab Supervisor
           </div>
 
+          <div class="row">
           <div>
-            {{userDetails.name}}
-            |
-            <button @click="performSignOut" class="primary">
-              Sign Out
-            </button>
-
+           <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}   
           </div>
+          <div>
+            <span>&nbsp&nbsp|&nbsp&nbsp</span>
+          </div>
+
+          <div @click="performSignOut" class="primary cursor-pointer">
+           <i class="fa fa-sign-in"></i>   Sign Out
+          </div>
+        </div>
       </q-toolbar-title>
     </div>
 
@@ -155,7 +159,7 @@
                     console.log(response.data);
                     self.selectedTasks=response.data;
                     
-                    console.log("selected task title", self.selectedTasks.labTitle);
+                    console.log("selected task title", self.selectedTasks[0].labSheetLink);
                     //console.log(self.selectedTasks.labSheetLink);
                     console.log("For some reason the selected task is undefined ???");  
                   })
@@ -164,6 +168,8 @@
                   })
 
                 console.log(this.selectedTasks);
+                console.log(this.selectedTasks.labSheetLink);
+
 
                 this.currentState = 'STATE_SHOW_LAB'
 

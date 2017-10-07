@@ -40,6 +40,14 @@ export function downloadFeedbackCall()
    return url
 }
 
+export function downloadConfigCall()
+{
+   var url = '/api/download_config.php?'
+   return url
+}
+
+
+
 export function sendEmailCall()
 {
    var url = '/api/send_email.php'

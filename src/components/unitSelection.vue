@@ -7,12 +7,17 @@
           iJason Virtual Lab Supervisor
         </div>
 
-        <div>
-          {{userDetails.name}}
-          |
-          <button @click="performSignOut" class="primary">
-            Sign Out
-          </button>
+        <div class="row">
+          <div>
+           <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}   
+          </div>
+          <div>
+            <span>&nbsp&nbsp|&nbsp&nbsp</span>
+          </div>
+
+          <div @click="performSignOut" class="primary cursor-pointer">
+           <i class="fa fa-sign-in"></i>   Sign Out
+          </div>
 
         </div>
       </q-toolbar-title>

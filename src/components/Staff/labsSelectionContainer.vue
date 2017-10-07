@@ -11,7 +11,7 @@
             Student
             |
             <button @click="performSignOut" class="primary">
-              Sign Out
+               <i class="fa fa-sign-in"></i> Sign Out
             </button>
 
           </div>

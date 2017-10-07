@@ -52,8 +52,6 @@
             <div v-if="iniDevice.deviceType == 'Switch'" >
               <q-select
                   :label="'Booked ' + iniDevice.deviceType"
-                  class="full-width"
-                  type="radio" 
                   v-model="select[index]"
                   :options="populateSelectOptionSwitch">
               </q-select>
@@ -61,8 +59,6 @@
             <div v-if="iniDevice.deviceType == 'Router'" >
               <q-select
                   :label="'Booked ' + iniDevice.deviceType"
-                  class="full-width"
-                  type="radio" 
                   v-model="select[index]"
                   :options="populateSelectOptionRouter">
               </q-select>
@@ -103,7 +99,7 @@
         <button
           class="primary full-width"
           @click="collectWork();"
-        :disabled="bookedDevices.length == 0">
+          :disabled="bookedDevices.length == 0">
           Collect Work
         </button>
       </div>  
@@ -175,7 +171,7 @@
                  <div class="col statusButton full-width ">{{work_collection_status_response.details}}!
                      <ul class="row">
                           <li v-for="device in work_collection_status_response.devices">
-                          Device: {{device}}
+                           Device: {{device}} 
                         </li>
                      </ul>
                </div>
@@ -221,7 +217,8 @@ export default{
       iniDevices: [],
         feedbacks:{},
         work_collection_status_response: {},
-      work_collection_response: {}
+      work_collection_response: {},
+      mappingStatus: 1
     }
   },
   computed: {
@@ -270,6 +267,7 @@ export default{
     constructCollectRequest() {
       console.log(this._data);
       var mappedDevices=[];
+       console.log("Select has", this.select);
       for (var i = 0; i < this.iniDevices.length; i++) {
         var device=this.iniDevices[i];
         var devicemapping={};
@@ -277,7 +275,7 @@ export default{
         devicemapping.deviceType=device.deviceType;
         // console.log("bookeddevices",this.bookedDevices);
         // console.log("selectoptions",this.selectOptions[i].value);
-        console.log(this.select[i]);
+       
         if ((typeof this.select[i]) !== 'undefined') {
           devicemapping.smartRackDeviceName=this.bookedDevices[this.select[i]].deviceName;
           devicemapping.smartRackDeviceNickName=this.bookedDevices[this.select[i]].deviceNickName;
@@ -288,6 +286,7 @@ export default{
         mappedDevices.push(devicemapping);
       }
       console.log(mappedDevices);
+
       var cred=user.credentials;
       var requestBody={
         credentials: cred,
@@ -350,9 +349,32 @@ export default{
     },
     collectWork() {
       var reqBody=this.constructCollectRequest();
+      console.log("Device Mapping" , reqBody.deviceMapping);
       var collectURL = collectCall();
       var self = this;
-      axios.post(collectURL, reqBody)
+      this.mappingStatus = 1;
+      
+      for(var i = 0; i < reqBody.deviceMapping.length; i++)
+      {
+        if(reqBody.deviceMapping[i].smartRackDeviceName == "")
+        {
+          this.mappingStatus = 0;
+        }
+      }
+      if (this.mappingStatus == 0)
+      {
+          Dialog.create({
+                title: 'Choose configured Lab Devices',
+                message: 'Please choose your configured lab devices before collecting work',
+                buttons: [
+                  'Cancel'
+                ]
+              })
+      }
+      else 
+      {
+        
+        axios.post(collectURL, reqBody)
         .then(function(response) {
           console.log(response.data);
           self.work_collection_response=response.data;
@@ -371,7 +393,9 @@ export default{
           console.log(error);
           //self.$refs.collectWorkStatusModal.open();
         })
-      // this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
+      }
+    
+      
     },
     timer: function() {
         console.log("here");
@@ -426,7 +450,7 @@ export default{
       var self = this;
       axios.post(feedbackURL, {labID: self.labID, username: user.credentials.username})
         .then(function(response){
-          console.log(response.data);
+          console.log("feedback is", response.data);
           self.feedbacks=response.data;
           //State change will occur after the feedbacks is collected, since if we emit outside the callback,
           //the feedbacks may not be collected yet , but we already changed the state.

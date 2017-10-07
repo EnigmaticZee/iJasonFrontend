@@ -8,17 +8,20 @@
             <!-- Form Input -->
             <div class="children">
                 <form>
-                    <p>
-                        <input type="text" class="full-width" v-model.trim="credentials.username" placeholder="Username"/>
-                    </p>
-                    <p>
-                        <input type="password" class="full-width" v-model="credentials.password" placeholder="Password"/>
-                    </p>
+                    <div class="floating-label">
+                        <input type="text" inverted="true" required class="full-width" v-model.trim="credentials.username" />
+                        <label>Username</label>
+                    </div>
+
+                    <div class="floating-label">
+                        <input type="password" class="full-width" required v-model="credentials.password" />
+                        <label>Password</label>
+                    </div>
                     <p>
                         <span class="error"> {{error}}</span>
                     </p>
                     <p>
-                        <button class="primary full-width" @click="login()">Sign In</button>
+                        <button class="primary full-width" @click="login()"> <i class="fa fa-sign-in" aria-hidden="true"></i>&nbspSign In</button>
                     </p>
                 </form>
           </div>
