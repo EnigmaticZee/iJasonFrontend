@@ -14,10 +14,12 @@
 
     </q-tabs>
 
-    <div class="text-center add-container">
-       <span @click="openModal(false)" class="add"><i class="material-icons">&#xE145;</i> Add  </span>
-    </div>
-
+     <div ref="tab-3">
+        <div class="text-center">
+          <img class="upload_image" @click="openModal(false)" src="../../assets/upload_icon.png" alt="">
+        </div>
+     </div>
+  
     <!-- Targets -->
     <div ref="tab-1">
         <div class="list" v-for="t in tasks">
@@ -68,9 +70,9 @@
         <label for="">Type</label>
         <br>
         <br>
-        <input type="checkbox" id="practice" value="Practice" v-model="checkedTypes">
+        <input type="radio" id="practice" value="Practice" name="type" v-model="checkedTypes">
         <label for="jack" style="margin-right: 10px">Practice</label>
-        <input type="checkbox" id="regular" value="Regular" v-model="checkedTypes">
+        <input type="radio" id="regular" value="Regular" name="type" v-model="checkedTypes">
         <label for="john">Regular</label>
         <br>
 
@@ -379,5 +381,11 @@
         background-color: #5cb85c;
       }
     }
+  }
+
+   .upload_image {
+    cursor: pointer;
+    margin-top: 1rem;
+    height: 8rem;
   }
 </style>

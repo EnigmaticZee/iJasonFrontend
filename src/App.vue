@@ -14,4 +14,10 @@
 export default {}
 </script>
 
-<style></style>
+<style lang="scss">
+  .mobile-hide {
+    @media(max-width: 772px) {
+      display: none;
+    }
+  }
+</style>

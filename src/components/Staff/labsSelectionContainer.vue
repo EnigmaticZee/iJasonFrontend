@@ -1,17 +1,23 @@
 <template>
   <q-layout>
     <div slot="header" class="toolbar">
+     <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
+        <i>menu</i>
+      </button>
+      <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
+        <i>menu</i>
+      </button>
       <q-toolbar-title :padding="1">
           <div>
             <img src="~assets/ijason-logo.png">
-            iJason Virtual Lab Supervisor
+            <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
           </div>
 
           <div>
             Student
             |
             <button @click="performSignOut" class="primary">
-               <i class="fa fa-sign-in"></i> Sign Out
+              Sign Out
             </button>
 
           </div>
@@ -189,12 +195,7 @@
     margin-top: -260px;
   }
 
- .toolbar-content .toolbar-title > div {
-   @media(max-width: 560px) {
-     align-items: flex-start !important;
-     flex-flow: column;
-   }
- }
+
 
   .logo {
     img {

@@ -2,9 +2,12 @@
   <q-layout>
     <div slot="header" class="toolbar">
       <q-toolbar-title :padding="1">
+       <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
+       <i>menu</i>
+    </button>
           <div>
             <img src="~assets/ijason-logo.png">
-            iJason Virtual Lab Supervisor
+            <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
           </div>
 
           <div class="row">
