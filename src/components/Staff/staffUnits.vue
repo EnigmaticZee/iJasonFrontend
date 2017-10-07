@@ -108,6 +108,21 @@ export default {
     'q-input': QInput
   },
   methods: {
+    dummy () {
+      var unitsURL = addUnit();
+      var reqBody = {
+          unitCode: 'Test1001',
+          unitName: 'Test Unit'
+      };
+
+      axios.post(unitsURL, reqBody)
+        .then(function(response){
+          console.log('Result Add: ',response.data);
+        })
+        .catch(function(error){
+          console.log(error);
+        })
+    },
     openModal (isEditValue, editData = {}) {
       this.isEdit = isEditValue
       if (this.isEdit) {
@@ -125,10 +140,8 @@ export default {
       var unitsURL =  this.isEdit ? editUnit() : addUnit();
       console.log("Units URL" , unitsURL);
       var reqBody= {
-        unit: {
-          Code: this.codeInput,
-		      Name: this.nameInput
-        }
+          unitCode: this.codeInput,
+		      unitName: this.nameInput
       }
       var self = this;
 
