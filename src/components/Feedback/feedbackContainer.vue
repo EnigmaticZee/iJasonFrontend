@@ -5,14 +5,14 @@
 
         <div class=" card feedback">
         <div class="row feedbackButtons">
-          <button class="primary full-width"  @click="downloadFeedback()">Download PDF
+          <button class="primary full-width">Download Configuaration
                 <i>file_download</i>
           </button>
 
-          <button class="secondary full-width" @click="downloadConfig()">Download Configuaration
+          <button class="secondary full-width"  @click="downloadFeedback()">Download PDF
                 <i>file_download</i>
           </button>
-
+          
            <button class="default full-width" @click="sendEmail()">Email 
                 <i>email</i>
           </button>
@@ -40,7 +40,6 @@
       import user from '../../auth';
       import {downloadFeedbackCall} from '../../api'
       import {sendEmailCall} from '../../api'
-      import {downloadConfigCall} from '../../api' 
     export default {
         props: ['feedbacks'],
 
@@ -61,21 +60,6 @@
                   .then(function(response) {
                     console.log(response.data);
                     window.open(downloadFeedbackUrl+"username="+ user.credentials.username, '_blank');
-                  })
-                  .catch(function(error) {
-                    console.log(error);
-                    //self.$refs.collectWorkStatusModal.open();
-                  })
-
-            },
-            downloadConfig : function() 
-            {
-              var downloadConfigUrl = downloadConfigCall();
-              console.log(downloadConfigUrl+"username="+ user.credentials.username);
-              axios.get(downloadConfigUrl+"username="+ user.credentials.username)
-                  .then(function(response) {
-                    console.log(response.data);
-                    window.open(downloadConfigUrl+"username="+ user.credentials.username, '_blank');
                   })
                   .catch(function(error) {
                     console.log(error);

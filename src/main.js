@@ -11,7 +11,7 @@ import Quasar from 'quasar'
 import router from './router'
 import auth from './auth'
 import nav from './nav'
-import 'quasar-extras/fontawesome'
+
 
 export const eventBus = new Vue();
 Vue.use(Quasar) // Install Quasar Framework

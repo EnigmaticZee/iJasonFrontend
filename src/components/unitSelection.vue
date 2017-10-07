@@ -4,20 +4,15 @@
       <q-toolbar-title :padding="1">
         <div>
           <img src="~assets/ijason-logo.png">
-          iJason Virtual Lab Supervisor
+          <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
         </div>
 
-        <div class="row">
-          <div>
-           <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}   
-          </div>
-          <div>
-            <span>&nbsp&nbsp|&nbsp&nbsp</span>
-          </div>
-
-          <div @click="performSignOut" class="primary cursor-pointer">
-           <i class="fa fa-sign-in"></i>   Sign Out
-          </div>
+        <div>
+          {{userDetails.name}}
+          |
+          <button @click="performSignOut" class="primary">
+            Sign Out
+          </button>
 
         </div>
       </q-toolbar-title>
@@ -147,13 +142,6 @@ export default {
   margin: top;
   margin-top: -260px;
 }
-
-.toolbar-content .toolbar-title > div {
-   @media(max-width: 560px) {
-     align-items: flex-start !important;
-     flex-flow: column;
-   }
- }
 
 .logo {
   img {

@@ -1,10 +1,13 @@
 <template>
   <q-layout class="background">
     <div slot="header" class="toolbar">
+      <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
+        <i>menu</i>
+      </button>
       <q-toolbar-title :padding="1">
         <div>
           <img src="~assets/ijason-logo.png">
-          iJason Virtual Lab Supervisor
+          <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
         </div>
 
         <div>
@@ -31,16 +34,14 @@
           <span @click="openModal(false)" class="pull-right add"><i class="material-icons">&#xE145;</i> Add  </span>
         </div>
         <div class="units-list">
-          <button
-            @click="() => handleUnitClick(unit)"
-            v-for="unit in units"
-            class="primary single-unit">
+          <span v-for="unit in units"
+            :key="unit.unitCode"
+            class="units-list__item single-unit">
               <div class="row">
                 <img src="../../assets/units-icon.png" alt="">
               </div>
-              
-              <div class="single-unit-description col">
-                <br><br>
+              <div @click="() => handleUnitClick(unit)" class="single-unit-description col">
+                <br>
                 <div class="row">{{ unit.unitTitle }}</div>
                 <div class="row">{{ unit.unitCode}}</div>
               </div>
@@ -48,7 +49,7 @@
               <div class="single-unit-edit" @click="openModal(true, { unitTitle: unit.unitTitle, unitCode: unit.unitCode })">
                 <i class="material-icons">&#xE254;</i> Edit
               </div>
-          </button>
+          </span>
         </div>
       </div>
     </div>
@@ -194,13 +195,6 @@ export default {
   margin-top: -260px;
 }
 
-.toolbar-content .toolbar-title > div {
-   @media(max-width: 560px) {
-     align-items: flex-start !important;
-     flex-flow: column;
-   }
- }
-
 .logo {
   img {
     max-width: 100%;
@@ -241,6 +235,7 @@ export default {
     padding: 10px 0;
 
     .add {
+      background-color: transparent;
       cursor: pointer;
       font-size: 20px;
       margin-right: 15px;
@@ -252,6 +247,13 @@ export default {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+
+    &__item {
+      cursor: pointer;
+      padding: 0.3rem 1rem;
+      background: #027be3;
+      color: #fff;
+    }
   }
 
   .single-unit {
@@ -283,6 +285,7 @@ export default {
     }
 
     .single-unit-edit {
+      cursor: pointer;
       width: 100%;
       text-align: right;
       padding-top: 40px;

@@ -193,7 +193,6 @@
           },
           downloadLab: function (labDownloadableLink)
           {
-            console.log(labDownloadableLink);
             window.open = (labDownloadableLink, '_blank');
           }
 

@@ -1,24 +1,23 @@
 <template>
   <q-layout>
     <div slot="header" class="toolbar">
+      <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
+        <i>menu</i>
+      </button>
       <q-toolbar-title :padding="1">
           <div>
             <img src="~assets/ijason-logo.png">
-            iJason Virtual Lab Supervisor
+            <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
           </div>
 
-          <div class="row">
           <div>
-           <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}   
-          </div>
-          <div>
-            <span>&nbsp&nbsp|&nbsp&nbsp</span>
-          </div>
+            {{userDetails.name}}
+            |
+            <button @click="performSignOut" class="primary">
+              Sign Out
+            </button>
 
-          <div @click="performSignOut" class="primary cursor-pointer">
-           <i class="fa fa-sign-in"></i>   Sign Out
           </div>
-        </div>
       </q-toolbar-title>
     </div>
 
@@ -159,7 +158,7 @@
                     console.log(response.data);
                     self.selectedTasks=response.data;
                     
-                    console.log("selected task title", self.selectedTasks[0].labSheetLink);
+                    console.log("selected task title", self.selectedTasks.labTitle);
                     //console.log(self.selectedTasks.labSheetLink);
                     console.log("For some reason the selected task is undefined ???");  
                   })
@@ -168,8 +167,6 @@
                   })
 
                 console.log(this.selectedTasks);
-                console.log(this.selectedTasks.labSheetLink);
-
 
                 this.currentState = 'STATE_SHOW_LAB'
 
@@ -211,13 +208,6 @@
     margin: top;
     margin-top: -260px;
   }
-
- .toolbar-content .toolbar-title > div {
-   @media(max-width: 560px) {
-     align-items: flex-start !important;
-     flex-flow: column;
-   }
- }
 
   .logo {
     img {
