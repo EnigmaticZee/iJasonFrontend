@@ -1,7 +1,7 @@
 <template>
   <div class="layout-view">
     <!-- Select Room (Radio Button) -->
-  
+
     <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>
 
 
@@ -48,21 +48,21 @@
 
       <div class="list booking" v-for="(iniDevice,index) in iniDevices">
         <div class="item" :device="iniDevice.deviceType" >
-            Configured Lab {{iniDevice.deviceType}} : {{iniDevice.deviceName}}  
+            Configured Lab {{iniDevice.deviceType}} : {{iniDevice.deviceName}}
             <div v-if="iniDevice.deviceType == 'Switch'" >
               <q-select
                   :label="'Booked ' + iniDevice.deviceType"
                   v-model="select[index]"
                   :options="populateSelectOptionSwitch">
               </q-select>
-            </div> 
+            </div>
             <div v-if="iniDevice.deviceType == 'Router'" >
               <q-select
                   :label="'Booked ' + iniDevice.deviceType"
                   v-model="select[index]"
                   :options="populateSelectOptionRouter">
               </q-select>
-            </div>        
+            </div>
         </div>
         </br></br>
       </div>
@@ -93,7 +93,7 @@
         <button  class="warning full-width" @click="cancelCollectWork()">
           Cancel
         </button>
-      </div>  
+      </div>
 
       <div class="auto flex justify-center">
         <button
@@ -102,7 +102,7 @@
           :disabled="bookedDevices.length == 0">
           Collect Work
         </button>
-      </div>  
+      </div>
     </div>
 
 
@@ -124,24 +124,24 @@
     <q-modal @open="timer()" noEscDismiss  noBackdropDismiss ref="collectWorkStatusModal">
 
         <div class="row">
-           
+
 
             <span v-if="work_collection_status_response.result === 'Success'" class="label bg-primary text-white full-width justify-center">{{work_collection_status_response.details}}</span>
             <span v-else class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
 
         </div>
 
-        
+
         <div v-if="progressBarStatus.active == 'yes'">
              <q-progress :percentage="progressBarStatus.percentage"class="animate stripe"
               style="height: 25px"
-        /> 
-        </div>       
+        />
+        </div>
       <div class="col">
-          <div v-if="work_collection_status_response.result === 'Success'"> 
+          <div v-if="work_collection_status_response.result === 'Success'">
             <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              
+
               <div class="row statusButton  justify-center"> <img src="~assets/success.png"></div>
               <div class="col statusButton full-width ">
                  <div class="row statusButton full-width ">You are all set to get your feedback!</div>
@@ -149,35 +149,35 @@
             </div>
           </div>
 
-           <div v-if="work_collection_status_response.result === 'Pending'"> 
+           <div v-if="work_collection_status_response.result === 'Pending'">
             <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              
+
               <div class="row statusButton  justify-center"> <img src="~assets/warning.png"></div>
               <div class="col statusButton full-width ">
                  <div class="row statusButton full-width ">{{work_collection_status_response.details}}</div>
               </div>
             </div>
-            
+
           </div>
 
 
           <div v-if="work_collection_status_response.result === 'Fail'">
            <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              
+
               <div class="col statusButton  justify-center"> <img src="~assets/error.png"></div>
               <div class="col statusButton full-width ">
                  <div class="col statusButton full-width ">{{work_collection_status_response.details}}!
                      <ul class="row">
                           <li v-for="device in work_collection_status_response.devices">
-                           Device: {{device}} 
+                           Device: {{device}}
                         </li>
                      </ul>
                </div>
               </div>
             </div>
-         
+
             <!-- You could close the modal here like that:-->
             <!-- @click="$refs.collectWorkStatusModal.close()" -->
           </div>
@@ -189,9 +189,9 @@
       <button class="primary full-width" @click="getFeedback" v-if="work_collection_status_response.result === 'Success'">
           Get Feedback
         </button>
-      
+
       </div>
-     
+
     </q-modal>
   </div>
 
@@ -210,7 +210,7 @@ export default{
   data: function() {
     return {
       room: null,
-      select: [],
+      select: [null],
       timerInterval: null,
       progressBarStatus: {seconds: 0, percentage: 0, active:'yes'},
       bookedDevices: [],
@@ -275,8 +275,8 @@ export default{
         devicemapping.deviceType=device.deviceType;
         // console.log("bookeddevices",this.bookedDevices);
         // console.log("selectoptions",this.selectOptions[i].value);
-       
-        if ((typeof this.select[i]) !== 'undefined') {
+
+        if ( this.select[i] !== null) {
           devicemapping.smartRackDeviceName=this.bookedDevices[this.select[i]].deviceName;
           devicemapping.smartRackDeviceNickName=this.bookedDevices[this.select[i]].deviceNickName;
         } else {
@@ -327,7 +327,7 @@ export default{
           console.log(response.data);
           self.bookedDevices=response.data;
           if (self.bookedDevices.length == 0)
-            { 
+            {
               Dialog.create({
                 title: 'No Bookings Found!',
                 message: 'No bookings found in room ' + self.room + ' for your credentials',
@@ -353,7 +353,7 @@ export default{
       var collectURL = collectCall();
       var self = this;
       this.mappingStatus = 1;
-      
+
       for(var i = 0; i < reqBody.deviceMapping.length; i++)
       {
         if(reqBody.deviceMapping[i].smartRackDeviceName == "")
@@ -371,15 +371,15 @@ export default{
                 ]
               })
       }
-      else 
+      else
       {
-        
+
         axios.post(collectURL, reqBody)
         .then(function(response) {
           console.log(response.data);
           self.work_collection_response=response.data;
           console.log("im here");
-          
+
           if (self.work_collection_response.result === 'Failure'){
               console.log("Collection Failure");
               return;
@@ -394,8 +394,8 @@ export default{
           //self.$refs.collectWorkStatusModal.open();
         })
       }
-    
-      
+
+
     },
     timer: function() {
         console.log("here");
@@ -413,7 +413,7 @@ export default{
           console.log("stats " + this.progressBarStatus.active);
           clearInterval(this.timerInterval);
         }
-       
+
       }
       else
       {
@@ -460,7 +460,7 @@ export default{
         .catch(function(error){
           console.log(error);
         })
-        
+
       console.log('get feedback');
     }
   }
