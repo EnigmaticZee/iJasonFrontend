@@ -13,14 +13,14 @@ export default {
   },
 
   user: {
-  	authenticated: false
+    authenticated: true
   },
 
   userDetails: {},
 
 
   login: function(context, credentials){
-  	
+
   	  var self = this;
 
   	  axios.post(LOGIN_URL, credentials)
@@ -45,7 +45,7 @@ export default {
                     {
                       context.$router.push('staff-units');
                     }
-                		
+
                 	}
 
                   if(response.data[0].result === "Fail")

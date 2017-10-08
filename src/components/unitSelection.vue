@@ -1,65 +1,65 @@
 <template>
-  <q-layout class="background">
-    <div slot="header" class="toolbar">
-      <q-toolbar-title :padding="1">
-        <div>
-          <img src="~assets/ijason-logo.png">
-           <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
-        </div>
-
-        <div class="row">
+  <q-layout id="particles-background" class="background">
+      <div slot="header" class="toolbar">
+        <q-toolbar-title :padding="1">
           <div>
-           <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}   
-          </div>
-          <div>
-            <span>&nbsp&nbsp|&nbsp&nbsp</span>
+            <img src="~assets/ijason-logo.png">
+            <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
           </div>
 
-          <div @click="performSignOut" class="primary cursor-pointer">
-           <i class="fa fa-sign-in"></i>   Sign Out
+          <div class="row">
+            <div>
+            <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}
+            </div>
+            <div>
+              <span>&nbsp&nbsp|&nbsp&nbsp</span>
+            </div>
+
+            <div @click="performSignOut" class="primary cursor-pointer">
+            <i class="fa fa-sign-in"></i>   Sign Out
+            </div>
+          </div>
+        </q-toolbar-title>
+      </div>
+
+      <div class="layout-view col">
+      <br><br><br><br>
+        <div class="units-selection-welcome-message col">
+          <h1 class="text-primary">iJason Virtual Lab Supervisor</h1>
+          <p class="text-primary">Welcome back, {{userDetails.name}} </p>
+        </div>
+        <br><br><br>
+        <div class="units-container col">
+          <div class="units-heading  bg-secondary">
+            Units You study
+          </div>
+          <div class="units-list">
+            <button
+              @click="() => handleUnitClick(unit.unitCode, unit.unitTitle)"
+              v-for="unit in units"
+              class="primary single-unit">
+                <div class="row">
+                  <img src="../assets/units-icon.png" alt="">
+                </div>
+
+                <div class="single-unit-description col">
+                <br><br>
+                  <div class="row">{{ unit.unitTitle }}</div>
+                  <div class="row">{{ unit.unitCode}}</div>
+                </div>
+            </button>
           </div>
         </div>
-      </q-toolbar-title>
-    </div>
+      </div>
 
-    <div class="layout-view col">
-    <br><br><br><br>
-      <div class="units-selection-welcome-message col">
-        <h1 class="text-primary">iJason Virtual Lab Supervisor</h1>
-        <p class="text-primary">Welcome back, {{userDetails.name}} </p>
-      </div>
-      <br><br><br>
-      <div class="units-container col">
-        <div class="units-heading  bg-secondary">
-          Units You study
+      <div slot="footer" class="toolbar">
+        <div class="auto flex justify-center within-iframe-hide">
+          iJason - Virtual Labs for Networking Students
         </div>
-        <div class="units-list">
-          <button
-            @click="() => handleUnitClick(unit.unitCode, unit.unitTitle)"
-            v-for="unit in units"
-            class="primary single-unit">
-              <div class="row">
-                <img src="../assets/units-icon.png" alt="">
-              </div>
-              
-              <div class="single-unit-description col">
-              <br><br>
-                <div class="row">{{ unit.unitTitle }}</div>
-                <div class="row">{{ unit.unitCode}}</div>
-              </div>
-          </button>
-        </div>
+        <q-toolbar-title :padding="0" class="within-iframe-only">
+          Footer
+        </q-toolbar-title>
       </div>
-    </div>
-
-    <div slot="footer" class="toolbar">
-      <div class="auto flex justify-center within-iframe-hide">
-        iJason - Virtual Labs for Networking Students
-      </div>
-      <q-toolbar-title :padding="0" class="within-iframe-only">
-        Footer
-      </q-toolbar-title>
-    </div>
   </q-layout>
 </template>
 
@@ -69,29 +69,39 @@ import {unitsCall} from '../api'
 import auth from '../auth';
 import nav from '../nav'
 
+import { mountParticles}  from '../lib/particle-background.js';
+
 export default {
   data () {
     return {
       units: [],
       semester :2,
       year: 2017,
-      userDetails: auth.userDetails[0]
     }
   },
 
   computed: {
+    userDetails () {
+      return auth.userDetails[0] || {
+        name: 'Guest'
+      }
+    }
+  },
+
+  mounted () {
+    mountParticles('particles-background');
   },
 
   methods: {
     performSignOut () {
       auth.logout(this);
-     
+
     },
 
     handleUnitClick (unit, title) {
       console.log(unit);
       nav.unitToLab(this, unit, title);
-    }, 
+    },
     constructUnitsReqBody (){
 
       var requestBody={
@@ -250,10 +260,23 @@ export default {
 }
 
 .background {
-  background-image: url("../assets/background2.jpg");
+  // background-image: url("../assets/background2.jpg");
   opacity: 20px;
   background-size: cover;
   background-repeat: no-repeat;
+
+  > div {
+    z-index: 10;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+  }
 }
 
 </style>
