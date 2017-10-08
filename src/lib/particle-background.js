@@ -1,7 +1,7 @@
 import particles from 'particles.js';
 
 export function mountParticles(id = 'particles-background') {
-    particlesJS(id, {
+	let config = {
         particles: {
             number: {
                 value: 80,
@@ -110,5 +110,6 @@ export function mountParticles(id = 'particles-background') {
             },
         },
         retina_detect: true,
-    });
+	};
+    particlesJS(id, config);
 }

@@ -13,7 +13,7 @@ export default {
   },
 
   user: {
-    authenticated: true
+    authenticated: false
   },
 
   userDetails: {},

@@ -69,7 +69,7 @@ import {unitsCall} from '../api'
 import auth from '../auth';
 import nav from '../nav'
 
-import { mountParticles}  from '../lib/particle-background.js';
+import { mountParticles }  from '../lib/particle-background.js';
 
 export default {
   data () {

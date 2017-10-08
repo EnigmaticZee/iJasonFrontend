@@ -89,7 +89,7 @@ import {editUnit} from '../../api'
 import { QInput } from 'quasar';
 import auth from '../../auth';
 
-import { mountParticles}  from '../../lib/particle-background.js';
+import { mountParticles }  from '../../lib/particle-background.js';
 
 export default {
   data () {
