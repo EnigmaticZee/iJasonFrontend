@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-view">
+  <div id="q-app" class="layout-view">
     <!-- Tabs -->
     <q-tabs :refs="$refs" class="justified" default-tab="tab-1">
       <q-tab name="tab-3" icon="add">
@@ -64,6 +64,7 @@
     </div>
 
     <q-modal class="staff-modal" ref="staffLabModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
+    
         <h4>{{ modalTitle }} lab</h4>
         <input type="text" v-model="Name" class="full-width" placeholder="Name"/>
 
@@ -75,17 +76,18 @@
         <input type="radio" id="regular" value="Regular" name="type" v-model="checkedTypes">
         <label for="john">Regular</label>
         <br>
-
+        <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
         <label for="">Choose lab sheet (PDF) file</label>
-        <input class="full-width" type="file" @change="onLabFileChange"> 
+        <input  name="labSheet" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
 
         <label for="">Choose ini file</label>
-        <input class="full-width" type="file" @change="onIniFileChange"> 
+        <input  name="iniFile" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
 
         <div class="buttons text-right">
           <button @click="$refs.staffLabModal.close()" class="primary">Close</button>
           <button @click="submitModal()" class="secondary">Submit</button>
         </div>
+      
 
         <br>
         <p class="text-center">iJason Virtual Lab Supervisor</p>
@@ -180,8 +182,8 @@
                 Name: '',
                 Type: '',
                 checkedTypes: [],
-                INIFile: null,
-                LabSheet: null,
+                iniFile: {},
+                labSheet: {},
                 options: {
                   paramName: 'file'
                 },
@@ -215,16 +217,16 @@
               this.week = editData.week
               this.Name = editData.Name
               this.Type = editData.Type
-              this.INIFile = editData.INIFile
-              this.LabSheet = editData.LabSheet
+              this.iniFile = editData.iniFile
+              this.labSheet = editData.labSheet
             } else {
               this.modalTitle = 'Add'
               this.unitCode = ''
               this.week = ''
               this.Name = ''
               this.Type = ''
-              this.INIFile = ''
-              this.LabSheet = ''
+              this.iniFile = ''
+              this.labheet = ''
             }
             this.$refs.staffLabModal.open()
           },
@@ -235,10 +237,10 @@
             var formData = new FormData();
             formData.append('unitCode', this.weekUnitData.unitCode);
             formData.append('week', this.weekUnitData.week);
-            formData.append('Name', this.Name);
-            formData.append('Type', this.checkedTypes);
-            formData.append('INIFile', this.INIFile);
-            formData.append('LabSheet',this.LabSheet);
+            formData.append('name', this.Name);
+            formData.append('type', this.checkedTypes);
+            formData.append('INIFile', this.iniFile);
+            formData.append('labSheet',this.labSheet);
 
             // TODO: Remove this
             for (var pair of formData.entries()) {
@@ -249,13 +251,27 @@
 
             axios.post(unitsURL, formData)
               .then(function(response){
-                location.reload()
+                console.log("Response from adding lab", response.data);
               })
               .catch(function(error){
                 console.log(error);
+                console.log(error.description);
               })
               self.$refs.staffLabModal.close()
           },
+          fileAdded(fieldName, files)
+          {
+            if(fieldName == 'labSheet')
+            {
+              this.labSheet = files[0];
+            }
+            else if(fieldName == 'iniFile')
+            {
+              this.iniFile = files[0];
+            }
+
+          },
+
           onLabFileChange(e) {
             var files = e.target.files || e.dataTransfer.files;
             if (!files.length)
