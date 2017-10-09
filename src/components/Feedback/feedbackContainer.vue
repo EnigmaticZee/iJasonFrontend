@@ -1,6 +1,6 @@
 <template>
   <div class="layout-view">
-        
+
          <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{feedbacks.labName}}</div>
 
         <div class=" card feedback">
@@ -13,15 +13,15 @@
                 <i>file_download</i>
           </button>
 
-           <button class="default full-width" @click="sendEmail()">Email 
+           <button class="default full-width" @click="sendEmail()">Email
                 <i>email</i>
           </button>
-         
+
         </div>
         <div  v-for="feedback in feedbacks.errors"  class="card">
           <div class="card-title bg-red-5 text-white">
             {{feedback.error}}
-               
+
           </div>
           <div v-for="detail in feedback.details" class="card-content ">
               {{detail}}
@@ -36,68 +36,68 @@
 </template>
 
 <script>
-      import axios from 'axios'
-      import user from '../../auth';
-      import {downloadFeedbackCall} from '../../api'
-      import {sendEmailCall} from '../../api'
-      import {downloadConfigCall} from '../../api' 
+    //Import Libraries
+    import axios from 'axios'
+    import user from '../../auth';
+    import {downloadFeedbackCall} from '../../api'
+    import {sendEmailCall} from '../../api'
+    import {downloadConfigCall} from '../../api'
+
     export default {
         props: ['feedbacks'],
 
         data: function() {
-            return{}
+            return {}
         },
-
         methods: {
-            dummy : function () {
-                console.log(this.feedbacks);
-                alert(this.feedbacks);
-            },
-            downloadFeedback : function() 
-            {
-              var downloadFeedbackUrl = downloadFeedbackCall();
-              console.log(downloadFeedbackUrl+"username="+ user.credentials.username);
-              axios.get(downloadFeedbackUrl+"username="+ user.credentials.username)
-                  .then(function(response) {
-                    console.log(response.data);
-                    window.open(downloadFeedbackUrl+"username="+ user.credentials.username, '_blank');
-                  })
-                  .catch(function(error) {
-                    console.log(error);
-                    //self.$refs.collectWorkStatusModal.open();
-                  })
+            /* ---Download Feedback---
+               1. Sends GET Request via API containing user's credentials
+               2. API will send back the URL Location for download pdf
+               3. Load it in the new tab. */
+            downloadFeedback : function() {
+                var downloadFeedbackURL = downloadFeedbackCall();
 
+                //GET Request
+                axios.get(downloadFeedbackURL + 'username=' + user.credentials.username)
+                .then(function(response) {
+                    console.log('Download Feedback Response:', response.data);
+                    window.open(downloadFeedbackURL + 'username=' + user.credentials.username, '_blank');
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
             },
-            downloadConfig : function() 
-            {
-              var downloadConfigUrl = downloadConfigCall();
-              console.log(downloadConfigUrl+"username="+ user.credentials.username);
-              axios.get(downloadConfigUrl+"username="+ user.credentials.username)
-                  .then(function(response) {
-                    console.log(response.data);
+            /* ---Download Config---
+               1. Sends GET Request via API containing user's credentials
+               2. API will send back the URL Location for download configuration
+               3. Load it in the new tab. */
+            downloadConfig : function() {
+                var downloadConfigUrl = downloadConfigCall();
+                console.log(downloadConfigUrl+"username="+ user.credentials.username);
+                axios.get(downloadConfigUrl+"username="+ user.credentials.username)
+                .then(function(response) {
+                    console.log('Download Config Response:',response.data);
                     window.open(downloadConfigUrl+"username="+ user.credentials.username, '_blank');
                   })
                   .catch(function(error) {
                     console.log(error);
-                    //self.$refs.collectWorkStatusModal.open();
                   })
 
             },
-            sendEmail: function()
-            {
-
-              var sendEmailUrl = sendEmailCall();
-
-              console.log(this.feedbacks);
-              var self = this;
-              axios.post(sendEmailUrl, {username: user.credentials.username, feedback: this.feedbacks})
-                .then(function(response){
-                  console.log(response.data);
+            /* ---Send Email---
+               1. Sends POST Request via API containing user's credentials and Feedback
+               2. The emailing is handled in the backend. */
+            sendEmail: function() {
+                var sendEmailUrl = sendEmailCall();
+                console.log(this.feedbacks);
+                var self = this;
+                axios.post(sendEmailUrl, {username: user.credentials.username, feedback: this.feedbacks})
+                .then(function(response) {
+                     console.log(response.data);
+                 })
+                 .catch(function(error) {
+                      console.log(error);
                 })
-                .catch(function(error){
-                  console.log(error);
-                })
-
             }
         }
     }

@@ -276,7 +276,7 @@ export default{
         // console.log("bookeddevices",this.bookedDevices);
         // console.log("selectoptions",this.selectOptions[i].value);
 
-        if ( this.select[i] !== null) {
+        if ( this.select[i] != null) {
           devicemapping.smartRackDeviceName=this.bookedDevices[this.select[i]].deviceName;
           devicemapping.smartRackDeviceNickName=this.bookedDevices[this.select[i]].deviceNickName;
         } else {
@@ -358,6 +358,7 @@ export default{
       {
         if(reqBody.deviceMapping[i].smartRackDeviceName == "")
         {
+            console.log("mapping status" , this.mappingStatus)
           this.mappingStatus = 0;
         }
       }

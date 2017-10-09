@@ -29,26 +29,23 @@
 </template>
 
 <script>
-
+    //Import Libraries
     import auth from '../auth'
-    export default{
-        data: function(){
+
+    export default {
+        data: function() {
             return {
                 img: require('../assets/logo.jpg'),
                 credentials: {
                     username: '',
                     password: ''
                 },
-                error: ""
+                error: ''
             };
         },
         methods: {
-            login: function()
-            {
-                var credentials = {username: this.credentials.username,
-                    password: this.credentials.password}
-
-                auth.login(this, credentials)
+            login: function() {
+                auth.login(this, this.credentials)
             }
         }
     }
