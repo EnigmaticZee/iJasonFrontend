@@ -35,10 +35,10 @@ export default new VueRouter({
   routes: [
     { path: '/', component: load('Login') }, // Default
     { path: '/units', component: load('unitSelection') },
+    { path: '/units/:code', component: loadLabsComponent('labsSelectionContainer') },
     { path: '/staff-units', component: load('Staff/staffUnits') },
     { path: '/staff-units/labs', component: loadStaffLabsComponent('labsSelectionContainer') },
     { path: '*', component: load('Error404') },
-    { path: '/units/labs', component: loadLabsComponent('labsSelectionContainer') },
     { path: '/login', component: load('Login') }
   ]
 })
