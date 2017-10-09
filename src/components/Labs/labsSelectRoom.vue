@@ -358,6 +358,7 @@ export default{
       {
         if(reqBody.deviceMapping[i].smartRackDeviceName == "")
         {
+            console.log("mapping status" , this.mappingStatus)
           this.mappingStatus = 0;
         }
       }
