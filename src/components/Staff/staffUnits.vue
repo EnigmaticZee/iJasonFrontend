@@ -1,9 +1,6 @@
 <template>
-  <q-layout class="background">
+  <q-layout id="particles-background" class="background">
     <div slot="header" class="toolbar">
-    <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
-        <i>menu</i>
-      </button>
       <q-toolbar-title :padding="1">
         <div>
           <img src="~assets/ijason-logo.png">
@@ -30,11 +27,11 @@
       <br><br><br>
       <div class="units-container col">
         <div class="units-heading bg-secondary">
-          Staff units 
+          Staff units
           <span @click="openModal(false)" class="pull-right add"><i class="material-icons">&#xE145;</i> Add  </span>
         </div>
         <div class="units-list">
-          
+
             <span v-for="unit in units"
             :key="unit.unitCode"
             class="units-list__item single-unit">
@@ -44,7 +41,7 @@
               </div>
                <div @click="() => handleUnitClick(unit)" class="single-unit-description col">
                <br>
-           
+
                 <div class="row">{{ unit.unitTitle }}</div>
                 <div class="row">{{ unit.unitCode}}</div>
               </div>
@@ -53,7 +50,7 @@
                 <i class="material-icons">&#xE254;</i> Edit
               </div>
               </span>
-        
+
         </div>
       </div>
     </div>
@@ -92,6 +89,8 @@ import {editUnit} from '../../api'
 import { QInput } from 'quasar';
 import auth from '../../auth';
 
+import { mountParticles }  from '../../lib/particle-background.js';
+
 export default {
   data () {
     return {
@@ -107,6 +106,11 @@ export default {
   components: {
     'q-input': QInput
   },
+
+  mounted() {
+    mountParticles('particles-background');
+  },
+
   methods: {
     dummy () {
       var unitsURL = addUnit();
@@ -161,7 +165,7 @@ export default {
 
     handleUnitClick (unit) {
       console.log(unit)
-    }, 
+    },
     constructUnitsReqBody (){
 
       var requestBody={
@@ -338,10 +342,23 @@ export default {
 }
 
 .background {
-  background-image: url("../../assets/background2.jpg");
+  // background-image: url("../../assets/background2.jpg");
   opacity: 20px;
   background-size: cover;
   background-repeat: no-repeat;
+
+  > div {
+    z-index: 10;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+  }
 }
 
 .staff-modal {
