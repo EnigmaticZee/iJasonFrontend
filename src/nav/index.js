@@ -14,7 +14,7 @@ export default {
 		this.unitsDetails.unitName = title;
 		console.log(this.unitsDetails.unitCode);
 		console.log(this.unitsDetails.unitName);
-		context.$router.push('/units/' + this.unitsDetails.unitCode);
+		context.$router.push('/units/labs');
 	},
 	toUnit(context)
 	{
