@@ -2,29 +2,32 @@
   <q-layout>
     <div slot="header" class="toolbar">
       <q-toolbar-title :padding="1">
-       <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
-       <i>menu</i>
-    </button>
-          <div>
+        <div>
+          <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
+            <i>menu</i>
+          </button>
+
+          <div class="mobile-hide">
             <img src="~assets/ijason-logo.png">
             <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
           </div>
+        </div>
 
-          <div class="row">
+        <div class="row">
           <div>
-           <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}   
+            <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}
           </div>
+
           <div>
             <span>&nbsp&nbsp|&nbsp&nbsp</span>
           </div>
 
           <div @click="performSignOut" class="primary cursor-pointer">
-           <i class="fa fa-sign-in"></i>   Sign Out
+            <i class="fa fa-sign-in"></i>   Sign Out
           </div>
         </div>
       </q-toolbar-title>
     </div>
-
 
     <q-tabs slot="navigation">
      <div>
@@ -47,9 +50,6 @@
     <div class="justify-center full-width row unitTitleStyle" slot="navigation">{{unitDetails.unitCode}} - {{unitDetails.unitName}}
     </div>
 
-
-    
-
     <q-drawer ref="leftDrawer">
       <div class="toolbar light">
         <q-toolbar-title :padding="1">
@@ -59,7 +59,7 @@
 
       <div class="list no-border platform-delimiter">
         <button
-          class="primary big  outline full-width" 
+          class="primary big  outline full-width"
           icon="view_week"
           v-for="week in weeks"
           @click="loadWeeklyTask(week)">
@@ -112,8 +112,6 @@
     import nav from '../../nav';
     import axios from 'axios'
 
-
-
     export default {
         data() {
             return {
@@ -127,10 +125,18 @@
                 selectedLabName: null,
                 /*userCredentials:{username:'student', password: 'password'},*/
                 selectedTasks: [],
-                userDetails: auth.userDetails[0],
+                // userDetails: auth.userDetails[0],
                 unitDetails: nav.unitsDetails
 
             }
+        },
+
+        computed: {
+          userDetails () {
+            return auth.userDetails[0] || {
+              name: 'Guest'
+            }
+          }
         },
 
         mounted() {
@@ -139,9 +145,9 @@
         methods: {
            performSignOut: function () {
               auth.logout(this);
-             
+
             },
-            goToUnitPage: function() 
+            goToUnitPage: function()
             {
               nav.toUnit(this);
             },
@@ -161,10 +167,10 @@
                   .then(function(response){
                     console.log(response.data);
                     self.selectedTasks=response.data;
-                    
+
                     console.log("selected task title", self.selectedTasks[0].labSheetLink);
                     //console.log(self.selectedTasks.labSheetLink);
-                    console.log("For some reason the selected task is undefined ???");  
+                    console.log("For some reason the selected task is undefined ???");
                   })
                   .catch(function(error){
                     console.log(error);
@@ -299,6 +305,30 @@
     }
   }
 
+  .breadcrumb-container {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    align-items: center;
+
+    > ul {
+      margin: 0;
+    }
+
+    > div {
+      width: 100px;
+
+      @media (min-width: 772px) {
+        display: none;
+      }
+
+      img {
+        width: 100%;
+        display: block;
+      }
+    }
+  }
+
   .toolbar-content {
     img {
       max-width: 150%;
@@ -310,18 +340,32 @@
     .toolbar-title {
       > div {
         display: flex;
-        align-items: center;
+        align-items: center !important;
         justify-content: space-between;
+        flex-direction: row;
+
+        @media (max-width: 772px) {
+          justify-content: space-between;
+        }
 
         > div:first-child {
-        display: flex;
-        align-items: center;
+          display: flex;
+          align-items: center;
 
+
+          > div {
+            display: flex;
+            align-items: center;
+            @media (max-width: 772px) {
+              // display: none;
+            }
+          }
         }
       }
     }
 
   }
+
   .unitTitleStyle {
     color: white;
     font-size: 1.4em;

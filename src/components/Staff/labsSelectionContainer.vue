@@ -1,9 +1,6 @@
 <template>
   <q-layout>
     <div slot="header" class="toolbar">
-     <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
-        <i>menu</i>
-      </button>
       <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
         <i>menu</i>
       </button>
