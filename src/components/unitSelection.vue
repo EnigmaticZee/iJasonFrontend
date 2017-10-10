@@ -63,7 +63,7 @@
                 <br><br>
                   <div class="row">{{ unit.unitTitle}}</div>
                   <div class="row">{{ unit.unitCode}}</div>
-                  <div class="row">Sem 0{{ unit.semester}} | {{unit.year}}</div>
+                  <div class="row">Sem 0{{semester}} | {{year}}</div>
                 </div>
             </button>
           </div>
