@@ -46,6 +46,11 @@ export function downloadConfigCall()
    return url
 }
 
+export function downloadLabCall()
+{
+   var url = '/api/download_labsheet.php?'
+   return url
+}
 
 
 export function sendEmailCall()
@@ -72,3 +77,10 @@ export function addLab()
    var url = '/api/add_lab.php'
    return url
 }
+
+export function editLab()
+{
+   var url = '/api/edit_lab.php'
+   return url
+}
+

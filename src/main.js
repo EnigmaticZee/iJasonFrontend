@@ -25,16 +25,23 @@ router.beforeEach(function(to,from,next){
 	{
 		next();
 	}
-
 	if (!nav.unitClicked && from.path === "/units" && to.path === "/units/labs")
 	{
 		next('/units');
 	}
-
 	if (auth.user.authenticated && to.path == "/login")
 	{
 		next('/units');
 	}
+/*
+	if(auth.user.authenticated && auth.userDetails[0].role ==="Student" && to.path === "/staff-units/labs" || to.path === "/staff-units"))
+	{
+		next('/units');
+	}
+	if(auth.user.authenticated && auth.userDetails[0].role ==="Staff" && (to.path === "/units/labs" || to.path === "/units"))
+	{
+		next('/staff-units');
+	}*/
 
 })
 

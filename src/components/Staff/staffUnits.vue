@@ -1,33 +1,38 @@
 <template>
   <q-layout id="particles-background" class="background">
+    
     <div slot="header" class="toolbar">
-      <q-toolbar-title :padding="1">
-        <div>
-          <img src="~assets/ijason-logo.png">
-           <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
-        </div>
+        <q-toolbar-title :padding="1">
+          <div>
+            <img src="~assets/ijason-logo.png">
+            <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
+          </div>
 
-        <div>
-          Student
-          |
-          <button @click="performSignOut" class="primary">
-            Sign Out
-          </button>
+          <div class="row">
+            <div>
+            <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}
+            </div>
+            <div>
+              <span>&nbsp&nbsp|&nbsp&nbsp</span>
+            </div>
 
-        </div>
-      </q-toolbar-title>
-    </div>
+            <div @click="performSignOut" class="primary cursor-pointer">
+            <i class="fa fa-sign-in"></i>   Sign Out
+            </div>
+          </div>
+        </q-toolbar-title>
+      </div>
 
     <div class="layout-view col">
     <br><br><br><br>
       <div class="units-selection-welcome-message col">
         <h1 class="text-primary">iJason Virtual Lab Supervisor</h1>
-        <p class="text-primary">Welcome back, student</p>
+        <p class="text-primary">Welcome back, {{userDetails.name}} </p>
       </div>
       <br><br><br>
       <div class="units-container col">
         <div class="units-heading bg-secondary">
-          Staff units
+          <span >Units You Teach</span>
           <span @click="openModal(false)" class="pull-right add"><i class="material-icons">&#xE145;</i> Add  </span>
         </div>
         <div class="units-list">
@@ -39,11 +44,12 @@
               <div class="row">
                 <img src="../../assets/units-icon.png" alt="">
               </div>
-               <div @click="() => handleUnitClick(unit)" class="single-unit-description col">
+               <div @click="() => handleUnitClick(unit.unitCode, unit.unitTitle)" class="single-unit-description full-width col">
                <br>
 
                 <div class="row">{{ unit.unitTitle }}</div>
                 <div class="row">{{ unit.unitCode}}</div>
+                <div v-if="unit.active == 0" class="row text-warning">Inactive Unit</div>
               </div>
 
               <div class="single-unit-edit" @click="openModal(true, { unitTitle: unit.unitTitle, unitCode: unit.unitCode })">
@@ -65,7 +71,7 @@
     </div>
 
      <q-modal class="staff-modal" ref="staffUnitModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
-        <h4>{{ modalTitle }} staff unit</h4>
+        <h4>{{ modalTitle }} Unit</h4>
         <input type="text" v-model="codeInput" class="full-width" placeholder="Code"/>
 
         <input type="text" v-model="nameInput" class="full-width" placeholder="Name"/>
@@ -88,6 +94,8 @@ import {addUnit} from '../../api'
 import {editUnit} from '../../api'
 import { QInput } from 'quasar';
 import auth from '../../auth';
+import nav from '../../nav'
+import {Loading} from 'quasar';
 
 import { mountParticles }  from '../../lib/particle-background.js';
 
@@ -98,20 +106,32 @@ export default {
       isEdit: false,
       codeInput: '',
       nameInput: '',
-      units: [ ],
-      semester :2,
-      year: 2017
+      units: [ ]
     }
   },
   components: {
     'q-input': QInput
   },
 
+  computed: {
+    userDetails () {
+      return auth.userDetails[0] || {
+        name: 'Guest'
+      }
+    }
+  },
+
+
   mounted() {
     mountParticles('particles-background');
   },
 
   methods: {
+    performSignOut () {
+        auth.logout(this);
+
+    },
+
     dummy () {
       var unitsURL = addUnit();
       var reqBody = {
@@ -152,40 +172,27 @@ export default {
       axios.post(unitsURL, reqBody)
         .then(function(response){
           console.log(response.data);
-          self.downloadUnits()
+          self.downloadUnits();
         })
         .catch(function(error){
           console.log(error);
         })
         self.$refs.staffUnitModal.close()
     },
-    performSignOut () {
-      console.log('Implement logic for signout here.')
+   
+
+    handleUnitClick (unit, title) {
+      console.log(unit);
+      nav.staffUnitToLab(this, unit, title);
     },
-
-    handleUnitClick (unit) {
-      console.log(unit)
-    },
-    constructUnitsReqBody (){
-
-      var requestBody={
-        username: auth.credentials.username,
-        semester:this.semester,
-        year:this.year
-      };
-
-      console.log(requestBody);
-
-      return requestBody;
-    },
+    
 
     downloadUnits() {
 
       var unitsURL = unitsCall();
-      var reqBody=this.constructUnitsReqBody();
       var self = this;
 
-      axios.post(unitsURL, reqBody)
+      axios.get(unitsURL)
         .then(function(response){
           console.log(response.data);
           self.units=response.data;
@@ -256,12 +263,14 @@ export default {
     border-top-right-radius: 20px;
     color: #fff;
     padding: 10px 0;
+    z-index: -1;
 
     .add {
       background-color: transparent;
       cursor: pointer;
       font-size: 20px;
-      margin-right: 15px;
+      margin-right: 10px;
+      z-index: 1;
     }
   }
 
@@ -311,7 +320,7 @@ export default {
 
     .single-unit-edit {
       cursor: pointer;
-      width: 100%;
+      width: 25%;
       text-align: right;
       padding-top: 40px;
     }
@@ -375,4 +384,5 @@ export default {
     }
   }
 }
+
 </style>

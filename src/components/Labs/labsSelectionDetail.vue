@@ -15,17 +15,17 @@
 
     <!-- Targets -->
     <div ref="tab-1">
-        <div v-if="tasks.length === 0" class="col ">
+        <div v-if="tutorialLabs.length === 0" class="col ">
             <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
 
-            <div class="row full-width justify-center">No labs available at the moment for this week...</div>
+            <div class="row full-width justify-center">No labs available for this week yet...</div>
         </div>
-        <div v-else class="list" v-for="t in tasks">
+        <div v-else class="list" v-for="t in tutorialLabs">
         <div v-if="t.labType=='Regular'">
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labSheetLink)">
+              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
                 Download
               </div>
             </div>
@@ -41,17 +41,17 @@
     </div>
 
     <div ref="tab-2">
-        <div v-if="tasks.length === 0" class="col ">
+        <div v-if="practiceLabs.length === 0" class="col ">
             <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
 
-            <div class="row full-width justify-center">No practice labs available at the moment for this week...</div>
+            <div class="row full-width justify-center">No practice labs available for this week yet...</div>
         </div>
-        <div class="list" v-for="t in tasks">
+        <div v-else class="list" v-for="t in practiceLabs">
         <div v-if="t.labType=='Practice'">
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labSheetLink)">
+              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
                 Download
               </div>
             </div>
@@ -141,10 +141,11 @@
 </template>
 
 <script>
-
+    import axios from 'axios'
     import nav from '../../nav'
+    import {downloadLabCall} from '../../api'
     export default {
-        props: ['tasks'],
+        props: ['practiceLabs', 'tutorialLabs'],
         data: function()
         {
             return {
@@ -191,10 +192,19 @@
           getFeedback: function() {
             return this.$refs.feedbackModal.open();
           },
-          downloadLab: function (labDownloadableLink)
+          downloadLab: function (labDownloadId)
           {
-            console.log(labDownloadableLink);
-            window.open = (labDownloadableLink, '_blank');
+            var downloadLabUrl = downloadLabCall();
+              console.log(downloadLabUrl+"labID="+ labDownloadId);
+              axios.get(downloadLabUrl+"labID="+ labDownloadId)
+                  .then(function(response) {
+                    console.log(response.data);
+                    window.open(downloadLabUrl+"labID="+ labDownloadId, '_blank');
+                  })
+                  .catch(function(error) {
+                    console.log(error);
+                    //self.$refs.collectWorkStatusModal.open();
+                  })
           }
 
 

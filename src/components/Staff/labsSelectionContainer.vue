@@ -10,13 +10,17 @@
             <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
           </div>
 
-          <div>
-            Student
-            |
-            <button @click="performSignOut" class="primary">
-              Sign Out
-            </button>
+           <div class="row">
+            <div>
+            <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}
+            </div>
+            <div>
+              <span>&nbsp&nbsp|&nbsp&nbsp</span>
+            </div>
 
+            <div @click="performSignOut" class="primary cursor-pointer">
+            <i class="fa fa-sign-in"></i>   Sign Out
+            </div>
           </div>
       </q-toolbar-title>
     </div>
@@ -25,7 +29,7 @@
     <q-tabs slot="navigation">
      <div>
       <ul class="breadcrumb">
-        <li>
+        <li  @click="goToUnitPage">
           <a>
             <i>home</i> Units
           </a>
@@ -33,12 +37,15 @@
 
         <li>
           <a >
-            <i>mail</i> Labs
+            <i>mail</i> Labs - {{unitDetails.unitCode}}
           </a>
         </li>
       </ul>
     </div>
     </q-tabs>
+    <div class="justify-center full-width row unitTitleStyle" slot="navigation">{{unitDetails.unitCode}} - {{unitDetails.unitName}}
+    </div>
+
 
     <q-drawer ref="leftDrawer">
       <div class="toolbar light">
@@ -71,16 +78,10 @@
     </q-drawer>
 
     <labs
-      v-if="currentState=='STATE_SHOW_LAB'"
-      :tasks="selectedTasks"
-      :weekUnitData="chosenWeekUnitValues"
+      v-if="currentState=='STATE_SHOW_LAB'" :chosenWeek="chosenWeek"
+     :practiceLabs="practiceLabs" :tutorialLabs="tutorialLabs"
       @stateWasChanged="currentState = $event"
       @chosenlabID="selectedLabID = $event" @chosenlabTitle="selectedLabName = $event"></labs>
-
-
-    <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" :labName="selectedLabName" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
-
-    <feedBack v-else :feedbacks="feedbacks"></feedBack>
 
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
@@ -95,9 +96,9 @@
 
 <script>
     import LabsSelection from '../Staff/labsSelectionDetail.vue';
-    import LabSelectRoom from '../Staff/labsSelectRoom.vue';
-    import FeedbackContainer from '../Feedback/feedbackContainer.vue'
+    import auth from '../../auth';
     import axios from 'axios'
+    import nav from '../../nav';
     import {labsCall} from '../../api'
 
 
@@ -106,7 +107,6 @@
             return {
                 //Constant
                 LAB_API_URL : '',
-                chosenWeekUnit: {},
                 feedbacks:{},
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
@@ -114,72 +114,82 @@
                 selectedLabName: null,
                 userCredentials:{username:'student', password: 'password'},
                 selectedTasks: [],
-                unit: 'TNE10011'
+                practiceLabs: [],
+                tutorialLabs: [],
+                unitDetails: nav.unitsDetails,
+                chosenWeek : 1
             }
         },
         computed: {
-          chosenWeekUnitValues () {
-            return this.chosenWeekUnit
+          userDetails () {
+            return auth.userDetails[0] || {
+              name: 'Guest'
+            }
           }
         },
-        mounted() {
-            // loadWeeklyTask();
-        },
         methods: {
+          performSignOut: function () {
+              auth.logout(this);
+
+            },
             loadWeeklyTask : function(aWeek) {
-
-
-                console.log("Chosen week is", aWeek);
-                console.log("chosen unit is", this.unit);
-
-                this.chosenWeekUnit = { week: aWeek, unitCode: this.unit }
 
                 var labsURL = labsCall();
                 var reqBody=this.constructLabRequest(aWeek);
                 var self = this;
+                this.chosenWeek = aWeek;
 
                 axios.post(labsURL, reqBody)
                   .then(function(response){
                     console.log(response.data);
-                    self.selectedTasks=response.data;
+                    self.tutorialLabs = [];
+                    self.practiceLabs = [];
+                    
+                    for (var i = 0; i<response.data.length; i++)
+                    {
+                      if (response.data[i].labType =='Regular')
+                      {
+                        self.tutorialLabs.push(response.data[i]);
+                      }
+                      else if (response.data[i].labType =="Practice")
+                      {
+                        self.practiceLabs.push(response.data[i]);
+                      }
+                    }
+
+                    console.log("Tutorial Labs", self.tutorialLabs);
+                    console.log("Practice Labs", self.practiceLabs);
                   })
                   .catch(function(error){
                     console.log(error);
                   })
 
-                console.log(this.selectedTasks);
-
                 this.currentState = 'STATE_SHOW_LAB'
-
-              /*  for (var i = 0; i < this.labTasks.length; i++)
-                {
-                    if(this.labTasks[i].week == aWeek)
-                        this.selectedTasks.push(this.labTasks[i]);
-                }*/
-            },
-
-            performSignOut: function ()
-            {
 
             },
 
             constructLabRequest : function(aWeek)
             {
               var requestBody={
-              unitCode: this.unit,
+              unitCode: nav.unitsDetails.unitCode,
               weekNo: aWeek
               };
 
               console.log(requestBody);
 
               return requestBody;
-            }
+            },
+            goToUnitPage: function()
+            {
+              nav.toStaffUnit(this);
+            },
 
         },
         components: {
-            'labs':LabsSelection,
-            'labRoom': LabSelectRoom,
-            'feedBack': FeedbackContainer
+            'labs':LabsSelection
+        },
+        beforeMount () {
+          this.loadWeeklyTask(1);
         }
     }
 </script>
@@ -292,5 +302,10 @@
         }
       }
     }
+  }
+   .unitTitleStyle {
+    color: white;
+    font-size: 1.4em;
+    padding-bottom: 1.5em;
   }
 </style>

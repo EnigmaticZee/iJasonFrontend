@@ -29,14 +29,31 @@
           <p class="text-primary">Welcome back, {{userDetails.name}} </p>
         </div>
         <br><br><br>
-        <div class="units-container col">
+      
+
+        <div class="units-container col"  v-if="units.length === 0" >
+            <div class="units-selection-welcome-message ">
+                <div class="col">
+                  <img  class="primary" src="../assets/university.png" alt="">
+                </div>
+
+                <div class="units-selection-welcome-message col">
+                <br><br>
+                  <div class="row text-warning">You don't seem to be enrolled in any subjects</div>
+                  <div class="row text-primary">Contact your convenor to enrol you in a subject</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="units-container col" v-else >
           <div class="units-heading  bg-secondary">
-            Units You study
+            Units You Study
           </div>
-          <div class="units-list">
+          <div class="units-list" v-for="unit in units">
+
             <button
               @click="() => handleUnitClick(unit.unitCode, unit.unitTitle)"
-              v-for="unit in units"
+              v-if="unit.active == 1"
               class="primary single-unit">
                 <div class="row">
                   <img src="../assets/units-icon.png" alt="">
@@ -44,8 +61,9 @@
 
                 <div class="single-unit-description col">
                 <br><br>
-                  <div class="row">{{ unit.unitTitle }}</div>
+                  <div class="row">{{ unit.unitTitle}}</div>
                   <div class="row">{{ unit.unitCode}}</div>
+                  <div class="row">Sem 0{{ unit.semester}} | {{unit.year}}</div>
                 </div>
             </button>
           </div>
@@ -66,6 +84,7 @@
 <script>
 import axios from 'axios'
 import {unitsCall} from '../api'
+import moment from 'moment';
 import auth from '../auth';
 import nav from '../nav'
 
@@ -75,8 +94,8 @@ export default {
   data () {
     return {
       units: [],
-      semester :2,
-      year: 2017,
+      semester : null ,
+      year: null,
     }
   },
 
@@ -141,6 +160,19 @@ export default {
     console.log(nav.unitClicked);
     nav.unitClicked = false;
 
+    this.year = moment().year();
+    var month = moment().month();
+    
+    if (month > 1 && month < 7)
+    {
+      this.semester = 1;
+    }
+    else if (month >= 7 && month < 12)
+    {
+      this.semester = 2;
+    }
+    console.log("Year is ", this.year);
+    console.log("Semester ", this.semester);
     console.log("Nav Object" , nav);
     this.downloadUnits();
 
@@ -232,6 +264,9 @@ export default {
 
     .single-unit-description {
       padding-top: 10px;
+    }
+    .no-unit {
+      width: 100%;
     }
   }
 }

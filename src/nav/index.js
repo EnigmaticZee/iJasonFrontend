@@ -21,5 +21,21 @@ export default {
 		console.log("Going to unit page");
 		var self = context;
 		self.$router.replace('/units');
+	},
+	staffUnitToLab(context,unit,title)
+	{
+		console.log("Inside StaffUnitTOLAB Function");
+		this.unitClicked = true;
+		this.unitsDetails.unitCode = unit;
+		this.unitsDetails.unitName = title;
+		console.log(this.unitsDetails.unitCode);
+		console.log(this.unitsDetails.unitName);
+		context.$router.push('/staff-units/labs');
+	},
+	toStaffUnit(context)
+	{
+		console.log("Going to unit page");
+		var self = context;
+		self.$router.replace('/staff-units');
 	}
 }

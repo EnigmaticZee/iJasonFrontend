@@ -3,7 +3,7 @@
     <!-- Tabs -->
     <q-tabs :refs="$refs" class="justified" default-tab="tab-1">
       <q-tab name="tab-3" icon="add">
-        Add Labs
+        Add Lab
       </q-tab>
       <q-tab name="tab-1" icon="description">
         Tutorial Labs
@@ -15,26 +15,36 @@
     </q-tabs>
 
      <div ref="tab-3">
+         <div  class="col">
+
+            <div class="row full-width justify-center addLab"><img class="upload_image" @click="openModal(false)" src="../../assets/upload_icon.png" alt=""></div>
+            <div class="row full-width justify-center">Please upload a lab for this week!</div>
+        </div>
         <div class="text-center">
-          <img class="upload_image" @click="openModal(false)" src="../../assets/upload_icon.png" alt="">
+          
         </div>
      </div>
   
     <!-- Targets -->
     <div ref="tab-1">
-        <div class="list" v-for="t in tasks">
+        <div v-if="tutorialLabs.length === 0" class="col ">
+            <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
+
+            <div class="row full-width justify-center">You have not added any tutorial labs for this week...</div>
+        </div>
+        <div v-else class="list" v-for="t in tutorialLabs">
         <div v-if="t.labType=='Regular'">
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content">
+              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
                 Download
               </div>
             </div>
-            <div class="item" >
-              <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showRoom(t.labID,t.labTitle)" >
-                Check Lab Work
+             <div class="item" >
+              <i class="item-primary">mode_edit</i>
+              <div class="item-content cursor-pointer" v-on:click="openModal(true, {labID : t.labID, Name : t.labTitle, Type: t.labType })">
+                Edit
               </div>
             </div>
         </q-collapsible>
@@ -43,19 +53,24 @@
     </div>
 
     <div ref="tab-2">
-        <div class="list" v-for="t in tasks">
+        <div v-if="practiceLabs.length === 0" class="col ">
+            <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
+
+            <div class="row full-width justify-center">You have not added any practice labs for this week...</div>
+        </div>
+        <div v-else class="list" v-for="t in practiceLabs">
         <div v-if="t.labType=='Practice'">
         <q-collapsible icon="description" :label="t.labTitle">
             <div class="item" >
               <i class="item-primary">file_download</i>
-              <div class="item-content">
+              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
                 Download
               </div>
             </div>
             <div class="item" >
-              <i class="item-primary">build</i>
-              <div class="item-content" v-on:click="showRoom(t.labID)" >
-                Check Lab Work
+              <i class="item-primary">mode_edit</i>
+              <div class="item-content cursor-pointer" v-on:click="openModal(true, {labID : t.labID, Name : t.labTitle, Type: t.labType })">
+                Edit
               </div>
             </div>
           </q-collapsible>
@@ -63,24 +78,29 @@
         </div>
     </div>
 
+      
+
+
     <q-modal class="staff-modal" ref="staffLabModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
     
-        <h4>{{ modalTitle }} lab</h4>
+        <h4>{{ modalTitle }} Lab</h4>
         <input type="text" v-model="Name" class="full-width" placeholder="Name"/>
 
-        <label for="">Type</label>
+        <label for="">Lab Type</label>
         <br>
         <br>
-        <input type="radio" id="practice" value="Practice" name="type" v-model="checkedTypes">
-        <label for="jack" style="margin-right: 10px">Practice</label>
-        <input type="radio" id="regular" value="Regular" name="type" v-model="checkedTypes">
-        <label for="john">Regular</label>
+        <input type="radio" id="Regular" value="Regular" name="Regular" v-model="checkedType">
+        <label for="Regular">Regular</label>
+
+        <input type="radio" id="Practice" value="Practice" name="Practice" v-model="checkedType">
+        <label for="Practice" style="margin-right: 10px">Practice</label>
+        
         <br>
         <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
-        <label for="">Choose lab sheet (PDF) file</label>
+        <label for="">Choose lab sheet (.pdf)</label>
         <input  name="labSheet" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
 
-        <label for="">Choose ini file</label>
+        <label for="">Choose ini file (.ini)</label>
         <input  name="iniFile" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
 
         <div class="buttons text-right">
@@ -93,62 +113,9 @@
         <p class="text-center">iJason Virtual Lab Supervisor</p>
     </q-modal>
 
-    <q-modal  ref="basicModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
-        <header class="modal-header">Select Configuration</header>
-        <div id="modal-content">
-            <div id="menu"class="row">
-              <ul class="menu">
-                <li class="menu__item menu__item--dropdown" v-on:click="toggle('ranking')" v-bind:class="{'open' : dropDowns.ranking.open}">
-                  <a class="menu__link menu__link--toggle">
-                      <span>Select Rooms></span>
+    
+    
 
-                  </a>
-
-                  <ul class="dropdown-menu">
-                      <li class="dropdown-menu__item" v-on:click="selectRoom('328')">
-                          <a class="dropdown-menu__link">328</a>
-                      </li>
-
-                      <li class="dropdown-menu__item" v-on:click="selectRoom('329')">
-                          <a class="dropdown-menu__link">329</a>
-                      </li>
-
-                      <li class="dropdown-menu__item" v-on:click="selectRoom('330')">
-                          <a class="dropdown-menu__link">330</a>
-                      </li>
-                  </ul>
-                </li>
-              </ul>
-              <span>room number: {{roomNum}}</span>
-            </div>
-            <div v-show="isShow">
-              <div>
-                <span>Switches</span>
-                <div class="list" v-for="t in switches">
-                    <div class="item" >
-                      <div class="item-content">
-                        {{t.deviceName}}
-                      </div>
-                    </div>
-                </div>
-              </div>
-              <div>
-                <span>Routers</span>
-                <div class="list" v-for="t in routers">
-                    <div class="item" >
-                      <div class="item-content">
-                        {{t.deviceName}}
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-        </div>
-        <footer>
-          <button color="primary" @click="$refs.basicModal.close()">Close</button>
-          <button color="primary" v-on:click="getFeedback()">Get Feedback</button>
-        </footer>
-    </q-modal>
     <q-modal  ref="feedbackModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
         <header class="modal-header">Feedback</header>
         <div id="modal-content">
@@ -167,21 +134,25 @@
 
 <script>
     import axios from 'axios'
+    import {downloadLabCall} from '../../api'
+
+    import nav from '../../nav'
     import {addLab} from '../../api'
     import {editLab} from '../../api'
 
     export default {
-        props: ['tasks', 'weekUnitData'],
+        props: ['practiceLabs', 'tutorialLabs', 'chosenWeek'],
         data: function()
         {
             return {
                 modalTitle: 'Add',
                 isEdit: false,
+                labId: null,
                 unitCode: '',
                 week: '',
                 Name: '',
                 Type: '',
-                checkedTypes: [],
+                checkedType: null,
                 iniFile: {},
                 labSheet: {},
                 options: {
@@ -202,7 +173,8 @@
                     {deviceName: 'router 3'}
                 ],
                 isShow: false,
-                roomNum: ''
+                roomNum: '',
+                unitDetails: nav.unitsDetails
 
 
             }
@@ -212,52 +184,104 @@
           openModal (isEditValue, editData = {}) {
             this.isEdit = isEditValue
             if (this.isEdit) {
+              console.log("Editing")
+              console.log("Lab type is ", editData.Type);
               this.modalTitle = 'Edit'
-              this.unitCode = editData.unitCode
-              this.week = editData.week
+              this.labId = editData.labID
               this.Name = editData.Name
-              this.Type = editData.Type
-              this.iniFile = editData.iniFile
-              this.labSheet = editData.labSheet
+              this.checkedType = editData.Type
+              this.iniFile = ''
+              this.labSheet = ''
             } else {
+              console.log("Adding");
               this.modalTitle = 'Add'
               this.unitCode = ''
               this.week = ''
               this.Name = ''
               this.Type = ''
               this.iniFile = ''
-              this.labheet = ''
+              this.labSheet = ''
+             
             }
-            this.$refs.staffLabModal.open()
+             this.$refs.staffLabModal.open()
+            
           },
           submitModal () {
-            console.log(this.isEdit)
+            console.log("Is it edit? ", this.isEdit)
             var unitsURL =  this.isEdit ? editLab() : addLab();
 
-            var formData = new FormData();
-            formData.append('unitCode', this.weekUnitData.unitCode);
-            formData.append('week', this.weekUnitData.week);
-            formData.append('name', this.Name);
-            formData.append('type', this.checkedTypes);
-            formData.append('INIFile', this.iniFile);
-            formData.append('labSheet',this.labSheet);
+            if (this.isEdit)
+            {
+              console.log("Editing a lab");
 
-            // TODO: Remove this
-            for (var pair of formData.entries()) {
-              console.log(pair[0]+ ', ' + pair[1]); 
+
+              var formData = new FormData();
+                formData.append('labID', this.labId);
+                formData.append('labName', this.Name);
+                formData.append('labType', this.checkedType);
+                //console.log ("Type of for labsheet", typeof this.labSheet)
+                //console.log ("Type of for IniFile", typeof this.iniFile)
+
+                if (typeof this.labSheet != 'string')
+                {
+                  formData.append('labSheet',this.labSheet);
+                }
+               
+                if (typeof this.iniFile != 'string')
+                {
+                  formData.append('INIFile', this.iniFile);
+                }
+               
+                for (var pair of formData.entries()) {
+                        console.log(pair[0]+ ', ' + pair[1]); 
+                    }
+                var self = this;
+
+                axios.put(unitsURL, formData)
+                  .then(function(response){
+                    console.log("Response from editing lab", response.data);
+                  })
+                  .catch(function(error){
+                    console.log(error);
+                    console.log(error.description);
+                  })
+
+
             }
+            else { 
+              console.log("Adding a lab");
+                var formData = new FormData();
+                console.log("Week unit Data UNIT is ",this.unitDetails.unitCode);
+                console.log("Week unit Data WEEK is ", this.chosenWeek);
+                formData.append('unitCode', this.unitDetails.unitCode);
+                formData.append('week', this.chosenWeek);
+                formData.append('name', this.Name);
+                formData.append('type', this.checkedType);
+                formData.append('INIFile', this.iniFile);
+                formData.append('labSheet',this.labSheet);
 
-            var self = this;
+                var self = this;
 
-            axios.post(unitsURL, formData)
-              .then(function(response){
-                console.log("Response from adding lab", response.data);
-              })
-              .catch(function(error){
-                console.log(error);
-                console.log(error.description);
-              })
-              self.$refs.staffLabModal.close()
+                axios.post(unitsURL, formData)
+                  .then(function(response){
+                    console.log("Response from adding lab", response.data);
+                  })
+                  .catch(function(error){
+                    console.log(error);
+                    console.log(error.description);
+                  })
+                
+            }
+          
+
+          
+          this.iniFile = {};
+          this.labSheet = {};
+           self.$refs.staffLabModal.close();
+
+
+           
+              
           },
           fileAdded(fieldName, files)
           {
@@ -304,7 +328,22 @@
           },
           getFeedback: function() {
             return this.$refs.feedbackModal.open();
+          },
+           downloadLab: function (labDownloadId)
+          {
+            var downloadLabUrl = downloadLabCall();
+              console.log(downloadLabUrl+"labID="+ labDownloadId);
+              axios.get(downloadLabUrl+"labID="+ labDownloadId)
+                  .then(function(response) {
+                    console.log(response.data);
+                    window.open(downloadLabUrl+"labID="+ labDownloadId, '_blank');
+                  })
+                  .catch(function(error) {
+                    console.log(error);
+                    //self.$refs.collectWorkStatusModal.open();
+                  })
           }
+
         }
     }
 </script>
@@ -403,5 +442,8 @@
     cursor: pointer;
     margin-top: 1rem;
     height: 8rem;
+  }
+  .noLabs, .addLab {
+    margin: 10% 10% 2% 10%;
   }
 </style>

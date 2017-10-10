@@ -83,7 +83,7 @@
 
     <labs
       v-if="currentState=='STATE_SHOW_LAB'"
-      :tasks="selectedTasks"
+      :practiceLabs="practiceLabs" :tutorialLabs="tutorialLabs"
       @stateWasChanged="currentState = $event"
       @chosenlabID="selectedLabID = $event" @chosenlabTitle="selectedLabName = $event"></labs>
 
@@ -124,7 +124,8 @@
                 selectedLabID: 1,
                 selectedLabName: null,
                 /*userCredentials:{username:'student', password: 'password'},*/
-                selectedTasks: [],
+                practiceLabs: [],
+                tutorialLabs: [],
                 // userDetails: auth.userDetails[0],
                 unitDetails: nav.unitsDetails
 
@@ -139,9 +140,6 @@
           }
         },
 
-        mounted() {
-            // loadWeeklyTask();
-        },
         methods: {
            performSignOut: function () {
               auth.logout(this);
@@ -166,27 +164,32 @@
                 axios.post(labsURL, reqBody)
                   .then(function(response){
                     console.log(response.data);
-                    self.selectedTasks=response.data;
+                    self.tutorialLabs = [];
+                    self.practiceLabs = [];
+                    
+                    for (var i = 0; i<response.data.length; i++)
+                    {
+                      if (response.data[i].labType =='Regular')
+                      {
+                        self.tutorialLabs.push(response.data[i]);
+                      }
+                      else if (response.data[i].labType =="Practice")
+                      {
+                        self.practiceLabs.push(response.data[i]);
+                      }
+                    }
 
-                    console.log("selected task title", self.selectedTasks[0].labSheetLink);
-                    //console.log(self.selectedTasks.labSheetLink);
-                    console.log("For some reason the selected task is undefined ???");
+                    console.log("Tutorial Labs", self.tutorialLabs);
+                    console.log("Practice Labs", self.practiceLabs);
                   })
                   .catch(function(error){
                     console.log(error);
                   })
 
-                console.log(this.selectedTasks);
-                console.log(this.selectedTasks.labSheetLink);
-
 
                 this.currentState = 'STATE_SHOW_LAB'
 
-              /*  for (var i = 0; i < this.labTasks.length; i++)
-                {
-                    if(this.labTasks[i].week == aWeek)
-                        this.selectedTasks.push(this.labTasks[i]);
-                }*/
+          
             },
             constructLabRequest : function(aWeek)
             {
