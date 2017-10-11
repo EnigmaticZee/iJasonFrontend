@@ -114,11 +114,8 @@
     import {labsCall} from '../../api'
 
     export default {
-        data() {
+        data: function() {
             return {
-                //Constant
-                LAB_API_URL : '',
-
                 feedbacks:{},
                 currentState: 'STATE_SHOW_LAB',
                 weeks : 12,
@@ -127,7 +124,6 @@
                 practiceLabs: [],
                 tutorialLabs: [],
                 unitDetails: nav.unitsDetails
-
             }
         },
         computed: {
@@ -160,7 +156,7 @@
             loadWeeklyTask : function(aWeek) {
                 console.log("Nav in Labs", nav);
                 console.log('Week:', aWeek);
-                console.log ('Unit Details:', this.unitDetails);
+                console.log ('Unit Details:', nav.unitDetails);
 
                 var labsURL = labsCall();
                 var reqBody = {

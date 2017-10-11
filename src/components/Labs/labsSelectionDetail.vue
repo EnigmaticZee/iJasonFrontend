@@ -1,14 +1,14 @@
 <template>
   <div class="layout-view">
     <!-- Tabs -->
-    
+
     <q-tabs :refs="$refs" class="justified" default-tab="tab-1" >
 
       <q-tab name="tab-1" icon="description">
-        Tutorial Labs 
+        Tutorial Labs
       </q-tab>
       <q-tab name="tab-2" icon="dns">
-        Extra Practice Labs 
+        Extra Practice Labs
       </q-tab>
 
     </q-tabs>
@@ -65,155 +65,77 @@
         </div>
         </div>
     </div>
-
-    <q-modal  ref="basicModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
-        <header class="modal-header">Select Configuration</header>
-        <div id="modal-content">
-            <div id="menu"class="row">
-              <ul class="menu">
-                <li class="menu__item menu__item--dropdown" v-on:click="toggle('ranking')" v-bind:class="{'open' : dropDowns.ranking.open}">
-                  <a class="menu__link menu__link--toggle">
-                      <span>Select Rooms></span>
-
-                  </a>
-
-                  <ul class="dropdown-menu">
-                      <li class="dropdown-menu__item" v-on:click="selectRoom('328')">
-                          <a class="dropdown-menu__link">328</a>
-                      </li>
-
-                      <li class="dropdown-menu__item" v-on:click="selectRoom('329')">
-                          <a class="dropdown-menu__link">329</a>
-                      </li>
-
-                      <li class="dropdown-menu__item" v-on:click="selectRoom('330')">
-                          <a class="dropdown-menu__link">330</a>
-                      </li>
-                  </ul>
-                </li>
-              </ul>
-              <span>room number: {{roomNum}}</span>
-            </div>
-            <div v-show="isShow">
-              <div>
-                <span>Switches</span>
-                <div class="list" v-for="t in switches">
-                    <div class="item" >
-                      <div class="item-content">
-                        {{t.deviceName}}
-                      </div>
-                    </div>
-                </div>
-              </div>
-              <div>
-                <span>Routers</span>
-                <div class="list" v-for="t in routers">
-                    <div class="item" >
-                      <div class="item-content">
-                        {{t.deviceName}}
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-        </div>
-        <footer>
-          <button color="primary" @click="$refs.basicModal.close()">Close</button>
-          <button color="primary" v-on:click="getFeedback()">Get Feedback</button>
-        </footer>
-    </q-modal>
-    <q-modal  ref="feedbackModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
-        <header class="modal-header">Feedback</header>
-        <div id="modal-content">
-            <div>iniFileDevice:"sw"</div>
-				    <div>deviceType:"Switch"</div>
-    				<div>smartRackDevice:"Enclosure"</div>
-				    <div>smartRackDeviceNickName:"mySwi"</div>
-        </div>
-        <footer>
-          <button color="primary" @click="$refs.feedbackModal.close()">Close</button>
-        </footer>
-    </q-modal>
   </div>
 
-  
+
 
 </template>
 
 <script>
+    //Import Libraries
     import axios from 'axios'
     import nav from '../../nav'
     import {downloadLabCall} from '../../api'
+
     export default {
+
+        //Passed Properties
         props: ['practiceLabs', 'tutorialLabs'],
-        data: function()
-        {
+        data: function() {
             return {
                 labTasks: [],
                 dropDowns: {
                   ranking: { open: false}
                 },
-                switches: [
-                    {deviceName: 'Sw 1'},
-                    {deviceName: 'Sw 2'},
-                    {deviceName: 'Sw 3'}
-                ],
-                routers: [
-                    {deviceName: 'router 1'},
-                    {deviceName: 'router 2'},
-                    {deviceName: 'router 3'}
-                ],
                 isShow: false,
                 roomNum: ''
-
-
             }
-
         },
         methods: {
-          showDialog: function (event) {
+            /* ---Show Dialog---
+            1. Show the Modal to the screen */
+            showDialog: function (event) {
+                return this.$refs.basicModal.open();
+            },
+            /* ---Show Room---
+            1. Notify the parent component about the changes
+                Changes Made:
+                a) State is changed to STATE_SHOW_ROOM
+                b) labID
+                c) labTitle */
+             showRoom: function(labID,labTitle) {
+                 this.$emit('stateWasChanged', 'STATE_SHOW_ROOM');
+                 this.$emit('chosenlabID', labID);
+                 this.$emit('chosenlabTitle', labTitle);
+             },
+             /* Select Room
+             1. Set the Room based on the selected radio button
+             2. Set the show status to true
+             Note: Show status indicates the visibilty of the next stage,
+             which is setting up the routers and switches  */
+             selectRoom: function(roomNum) {
+                 this.roomNum = roomNum;
+                 this.isShow = true;
+             },
+             /* Download Lab
+             1. Get the URL for the selected Lab Sheet
+             2. Open it on the new window*/
+             downloadLab: function (labDownloadId) {
+                 var downloadLabURL = downloadLabCall();
+                 console.log('Download Lab URL:', downloadLabURL + "labID=" + labDownloadId);
 
-            return this.$refs.basicModal.open();
-          },
-
-          showRoom: function(labID,labTitle) {
-
-              this.$emit('stateWasChanged', 'STATE_SHOW_ROOM');
-              this.$emit('chosenlabID', labID);
-              this.$emit('chosenlabTitle', labTitle);
-          },
-          toggle: function(dropdownName) {
-            this.dropDowns[dropdownName].open = !this.dropDowns[dropdownName].open;
-          },
-          selectRoom: function(roomNum) {
-            this.roomNum = roomNum;
-            this.isShow = true;
-          },
-          getFeedback: function() {
-            return this.$refs.feedbackModal.open();
-          },
-          downloadLab: function (labDownloadId)
-          {
-            var downloadLabUrl = downloadLabCall();
-              console.log(downloadLabUrl+"labID="+ labDownloadId);
-              axios.get(downloadLabUrl+"labID="+ labDownloadId)
-                  .then(function(response) {
-                    console.log(response.data);
-                    window.open(downloadLabUrl+"labID="+ labDownloadId, '_blank');
+                 //GET Request
+                 axios.get(downloadLabURL+"labID=" + labDownloadId)
+                 .then(function(response) {
+                     console.log('Download Lab Response:', response.data);
+                     window.open(downloadLabURL + "labID=" + labDownloadId, '_blank');
                   })
                   .catch(function(error) {
-                    console.log(error);
-                    //self.$refs.collectWorkStatusModal.open();
+                      console.log(error);
                   })
+              }
           }
-
-
-        },
-        components: {
-
-        }
-
-    }
+      }
 </script>
 
 <style>
