@@ -104,13 +104,14 @@
 </template>
 
 <script>
+    //Import Libraries
+    import axios from 'axios'
+    import auth from '../../auth';
+    import nav from '../../nav';
     import LabsSelection from './labsSelectionDetail.vue';
     import LabSelectRoom from './labsSelectRoom.vue';
     import FeedbackContainer from '../Feedback/feedbackContainer.vue'
     import {labsCall} from '../../api'
-    import auth from '../../auth';
-    import nav from '../../nav';
-    import axios from 'axios'
 
     export default {
         data() {
@@ -123,15 +124,12 @@
                 weeks : 12,
                 selectedLabID: 1,
                 selectedLabName: null,
-                /*userCredentials:{username:'student', password: 'password'},*/
                 practiceLabs: [],
                 tutorialLabs: [],
-                // userDetails: auth.userDetails[0],
                 unitDetails: nav.unitsDetails
 
             }
         },
-
         computed: {
           userDetails () {
             return auth.userDetails[0] || {
@@ -139,71 +137,68 @@
             }
           }
         },
-
         methods: {
+            /* ---Sign out---
+               1. Call the logout function inside auth */
            performSignOut: function () {
-              auth.logout(this);
+               auth.logout(this);
+            },
+            /* ---Go To Unit Page---
+               1. Call the toUnit function inside nav*/
+            goToUnitPage: function() {
+                nav.toUnit(this);
+            },
+            /* ---Load Weekly Task ---
+               1. Construct an request Object based on the chosen week
+               2. The Object should contain the unitCode and the week
+               3. Send a POST request , and passes the Object as the parameter
+               4. Populate the local array based on the result (tasks) type
+                    a. If the Task is a regular, push it to the regular task array
+                    b. If the task is a practice, push it to the practice array
+               5. Finally changes the currentState to the STATE_SHOW_LAB */
 
-            },
-            goToUnitPage: function()
-            {
-              nav.toUnit(this);
-            },
             loadWeeklyTask : function(aWeek) {
-
-                console.log("Authentication", auth);
                 console.log("Nav in Labs", nav);
-                console.log("Chosen week is", aWeek);
-                console.log("chosen unit is", this.unitDetails.unitCode);
-                console.log ("unit Details", this.unitDetails);
+                console.log('Week:', aWeek);
+                console.log ('Unit Details:', this.unitDetails);
 
                 var labsURL = labsCall();
-                var reqBody=this.constructLabRequest(aWeek);
+                var reqBody = {
+                    unitCode: nav.unitsDetails.unitCode,
+                    weekNo: aWeek };
                 var self = this;
 
+                //POST Request
                 axios.post(labsURL, reqBody)
-                  .then(function(response){
-                    console.log(response.data);
+                .then(function(response) {
+                    console.log('Lab Tasks:', response.data);
+
+                    //Clear the Labs
                     self.tutorialLabs = [];
                     self.practiceLabs = [];
-                    
-                    for (var i = 0; i<response.data.length; i++)
-                    {
-                      if (response.data[i].labType =='Regular')
-                      {
-                        self.tutorialLabs.push(response.data[i]);
-                      }
-                      else if (response.data[i].labType =="Practice")
-                      {
-                        self.practiceLabs.push(response.data[i]);
-                      }
+
+                    /*Loop through the response, and assign the
+                    tutorialLabs / practiceLabs array based on the type*/
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].labType =='Regular')
+                            self.tutorialLabs.push(response.data[i]);
+                        else if (response.data[i].labType =="Practice")
+                            self.practiceLabs.push(response.data[i]);
                     }
 
                     console.log("Tutorial Labs", self.tutorialLabs);
                     console.log("Practice Labs", self.practiceLabs);
                   })
-                  .catch(function(error){
-                    console.log(error);
+                  .catch(function(error) {
+                      console.log(error);
                   })
 
-
-                this.currentState = 'STATE_SHOW_LAB'
-
-          
-            },
-            constructLabRequest : function(aWeek)
-            {
-              var requestBody={
-              unitCode: nav.unitsDetails.unitCode,
-              weekNo: aWeek
-              };
-
-              console.log(requestBody);
-
-              return requestBody;
+                  //Change the currenState to STATE_SHOW_LAB
+                  this.currentState = 'STATE_SHOW_LAB'
             }
 
         },
+        //Component List
         components: {
             'labs':LabsSelection,
             'labRoom': LabSelectRoom,
