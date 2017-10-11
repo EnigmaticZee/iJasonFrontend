@@ -1,6 +1,6 @@
 <template>
   <q-layout id="particles-background" class="background">
-    
+
     <div slot="header" class="toolbar">
         <q-toolbar-title :padding="1">
           <div>
@@ -72,13 +72,19 @@
 
      <q-modal class="staff-modal" ref="staffUnitModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
         <h4>{{ modalTitle }} Unit</h4>
-        <input type="text" v-model="codeInput" class="full-width" placeholder="Code"/>
+        <input type="text" v-model="codeInput" class="full-width" @input="$v.codeInput.$touch()" placeholder="Code"/>
+        <p v-if="!$v.codeInput.required && $v.codeInput.$dirty" class="text-red">Field is required</p>
+        <p v-if="!$v.codeInput.maxLength" class="text-red">Code can only have {{ $v.codeInput.$params.maxLength.max }} characters </p>
+        <p v-if="!$v.codeInput.alphaNum" class="text-red">Field can only contain letters or number</p>
 
-        <input type="text" v-model="nameInput" class="full-width" placeholder="Name"/>
+        <input type="text" v-model="nameInput" class="full-width" placeholder="Name" @input="$v.nameInput.$touch()"/>
+        <p v-if="!$v.nameInput.required && $v.nameInput.$dirty" class="text-red">Field is required</p>
+        <p v-if="!$v.nameInput.maxLength" class="text-red">Name can only have {{ $v.nameInput.$params.maxLength.max }} characters </p>
+        <p v-if="!$v.nameInput.alpha" class="text-red">Field can only contain characters </p>
 
         <div class="buttons text-right">
           <button @click="$refs.staffUnitModal.close()" class="primary">Close</button>
-          <button @click="submitModal()" class="secondary">Submit</button>
+          <button @click="submitModal()" class="secondary" :disabled="$v.codeInput.$invalid || $v.nameInput.$invalid">Submit</button>
         </div>
 
         <br>
@@ -96,9 +102,8 @@ import { QInput } from 'quasar';
 import auth from '../../auth';
 import nav from '../../nav'
 import {Loading} from 'quasar';
-
 import { mountParticles }  from '../../lib/particle-background.js';
-
+import { required, maxLength, alpha, alphaNum } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
@@ -112,7 +117,18 @@ export default {
   components: {
     'q-input': QInput
   },
-
+  validations: {
+      codeInput: {
+          required,
+          maxLength: maxLength(8),
+          alphaNum
+      },
+      nameInput: {
+          required,
+          maxLength: maxLength(45),
+          alpha
+      }
+  },
   computed: {
     userDetails () {
       return auth.userDetails[0] || {
@@ -179,13 +195,13 @@ export default {
         })
         self.$refs.staffUnitModal.close()
     },
-   
+
 
     handleUnitClick (unit, title) {
       console.log(unit);
       nav.staffUnitToLab(this, unit, title);
     },
-    
+
 
     downloadUnits() {
 
