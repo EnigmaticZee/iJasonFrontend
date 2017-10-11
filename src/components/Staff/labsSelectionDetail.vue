@@ -97,10 +97,10 @@
         
         <br>
         <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
-        <label for="">Choose lab sheet (.pdf)</label>
+        <label for="">Choose lab sheet (.pdf)</label><span v-if="isEdit" class="text-warning"> (optional to edit)</span>
         <input  name="labSheet" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
 
-        <label for="">Choose ini file (.ini)</label>
+        <label for="">Choose ini file (.ini)</label><span v-if="isEdit" class="text-warning"> (optional to edit)</span>
         <input  name="iniFile" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
 
         <div class="buttons text-right">
