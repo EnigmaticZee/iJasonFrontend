@@ -82,7 +82,7 @@
 
 
     <q-modal class="staff-modal" ref="staffLabModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
-    
+
         <h4>{{ modalTitle }} Lab</h4>
         <input type="text" v-model="Name" class="full-width" placeholder="Name"/>
 
@@ -107,8 +107,6 @@
           <button @click="$refs.staffLabModal.close()" class="primary">Close</button>
           <button @click="submitModal()" class="secondary">Submit</button>
         </div>
-      
-
         <br>
         <p class="text-center">iJason Virtual Lab Supervisor</p>
     </q-modal>
@@ -235,16 +233,7 @@
                 for (var pair of formData.entries()) {
                         console.log(pair[0]+ ', ' + pair[1]); 
                     }
-                var self = this;
-
-                axios.put(unitsURL, formData)
-                  .then(function(response){
-                    console.log("Response from editing lab", response.data);
-                  })
-                  .catch(function(error){
-                    console.log(error);
-                    console.log(error.description);
-                  })
+          
 
 
             }
@@ -260,24 +249,28 @@
                 formData.append('INIFile', this.iniFile);
                 formData.append('labSheet',this.labSheet);
 
-                var self = this;
-
-                axios.post(unitsURL, formData)
-                  .then(function(response){
-                    console.log("Response from adding lab", response.data);
-                  })
-                  .catch(function(error){
-                    console.log(error);
-                    console.log(error.description);
-                  })
+                for (var pair of formData.entries()) {
+                        console.log(pair[0]+ ', ' + pair[1]); 
+                    }
                 
             }
+
+            var self = this;
+
+            axios.post(unitsURL, formData)
+              .then(function(response){
+                console.log("Response from Editing/Adding lab", response.data);
+              })
+              .catch(function(error){
+                console.log(error);
+                console.log(error.description);
+              })
           
 
-          
-          this.iniFile = {};
-          this.labSheet = {};
-           self.$refs.staffLabModal.close();
+              
+              this.iniFile = '';
+              this.labSheet = '';
+              self.$refs.staffLabModal.close();
 
 
            
@@ -287,11 +280,14 @@
           {
             if(fieldName == 'labSheet')
             {
+              console.log("File Length", files.length);
               this.labSheet = files[0];
+              files = [];
             }
             else if(fieldName == 'iniFile')
             {
               this.iniFile = files[0];
+              files = [];
             }
 
           },
@@ -309,7 +305,6 @@
             this.INIFile = files[0]
           },
           showDialog: function (event) {
-
             return this.$refs.basicModal.open();
           },
 
