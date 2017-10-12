@@ -7,6 +7,7 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 // ==============================
 
 import Vue from 'vue'
+import Vuelidate from 'vuelidate'
 import Quasar from 'quasar'
 import router from './router'
 import auth from './auth'
@@ -15,6 +16,7 @@ import 'quasar-extras/fontawesome'
 
 export const eventBus = new Vue();
 Vue.use(Quasar) // Install Quasar Framework
+Vue.use(Vuelidate) // Vue Validation Framework
 
 router.beforeEach(function(to,from,next){
 	if (!auth.user.authenticated && to.path !== "/login")

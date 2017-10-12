@@ -21,10 +21,10 @@
             <div class="row full-width justify-center">Please upload a lab for this week!</div>
         </div>
         <div class="text-center">
-          
+
         </div>
      </div>
-  
+
     <!-- Targets -->
     <div ref="tab-1">
         <div v-if="tutorialLabs.length === 0" class="col ">
@@ -78,41 +78,46 @@
         </div>
     </div>
 
-      
+
 
 
     <q-modal class="staff-modal" ref="staffLabModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
 
         <h4>{{ modalTitle }} Lab</h4>
-        <input type="text" v-model="Name" class="full-width" placeholder="Name"/>
+        <input type="text" v-model="Name" class="full-width" placeholder="Name" @input="$v.Name.$touch()"/>
+        <p v-if="!$v.Name.required && $v.Name.$dirty" class="text-red">Field is required</p>
+        <p v-if="!$v.Name.maxLength" class="text-red">Name can only have {{ $v.Name.$params.maxLength.max }} characters </p>
+        <p v-if="!$v.Name.alphaNum" class="text-red">Field can only contain characters and numbers </p>
 
         <label for="">Lab Type</label>
         <br>
         <br>
-        <input type="radio" id="Regular" value="Regular" name="Regular" v-model="checkedType">
+        <input type="radio" id="Regular" value="Regular" name="Regular" v-model="checkedType" >
         <label for="Regular">Regular</label>
 
         <input type="radio" id="Practice" value="Practice" name="Practice" v-model="checkedType">
         <label for="Practice" style="margin-right: 10px">Practice</label>
-        
+
+        <p v-if="!$v.checkedType.required && $v.checkedType.$dirty" class="text-red">Field is required</p>
+
         <br>
         <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
         <label for="">Choose lab sheet (.pdf)</label><span v-if="isEdit" class="text-warning"> (optional to edit)</span>
-        <input  name="labSheet" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
+        <input  name="labSheet" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)">
 
         <label for="">Choose ini file (.ini)</label><span v-if="isEdit" class="text-warning"> (optional to edit)</span>
-        <input  name="iniFile" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)"> 
+        <input  name="iniFile" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)">
 
         <div class="buttons text-right">
           <button @click="$refs.staffLabModal.close()" class="primary">Close</button>
-          <button @click="submitModal()" class="secondary">Submit</button>
+          <button @click="submitModal()" class="secondary" :disabled="$v.Name.$invalid || $v.checkedType.$invalid || labSheet == '' || iniFile == ''">Submit</button>
         </div>
         <br>
         <p class="text-center">iJason Virtual Lab Supervisor</p>
     </q-modal>
 
-    
-    
+
+
 
     <q-modal  ref="feedbackModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
         <header class="modal-header">Feedback</header>
@@ -138,6 +143,7 @@
     import {addLab} from '../../api'
     import {editLab} from '../../api'
 
+    import { required, maxLength, alpha, alphaNum } from 'vuelidate/lib/validators'
     export default {
         props: ['practiceLabs', 'tutorialLabs', 'chosenWeek'],
         data: function()
@@ -173,10 +179,22 @@
                 isShow: false,
                 roomNum: '',
                 unitDetails: nav.unitsDetails
-
-
             }
 
+        },
+        validations: {
+            Name: {
+                required,
+                maxLength: maxLength(30),
+                alphaNum
+
+            },
+            checkedType: {
+                required
+            },
+            Type: {
+                required
+            }
         },
         methods: {
           openModal (isEditValue, editData = {}) {
@@ -199,10 +217,10 @@
               this.Type = ''
               this.iniFile = ''
               this.labSheet = ''
-             
+
             }
              this.$refs.staffLabModal.open()
-            
+
           },
           submitModal () {
             console.log("Is it edit? ", this.isEdit)
@@ -224,20 +242,20 @@
                 {
                   formData.append('labSheet',this.labSheet);
                 }
-               
+
                 if (typeof this.iniFile != 'string')
                 {
                   formData.append('INIFile', this.iniFile);
                 }
-               
+
                 for (var pair of formData.entries()) {
-                        console.log(pair[0]+ ', ' + pair[1]); 
+                        console.log(pair[0]+ ', ' + pair[1]);
                     }
-          
+
 
 
             }
-            else { 
+            else {
               console.log("Adding a lab");
                 var formData = new FormData();
                 console.log("Week unit Data UNIT is ",this.unitDetails.unitCode);
@@ -250,9 +268,9 @@
                 formData.append('labSheet',this.labSheet);
 
                 for (var pair of formData.entries()) {
-                        console.log(pair[0]+ ', ' + pair[1]); 
+                        console.log(pair[0]+ ', ' + pair[1]);
                     }
-                
+
             }
 
             var self = this;
@@ -265,16 +283,16 @@
                 console.log(error);
                 console.log(error.description);
               })
-          
 
-              
+
+
               this.iniFile = '';
               this.labSheet = '';
               self.$refs.staffLabModal.close();
 
 
-           
-              
+
+
           },
           fileAdded(fieldName, files)
           {
