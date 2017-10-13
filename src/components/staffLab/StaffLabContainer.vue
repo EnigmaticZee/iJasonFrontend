@@ -95,11 +95,11 @@
 </template>
 
 <script>
-    import LabsSelection from '../Staff/labsSelectionDetail.vue';
+    import StaffLabs from './StaffLabs.vue';
+    import axios from 'axios';
+    import {labsCall} from '../../api';
     import auth from '../../auth';
-    import axios from 'axios'
     import nav from '../../nav';
-    import {labsCall} from '../../api'
 
 
     export default {
@@ -186,7 +186,7 @@
 
         },
         components: {
-            'labs':LabsSelection
+            'labs':StaffLabs
         },
         beforeMount () {
           this.loadWeeklyTask(1);

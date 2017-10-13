@@ -1,9 +1,9 @@
 <template>
   <div class="layout-view">
     <!-- Select Room (Radio Button) -->
-    <div class="row">
-      <span class="label bg-primary text-white full-width justify-center">Feedback for {{labName}}</span>
-    </div>
+
+    <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>
+
 
     <div class="room">
     <div class="row">
@@ -48,25 +48,21 @@
 
       <div class="list booking" v-for="(iniDevice,index) in iniDevices">
         <div class="item" :device="iniDevice.deviceType" >
-            Configured Lab {{iniDevice.deviceType}} : {{iniDevice.deviceName}}  
+            Configured Lab {{iniDevice.deviceType}} : {{iniDevice.deviceName}}
             <div v-if="iniDevice.deviceType == 'Switch'" >
               <q-select
                   :label="'Booked ' + iniDevice.deviceType"
-                  class="full-width"
-                  type="radio" 
                   v-model="select[index]"
                   :options="populateSelectOptionSwitch">
               </q-select>
-            </div> 
+            </div>
             <div v-if="iniDevice.deviceType == 'Router'" >
               <q-select
                   :label="'Booked ' + iniDevice.deviceType"
-                  class="full-width"
-                  type="radio" 
                   v-model="select[index]"
                   :options="populateSelectOptionRouter">
               </q-select>
-            </div>        
+            </div>
         </div>
         </br></br>
       </div>
@@ -97,16 +93,16 @@
         <button  class="warning full-width" @click="cancelCollectWork()">
           Cancel
         </button>
-      </div>  
+      </div>
 
       <div class="auto flex justify-center">
         <button
           class="primary full-width"
           @click="collectWork();"
-        :disabled="bookedDevices.length == 0">
+          :disabled="bookedDevices.length == 0">
           Collect Work
         </button>
-      </div>  
+      </div>
     </div>
 
 
@@ -128,48 +124,60 @@
     <q-modal @open="timer()" noEscDismiss  noBackdropDismiss ref="collectWorkStatusModal">
 
         <div class="row">
-            <span class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
+
+
+            <span v-if="work_collection_status_response.result === 'Success'" class="label bg-primary text-white full-width justify-center">{{work_collection_status_response.details}}</span>
+            <span v-else class="label bg-primary text-white full-width justify-center">{{work_collection_response.details}}</span>
+
         </div>
 
-        
+
         <div v-if="progressBarStatus.active == 'yes'">
              <q-progress :percentage="progressBarStatus.percentage"class="animate stripe"
               style="height: 25px"
-        /> 
-        </div>       
-      <div class="row">
-          <div v-if="work_collection_status_response.result === 'Success'"> 
-            <div>
-              
-            </div>
-            <div>
+        />
+        </div>
+      <div class="col">
+          <div v-if="work_collection_status_response.result === 'Success'">
+            <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <span>{{work_collection_status_response.details}}</span>
+
+              <div class="row statusButton  justify-center"> <img src="~assets/success.png"></div>
+              <div class="col statusButton full-width ">
+                 <div class="row statusButton full-width ">You are all set to get your feedback!</div>
+              </div>
             </div>
-            
           </div>
 
-           <div v-if="work_collection_status_response.result === 'Pending'"> 
-            <div>
+           <div v-if="work_collection_status_response.result === 'Pending'">
+            <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <span>{{work_collection_status_response.details}}</span>
+
+              <div class="row statusButton  justify-center"> <img src="~assets/warning.png"></div>
+              <div class="col statusButton full-width ">
+                 <div class="row statusButton full-width ">{{work_collection_status_response.details}}</div>
+              </div>
             </div>
-            
+
           </div>
 
 
           <div v-if="work_collection_status_response.result === 'Fail'">
-           <div>
+           <div class="row full-width justify-center">
               <!-- <p> Status : {{ work_collection_status_response.result }} </p> -->
-              <span>{{work_collection_status_response.details}}</span>
+
+              <div class="col statusButton  justify-center"> <img src="~assets/error.png"></div>
+              <div class="col statusButton full-width ">
+                 <div class="col statusButton full-width ">{{work_collection_status_response.details}}!
+                     <ul class="row">
+                          <li v-for="device in work_collection_status_response.devices">
+                           Device: {{device}}
+                        </li>
+                     </ul>
+               </div>
+              </div>
             </div>
-            <div>
-              <ul>
-                <li v-for="device in work_collection_status_response.devices">
-                {{device}}
-                </li>
-              </ul>
-            </div>
+
             <!-- You could close the modal here like that:-->
             <!-- @click="$refs.collectWorkStatusModal.close()" -->
           </div>
@@ -181,35 +189,35 @@
       <button class="primary full-width" @click="getFeedback" v-if="work_collection_status_response.result === 'Success'">
           Get Feedback
         </button>
-      
+
       </div>
-     
+
     </q-modal>
   </div>
 
 </template>
 
 <script>
+
+import axios from 'axios';
+import {iniCall, bookedDevicesCall, collectCall, collectStatusCall, feedbackCall} from '../../api';
 import user from '../../auth';
-import axios from 'axios'
-import {iniCall} from '../../api'
-import {bookedDevicesCall} from '../../api'
-import {collectCall, collectStatusCall} from '../../api'
-import {feedbackCall} from '../../api'
-import { Dialog } from 'quasar'
+import { Dialog } from 'quasar';
+
 export default{
   props:['labID','labName'],
   data: function() {
     return {
       room: null,
-      select: [],
+      select: [null],
       timerInterval: null,
       progressBarStatus: {seconds: 0, percentage: 0, active:'yes'},
       bookedDevices: [],
       iniDevices: [],
         feedbacks:{},
         work_collection_status_response: {},
-      work_collection_response: {}
+      work_collection_response: {},
+      mappingStatus: 1
     }
   },
   computed: {
@@ -258,6 +266,7 @@ export default{
     constructCollectRequest() {
       console.log(this._data);
       var mappedDevices=[];
+       console.log("Select has", this.select);
       for (var i = 0; i < this.iniDevices.length; i++) {
         var device=this.iniDevices[i];
         var devicemapping={};
@@ -265,8 +274,8 @@ export default{
         devicemapping.deviceType=device.deviceType;
         // console.log("bookeddevices",this.bookedDevices);
         // console.log("selectoptions",this.selectOptions[i].value);
-        console.log(this.select[i]);
-        if ((typeof this.select[i]) !== 'undefined') {
+
+        if ( this.select[i] != null) {
           devicemapping.smartRackDeviceName=this.bookedDevices[this.select[i]].deviceName;
           devicemapping.smartRackDeviceNickName=this.bookedDevices[this.select[i]].deviceNickName;
         } else {
@@ -276,6 +285,7 @@ export default{
         mappedDevices.push(devicemapping);
       }
       console.log(mappedDevices);
+
       var cred=user.credentials;
       var requestBody={
         credentials: cred,
@@ -298,7 +308,7 @@ export default{
       var self = this;
       axios.post(iniURL, {labID: this.labID})
         .then(function(response){
-          console.log(response.data);
+          console.log("Bookes Devices", response.data);
           self.iniDevices=response.data;
         })
         .catch(function(error){
@@ -338,14 +348,38 @@ export default{
     },
     collectWork() {
       var reqBody=this.constructCollectRequest();
+      console.log("Device Mapping" , reqBody.deviceMapping);
       var collectURL = collectCall();
       var self = this;
-      axios.post(collectURL, reqBody)
+      this.mappingStatus = 1;
+
+      for(var i = 0; i < reqBody.deviceMapping.length; i++)
+      {
+        if(reqBody.deviceMapping[i].smartRackDeviceName == "")
+        {
+            console.log("mapping status" , this.mappingStatus)
+          this.mappingStatus = 0;
+        }
+      }
+      if (this.mappingStatus == 0)
+      {
+          Dialog.create({
+                title: 'Choose configured Lab Devices',
+                message: 'Please choose your configured lab devices before collecting work',
+                buttons: [
+                  'Cancel'
+                ]
+              })
+      }
+      else
+      {
+
+        axios.post(collectURL, reqBody)
         .then(function(response) {
           console.log(response.data);
           self.work_collection_response=response.data;
           console.log("im here");
-          
+
           if (self.work_collection_response.result === 'Failure'){
               console.log("Collection Failure");
               return;
@@ -359,7 +393,9 @@ export default{
           console.log(error);
           //self.$refs.collectWorkStatusModal.open();
         })
-      // this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
+      }
+
+
     },
     timer: function() {
         console.log("here");
@@ -377,7 +413,7 @@ export default{
           console.log("stats " + this.progressBarStatus.active);
           clearInterval(this.timerInterval);
         }
-       
+
       }
       else
       {
@@ -414,7 +450,7 @@ export default{
       var self = this;
       axios.post(feedbackURL, {labID: self.labID, username: user.credentials.username})
         .then(function(response){
-          console.log(response.data);
+          console.log("feedback is", response.data);
           self.feedbacks=response.data;
           //State change will occur after the feedbacks is collected, since if we emit outside the callback,
           //the feedbacks may not be collected yet , but we already changed the state.
@@ -424,7 +460,7 @@ export default{
         .catch(function(error){
           console.log(error);
         })
-        
+
       console.log('get feedback');
     }
   }
@@ -451,4 +487,12 @@ export default{
     .booking {
       padding: 2em;
     }
+    .statusButton{
+      padding: 1em;
+    }
+     .feedbackTitleStyle {
+    color: white;
+    font-size: 1.4em;
+    padding: 0.5em;
+  }
 </style>

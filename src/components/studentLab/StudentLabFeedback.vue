@@ -46,11 +46,9 @@
 
 <script>
     //Import Libraries
-    import axios from 'axios'
+    import axios from 'axios';
+    import {downloadFeedbackCall, sendEmailCall, downloadConfigCall} from '../../api';
     import user from '../../auth';
-    import {downloadFeedbackCall} from '../../api'
-    import {sendEmailCall} from '../../api'
-    import {downloadConfigCall} from '../../api'
 
     export default {
         props: ['feedbacks', 'labName'],

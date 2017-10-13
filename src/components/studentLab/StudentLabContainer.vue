@@ -88,9 +88,9 @@
       @chosenlabID="selectedLabID = $event" @chosenlabTitle="selectedLabName = $event"></labs>
 
 
-    <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" :labName="selectedLabName" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
+    <labCollection v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" :labName="selectedLabName" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labCollection>
 
-    <feedBack v-else  :labName="selectedLabName" :feedbacks="feedbacks"></feedBack>
+    <labFeedBack v-else  :labName="selectedLabName" :feedbacks="feedbacks"></labFeedBack>
 
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
@@ -105,13 +105,15 @@
 
 <script>
     //Import Libraries
-    import axios from 'axios'
+    import StudentLabs from './StudentLabs.vue';
+    import StudentLabCollection from './StudentLabWorkCollection.vue';
+    import StudentLabFeedback from './StudentLabFeedback.vue';
+    import axios from 'axios';
+    import {labsCall} from '../../api';
     import auth from '../../auth';
     import nav from '../../nav';
-    import LabsSelection from './labsSelectionDetail.vue';
-    import LabSelectRoom from './labsSelectRoom.vue';
-    import FeedbackContainer from '../Feedback/feedbackContainer.vue'
-    import {labsCall} from '../../api'
+  
+    
 
     export default {
         data: function() {
@@ -196,9 +198,9 @@
         },
         //Component List
         components: {
-            'labs':LabsSelection,
-            'labRoom': LabSelectRoom,
-            'feedBack': FeedbackContainer
+            'labs':StudentLabs,
+            'labCollection': StudentLabCollection,
+            'labFeedBack': StudentLabFeedback
         },
 
         beforeMount () {

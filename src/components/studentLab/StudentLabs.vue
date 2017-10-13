@@ -73,10 +73,10 @@
 
 <script>
     //Import Libraries
-    import axios from 'axios'
-    import nav from '../../nav'
-    import {downloadLabCall} from '../../api'
-
+    import axios from 'axios';
+    import {downloadLabCall} from '../../api';
+    import nav from '../../nav';
+    
     export default {
 
         //Passed Properties

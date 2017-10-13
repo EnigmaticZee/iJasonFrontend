@@ -34,7 +34,7 @@
         <div class="units-container col"  v-if="units.length === 0" >
             <div class="units-selection-welcome-message ">
                 <div class="col">
-                  <img  class="primary" src="../assets/university.png" alt="">
+                  <img  class="primary" src="../../assets/university.png" alt="">
                 </div>
 
                 <div class="units-selection-welcome-message col">
@@ -56,7 +56,7 @@
               v-if="unit.active == 1"
               class="primary single-unit">
                 <div class="row">
-                  <img src="../assets/units-icon.png" alt="">
+                  <img src="../../assets/units-icon.png" alt="">
                 </div>
 
                 <div class="single-unit-description col">
@@ -82,13 +82,13 @@
 </template>
 
 <script>
-import axios from 'axios'
-import {unitsCall} from '../api'
-import moment from 'moment';
-import auth from '../auth';
-import nav from '../nav'
 
-import { mountParticles }  from '../lib/particle-background.js';
+import axios from 'axios';
+import {unitsCall} from '../../api';
+import auth from '../../auth';
+import nav from '../../nav';
+import moment from 'moment';
+import { mountParticles }  from '../../lib/particle-background.js';
 
 export default {
   data () {

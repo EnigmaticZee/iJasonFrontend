@@ -23,7 +23,6 @@ export function feedbackCall () {
   return url
 }
 
-
 export function labsCall () {
   var url = '/api/get_labs.php'
   return url
@@ -52,13 +51,11 @@ export function downloadLabCall()
    return url
 }
 
-
 export function sendEmailCall()
 {
    var url = '/api/send_email.php'
    return url
 }
-
 
 export function addUnit()
 {

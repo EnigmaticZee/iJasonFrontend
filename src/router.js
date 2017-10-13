@@ -7,16 +7,16 @@ function load (component) {
   return () => System.import(`components/${component}.vue`)
 }
 
-function loadLabsComponent (component) {
-  return () => System.import(`components/Labs/${component}.vue`)
+function loadStudentComponents (component) {
+  return () => System.import(`components/studentLab/${component}.vue`)
 }
 
-function loadStaffLabsComponent (component) {
-  return () => System.import(`components/Staff/${component}.vue`)
+function loadStaffComponents (component) {
+  return () => System.import(`components/staffLab/${component}.vue`)
 }
 
-function loadFeedbackComponent (component) {
-  return () => System.import(`components/Feedback/${component}.vue`)
+function loadUnitComponents (component) {
+  return () => System.import(`components/unit/${component}.vue`)
 }
 
 export default new VueRouter({
@@ -33,12 +33,18 @@ export default new VueRouter({
    */
 
   routes: [
+    //Loading the login component
     { path: '/', component: load('Login') }, // Default
-    { path: '/units', component: load('unitSelection') },
-    { path: '/units/labs', component: loadLabsComponent('labsSelectionContainer') },
-    { path: '/staff-units', component: load('Staff/staffUnits') },
-    { path: '/staff-units/labs', component: loadStaffLabsComponent('labsSelectionContainer') },
-    { path: '*', component: load('Error404') },
-    { path: '/login', component: load('Login') }
+    { path: '/login', component: load('Login') },
+
+    //Loading the units components for student and staff
+    { path: '/units', component: loadUnitComponents('StudentUnit') },
+    { path: '/staff-units', component: loadUnitComponents('StaffUnit') },
+
+    //Loading the lab components for student and staff
+    { path: '/units/labs', component: loadStudentComponents('StudentLabContainer') },
+    { path: '/staff-units/labs', component: loadStaffComponents('StaffLabContainer') },
+
+    { path: '*', component: load('Error404') }
   ]
 })

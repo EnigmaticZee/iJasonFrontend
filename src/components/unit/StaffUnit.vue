@@ -93,16 +93,14 @@
 </template>
 
 <script>
-import axios from 'axios'
-import {unitsCall} from '../../api'
-import {addUnit} from '../../api'
-import {editUnit} from '../../api'
-import { QInput } from 'quasar';
+import axios from 'axios';
+import {unitsCall, addUnit, editUnit } from '../../api';
 import auth from '../../auth';
-import nav from '../../nav'
+import nav from '../../nav';
+import { QInput } from 'quasar';
 import {Loading} from 'quasar';
 import { mountParticles }  from '../../lib/particle-background.js';
-import { required, maxLength, alpha, alphaNum } from 'vuelidate/lib/validators'
+import { required, maxLength, alpha, alphaNum } from 'vuelidate/lib/validators';
 export default {
   data () {
     return {

@@ -18,7 +18,7 @@ export const eventBus = new Vue();
 Vue.use(Quasar) // Install Quasar Framework
 Vue.use(Vuelidate) // Vue Validation Framework
 
-router.beforeEach(function(to,from,next){
+/*router.beforeEach(function(to,from,next){
 	if (!auth.user.authenticated && to.path !== "/login")
 	{
 		next('/login');
@@ -57,7 +57,7 @@ router.beforeEach(function(to,from,next){
 	}
 
 })
-
+*/
 
 Quasar.start(() => {
   /* eslint-disable no-new */
