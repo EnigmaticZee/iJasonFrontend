@@ -1,7 +1,7 @@
 <template>
   <div class="layout-view">
 
-         <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{feedbacks.labName}}</div>
+         <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>
 
         <div class=" card feedback">
         <div class="row feedbackButtons">
@@ -18,7 +18,16 @@
           </button>
 
         </div>
-        <div  v-for="feedback in feedbacks.errors"  class="card">
+        <div v-if="feedback.length === 0"  class="card">
+          <div class="card-title bg-red-5 text-white">
+              Complete!
+          </div>
+          <div v-for="detail in feedback.details" class="card-content ">
+              You have successfully completed {{labName}}
+          </div>
+        </div>
+
+        <div v-else  v-for="feedback in feedbacks.errors"  class="card">
           <div class="card-title bg-red-5 text-white">
             {{feedback.error}}
 
@@ -44,7 +53,7 @@
     import {downloadConfigCall} from '../../api'
 
     export default {
-        props: ['feedbacks'],
+        props: ['feedbacks', 'labName'],
 
         data: function() {
             return {}

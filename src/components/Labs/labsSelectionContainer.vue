@@ -90,7 +90,7 @@
 
     <labRoom v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" :labName="selectedLabName" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labRoom>
 
-    <feedBack v-else :feedbacks="feedbacks"></feedBack>
+    <feedBack v-else  :labName="selectedLabName" :feedbacks="feedbacks"></feedBack>
 
     <div slot="footer" class="toolbar">
       <div class="auto flex justify-center within-iframe-hide">
