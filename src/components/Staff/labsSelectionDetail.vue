@@ -87,7 +87,6 @@
         <input type="text" v-model="Name" class="full-width" placeholder="Name" @input="$v.Name.$touch()"/>
         <p v-if="!$v.Name.required && $v.Name.$dirty" class="text-red">Field is required</p>
         <p v-if="!$v.Name.maxLength" class="text-red">Name can only have {{ $v.Name.$params.maxLength.max }} characters </p>
-        <p v-if="!$v.Name.alphaNum" class="text-red">Field can only contain characters and numbers </p>
 
         <label for="">Lab Type</label>
         <br>
@@ -110,7 +109,7 @@
 
         <div class="buttons text-right">
           <button @click="$refs.staffLabModal.close()" class="primary">Close</button>
-          <button @click="submitModal()" class="secondary" :disabled="$v.Name.$invalid || $v.checkedType.$invalid || labSheet == '' || iniFile == ''">Submit</button>
+          <button @click="submitModal()" class="secondary" :disabled="$v.Name.$invalid || $v.checkedType.$invalid">Submit</button>
         </div>
         <br>
         <p class="text-center">iJason Virtual Lab Supervisor</p>
@@ -185,8 +184,7 @@
         validations: {
             Name: {
                 required,
-                maxLength: maxLength(30),
-                alphaNum
+                maxLength: maxLength(30)
 
             },
             checkedType: {

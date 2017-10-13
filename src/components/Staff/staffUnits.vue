@@ -80,7 +80,6 @@
         <input type="text" v-model="nameInput" class="full-width" placeholder="Name" @input="$v.nameInput.$touch()"/>
         <p v-if="!$v.nameInput.required && $v.nameInput.$dirty" class="text-red">Field is required</p>
         <p v-if="!$v.nameInput.maxLength" class="text-red">Name can only have {{ $v.nameInput.$params.maxLength.max }} characters </p>
-        <p v-if="!$v.nameInput.alpha" class="text-red">Field can only contain characters </p>
 
         <div class="buttons text-right">
           <button @click="$refs.staffUnitModal.close()" class="primary">Close</button>
@@ -125,8 +124,7 @@ export default {
       },
       nameInput: {
           required,
-          maxLength: maxLength(45),
-          alpha
+          maxLength: maxLength(45)
       }
   },
   computed: {
