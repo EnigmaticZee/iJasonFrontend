@@ -27,23 +27,34 @@ router.beforeEach(function(to,from,next){
 	{
 		next();
 	}
-	if (!nav.unitClicked && from.path === "/units" && to.path === "/units/labs")
+	
+	if (auth.user.authenticated)
 	{
-		next('/units');
+		if (to.path == "/login" && auth.userDetails[0].role == "Student" )
+		{
+				next('/units');
+		}
+		if (to.path == "/login" && auth.userDetails[0].role == "Staff" )
+		{
+				next('/staff-units');
+		}
+		if (!nav.staffUnitClicked && to.path === "/staff-units/labs")
+		{
+			next('/staff-units');
+		}
+		if (!nav.studentUnitClicked && to.path === "/units/labs")
+		{
+			next('/units');
+		}
+		if (auth.userDetails[0].role == "Student" && (to.path === "/staff-units/labs" || to.path === "/staff-units" ))
+		{
+			next('/units');
+		}
+		if (auth.userDetails[0].role == "Staff" && (to.path === "/units/labs" || to.path === "/units" ))
+		{
+			next('/staff-units');
+		}
 	}
-	if (auth.user.authenticated && to.path == "/login")
-	{
-		next('/units');
-	}
-/*
-	if(auth.user.authenticated && auth.userDetails[0].role ==="Student" && to.path === "/staff-units/labs" || to.path === "/staff-units"))
-	{
-		next('/units');
-	}
-	if(auth.user.authenticated && auth.userDetails[0].role ==="Staff" && (to.path === "/units/labs" || to.path === "/units"))
-	{
-		next('/staff-units');
-	}*/
 
 })
 

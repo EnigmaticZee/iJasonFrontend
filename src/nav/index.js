@@ -3,13 +3,14 @@ import {router} from '../router'
 
 
 export default {
-	unitClicked: false,
+	studentUnitClicked: false,
+	staffUnitClicket: false,
 	unitsDetails : {unitCode: "", unitName: ""},
 
 	unitToLab(context, unit, title)
 	{
 		console.log("Inside UnitTOLAB Function");
-		this.unitClicked = true;
+		this.studentUnitClicked = true;
 		this.unitsDetails.unitCode = unit;
 		this.unitsDetails.unitName = title;
 		console.log(this.unitsDetails.unitCode);
@@ -25,7 +26,7 @@ export default {
 	staffUnitToLab(context,unit,title)
 	{
 		console.log("Inside StaffUnitTOLAB Function");
-		this.unitClicked = true;
+		this.staffUnitClicked = true;
 		this.unitsDetails.unitCode = unit;
 		this.unitsDetails.unitName = title;
 		console.log(this.unitsDetails.unitCode);

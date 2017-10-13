@@ -225,6 +225,9 @@ export default {
   },
 
   beforeMount () {
+    console.log("Staff Unit Clicked" ,nav.staffUnitClicked);
+    nav.studentUnitClicked = false;
+    nav.staffUnitClicked = false;
     this.downloadUnits();
   }
 

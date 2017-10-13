@@ -157,8 +157,9 @@ export default {
   },
 
   beforeMount () {
-    console.log(nav.unitClicked);
-    nav.unitClicked = false;
+    console.log("Student Unit Clicked" ,nav.studentUnitClicked);
+    nav.studentUnitClicked = false;
+    nav.staffUnitClicked = false;
 
     this.year = moment().year();
     var month = moment().month();

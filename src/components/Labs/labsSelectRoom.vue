@@ -309,7 +309,7 @@ export default{
       var self = this;
       axios.post(iniURL, {labID: this.labID})
         .then(function(response){
-          console.log(response.data);
+          console.log("Bookes Devices", response.data);
           self.iniDevices=response.data;
         })
         .catch(function(error){
