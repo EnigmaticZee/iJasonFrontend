@@ -108,9 +108,16 @@
         <input  name="iniFile" class="full-width" type="file" @change="fileAdded($event.target.name, $event.target.files)">
 
         <div class="buttons text-right">
-          <button @click="$refs.staffLabModal.close()" class="primary">Close</button>
-          <button @click="submitModal()" class="secondary" :disabled="$v.Name.$invalid || $v.checkedType.$invalid">Submit</button>
+        <div class="row float-right">
+          <div><button @click="$refs.staffLabModal.close()" class="primary">Close</button></div>
+          <div v-if="!isEdit">
+              <button @click="submitModal()" class="secondary" :disabled="$v.Name.$invalid || $v.checkedType.$invalid || iniFile == '' || labSheet == '' ">Submit</button>
+          </div>
+          <div v-if="isEdit">
+              <button @click="submitModal()" class="secondary" :disabled="$v.Name.$invalid || $v.checkedType.$invalid">Submit</button>
+          </div>
         </div>
+    </div>
         <br>
         <p class="text-center">iJason Virtual Lab Supervisor</p>
     </q-modal>

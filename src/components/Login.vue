@@ -9,13 +9,15 @@
             <div class="children">
                 <form>
                     <div class="floating-label">
-                        <input type="text" inverted="true" required class="full-width" v-model.trim="credentials.username" />
+                        <input type="text" inverted="true" required class="full-width" v-model.trim="credentials.username" @input="$v.credentials.username.$touch()"/>
                         <label>Username</label>
+                        <p v-if="!$v.credentials.username.required && $v.credentials.username.$dirty" class="text-red">Field is required</p>
                     </div>
 
                     <div class="floating-label">
-                        <input type="password" class="full-width" required v-model="credentials.password" />
+                        <input type="password" class="full-width" required v-model="credentials.password" @input="$v.credentials.password.$touch()" />
                         <label>Password</label>
+                        <p v-if="!$v.credentials.password.required && $v.credentials.password.$dirty" class="text-red">Field is required</p>
                     </div>
                     <p>
                         <span class="error"> {{error}}</span>
@@ -31,6 +33,7 @@
 <script>
     //Import Libraries
     import auth from '../auth'
+    import { required } from 'vuelidate/lib/validators'
 
     export default {
         data: function() {
@@ -42,6 +45,16 @@
                 },
                 error: ''
             };
+        },
+        validations: {
+            credentials: {
+                username: {
+                    required
+                },
+                password: {
+                    required
+                }
+            }
         },
         methods: {
             login: function() {
