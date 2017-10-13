@@ -62,6 +62,6 @@ export default {
       console.log(this.userDetails);
 
       //Route the user back to the login screen
-      context.$router.push('login');
+      context.$router.push('/login');
   }
 }
