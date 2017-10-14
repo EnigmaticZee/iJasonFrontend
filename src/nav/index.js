@@ -1,5 +1,4 @@
 import {router} from '../router'
-
 export default {
 
 	studentUnitClicked: false,

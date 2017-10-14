@@ -1,23 +1,21 @@
 <template>
-  <!-- Don't drop "q-app" class -->
-  <div id="q-app">
-
-    <router-view></router-view>
-
-  </div>
+	<!-- Don't drop "q-app" class -->
+	<div id="q-app">
+		<router-view></router-view>
+	</div>
 </template>
 
 <script>
 /*
  * Root component
  */
-export default {}
-</script>
+ export default {}
+ </script>
 
-<style lang="scss">
-  .mobile-hide {
-    @media(max-width: 772px) {
-      display: none;
-    }
-  }
-</style>
+ <style lang="scss">
+ .mobile-hide {
+ 	@media(max-width: 772px) {
+ 		display: none;
+ 	}
+ }
+ </style>

@@ -4,19 +4,19 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 function load (component) {
-  return () => System.import(`components/${component}.vue`)
+	return () => System.import(`components/${component}.vue`)
 }
 
 function loadStudentComponents (component) {
-  return () => System.import(`components/studentLab/${component}.vue`)
+	return () => System.import(`components/studentLab/${component}.vue`)
 }
 
 function loadStaffComponents (component) {
-  return () => System.import(`components/staffLab/${component}.vue`)
+	return () => System.import(`components/staffLab/${component}.vue`)
 }
 
 function loadUnitComponents (component) {
-  return () => System.import(`components/unit/${component}.vue`)
+	return () => System.import(`components/unit/${component}.vue`)
 }
 
 export default new VueRouter({
@@ -32,19 +32,19 @@ export default new VueRouter({
    * build publicPath back to '' so Cordova builds work again.
    */
 
-  routes: [
-    //Loading the login component
-    { path: '/', component: load('Login') }, // Default
-    { path: '/login', component: load('Login') },
+   routes: [
+	//Loading the login component
+	{ path: '/', component: load('Login') }, // Default
+	{ path: '/login', component: load('Login') },
 
-    //Loading the units components for student and staff
-    { path: '/units', component: loadUnitComponents('StudentUnit') },
-    { path: '/staff-units', component: loadUnitComponents('StaffUnit') },
+	//Loading the units components for student and staff
+	{ path: '/units', component: loadUnitComponents('StudentUnit') },
+	{ path: '/staff-units', component: loadUnitComponents('StaffUnit') },
 
-    //Loading the lab components for student and staff
-    { path: '/units/labs', component: loadStudentComponents('StudentLabContainer') },
-    { path: '/staff-units/labs', component: loadStaffComponents('StaffLabContainer') },
+	//Loading the lab components for student and staff
+	{ path: '/units/labs', component: loadStudentComponents('StudentLabContainer') },
+	{ path: '/staff-units/labs', component: loadStaffComponents('StaffLabContainer') },
 
-    { path: '*', component: load('Error404') }
-  ]
+	{ path: '*', component: load('Error404') }
+	]
 })
