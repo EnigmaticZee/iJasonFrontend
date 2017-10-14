@@ -5,7 +5,6 @@ export default {
 	studentUnitClicked: false,
 	staffUnitClicket: false,
 	unitsDetails : {unitCode: "", unitName: ""},
-
 	unitToLab(context, unit, title)
 	{
 		console.log("Inside UnitTOLAB Function");
@@ -16,14 +15,12 @@ export default {
 		console.log(this.unitsDetails.unitName);
 		context.$router.push('/units/labs');
 	},
-
 	toUnit(context)
 	{
 		console.log("Going to unit page");
 		var self = context;
 		self.$router.replace('/units');
 	},
-
 	staffUnitToLab(context,unit,title)
 	{
 		console.log("Inside StaffUnitTOLAB Function");
@@ -33,8 +30,7 @@ export default {
 		console.log(this.unitsDetails.unitCode);
 		console.log(this.unitsDetails.unitName);
 		context.$router.push('/staff-units/labs');
-	},
-	
+	},	
 	toStaffUnit(context)
 	{
 		console.log("Going to unit page");
