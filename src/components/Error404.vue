@@ -1,4 +1,5 @@
 <template>
+<q-layout>
 	<div class="error-page window-height window-width bg-light column items-center">
 		<div class="error-code bg-primary flex items-center justify-center">
 			404
@@ -12,19 +13,30 @@
 						<i class="on-left">keyboard_arrow_left</i>
 						Go back
 					</button>
-					<router-link to="/">
-						<button class="grey push small">
-							Go home
-							<i class="on-right">home</i>
-						</button>
-					</router-link>
+					
+						<router-link to="/units">
+							<button  class="grey push small">
+								Units
+								<i class="on-right">home</i>
+							</button>
+						</router-link>
 				</p>
 			</div>
 		</div>
 	</div>
+	 <div slot="footer" class="toolbar">
+            <div class="auto flex justify-center within-iframe-hide">
+            iJason - Virtual Labs for Networking Students
+            </div>
+            <q-toolbar-title :padding="0" class="within-iframe-only">
+            Footer
+            </q-toolbar-title>
+    </div>
+    </q-layout>
 </template>
 
 <script>
+import auth from '../auth'
 export default {
 	data () {
 		return {
