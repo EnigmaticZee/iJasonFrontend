@@ -12,14 +12,16 @@
 					<label>Username</label>
 					<p v-if="!$v.credentials.username.required && $v.credentials.username.$dirty" class="text-red">Field is required</p>
 				</div>
+				<br><br>
 				<div class="floating-label">
 					<input type="password" class="full-width" required v-model="credentials.password" @input="$v.credentials.password.$touch()" />
 					<label>Password</label>
 					<p v-if="!$v.credentials.password.required && $v.credentials.password.$dirty" class="text-red">Field is required</p>
 				</div>
-				<p>
-					<span class="error"> {{error}}</span>
+				<p >
+					<span class="text-red"> {{error}}</span>
 				</p>
+				<br>
 				<p>
 					<button class="primary full-width" @click="login()"> <i class="fa fa-sign-in" aria-hidden="true"></i>&nbspSign In</button>
 				</p>
@@ -55,7 +57,8 @@
 		},
 		methods: {
 			login: function() {
-				auth.login(this, this.credentials)
+					auth.login(this, this.credentials)
+				
 			}
 		}
 	}
@@ -75,8 +78,5 @@
 .border{
 	border: 5px solid red;
 }
-.error {
-	color : #D8000C;
-	background-color: #FFBABA;
-}
+
 </style>
