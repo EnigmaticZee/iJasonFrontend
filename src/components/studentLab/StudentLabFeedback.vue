@@ -1,47 +1,42 @@
 <template>
-  <div class="layout-view">
-
-         <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>
+    <div class="layout-view">
+        <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>
 
         <div class=" card feedback">
-        <div class="row feedbackButtons">
-          <button class="primary full-width"  @click="downloadFeedback()">Download PDF
-                <i>file_download</i>
-          </button>
+            <div class="row feedbackButtons">
+                <button class="primary full-width"  @click="downloadFeedback()">Download PDF
+                    <i>file_download</i>
+                </button>
 
-          <button class="secondary full-width" @click="downloadConfig()">Download Configuaration
-                <i>file_download</i>
-          </button>
+                <button class="secondary full-width" @click="downloadConfig()">Download Configuaration
+                    <i>file_download</i>
+                </button>
 
-           <button class="default full-width" @click="sendEmail()">Email
-                <i>email</i>
-          </button>
+                <button class="default full-width" @click="sendEmail()">Email
+                    <i>email</i>
+                </button>
 
-        </div>
-        <div v-if="feedback.length === 0"  class="card">
-          <div class="card-title bg-red-5 text-white">
-              Complete!
-          </div>
-          <div v-for="detail in feedback.details" class="card-content ">
-              You have successfully completed {{labName}}
-          </div>
-        </div>
+            </div>
+            <div v-if="feedback.length === 0"  class="card">
+                <div class="card-title bg-red-5 text-white">
+                    Complete!
+                </div>
+                <div v-for="detail in feedback.details" class="card-content ">
+                    You have successfully completed {{labName}}
+                </div>
+            </div>
 
-        <div v-else  v-for="feedback in feedbacks.errors"  class="card">
-          <div class="card-title bg-red-5 text-white">
-            {{feedback.error}}
-
-          </div>
-          <div v-for="detail in feedback.details" class="card-content ">
-              {{detail}}
-          </div>
-        </div>
+            <div v-else  v-for="feedback in feedbacks.errors"  class="card">
+                <div class="card-title bg-red-5 text-white">
+                    {{feedback.error}}
+                </div>
+                <div v-for="detail in feedback.details" class="card-content ">
+                    {{detail}}
+                </div>
+            </div>
 
         </div>
     </div>
-    <!-- <div>
-        <button @click="dummy()">Check Feedback</button>
-    </div> -->
 </template>
 
 <script>

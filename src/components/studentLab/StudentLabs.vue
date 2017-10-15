@@ -1,74 +1,66 @@
 <template>
-  <div class="layout-view">
+    <div class="layout-view">
     <!-- Tabs -->
-
     <q-tabs :refs="$refs" class="justified" default-tab="tab-1" >
-
-      <q-tab name="tab-1" icon="description">
-        Tutorial Labs
-      </q-tab>
-      <q-tab name="tab-2" icon="dns">
-        Extra Practice Labs
-      </q-tab>
-
+        <q-tab name="tab-1" icon="description">
+            Tutorial Labs
+        </q-tab>
+        <q-tab name="tab-2" icon="dns">
+            Extra Practice Labs
+        </q-tab>
     </q-tabs>
 
     <!-- Targets -->
-    <div ref="tab-1">
-        <div v-if="tutorialLabs.length === 0" class="col ">
-            <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
+        <div ref="tab-1">
+            <div v-if="tutorialLabs.length === 0" class="col ">
+                <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
+                <div class="row full-width justify-center">No labs available for this week yet...</div>
+            </div>
+            <div v-else class="list" v-for="t in tutorialLabs">
+                <div v-if="t.labType=='Regular'">
+                    <q-collapsible icon="description" :label="t.labTitle">
+                        <div class="item" >
+                            <i class="item-primary">file_download</i>
+                            <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
+                                Download
+                            </div>
+                        </div>
+                        <div class="item" >
+                            <i class="item-primary">build</i>
+                            <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID,t.labTitle)" >
+                                Check Lab Work
+                            </div>
+                        </div>
+                    </q-collapsible>
+                </div>
+            </div>
+        </div>
 
-            <div class="row full-width justify-center">No labs available for this week yet...</div>
-        </div>
-        <div v-else class="list" v-for="t in tutorialLabs">
-        <div v-if="t.labType=='Regular'">
-        <q-collapsible icon="description" :label="t.labTitle">
-            <div class="item" >
-              <i class="item-primary">file_download</i>
-              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
-                Download
-              </div>
+        <div ref="tab-2">
+            <div v-if="practiceLabs.length === 0" class="col ">
+                <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
+                <div class="row full-width justify-center">No practice labs available for this week yet...</div>
             </div>
-            <div class="item" >
-              <i class="item-primary">build</i>
-              <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID,t.labTitle)" >
-                Check Lab Work
-              </div>
+            <div v-else class="list" v-for="t in practiceLabs">
+                <div v-if="t.labType=='Practice'">
+                    <q-collapsible icon="description" :label="t.labTitle">
+                        <div class="item" >
+                            <i class="item-primary">file_download</i>
+                            <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
+                                Download
+                            </div>
+                        </div>
+                            <div class="item" >
+                                <i class="item-primary">build</i>
+                                <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID)" >
+                                    Check Lab Work
+                                </div>
+                            </div>
+                    </q-collapsible>
+                </div>
             </div>
-        </q-collapsible>
-        </div>
         </div>
     </div>
-
-    <div ref="tab-2">
-        <div v-if="practiceLabs.length === 0" class="col ">
-            <div class="row full-width justify-center noLabs"><img src="~assets/file.png"></div>
-
-            <div class="row full-width justify-center">No practice labs available for this week yet...</div>
-        </div>
-        <div v-else class="list" v-for="t in practiceLabs">
-        <div v-if="t.labType=='Practice'">
-        <q-collapsible icon="description" :label="t.labTitle">
-            <div class="item" >
-              <i class="item-primary">file_download</i>
-              <div class="item-content cursor-pointer" v-on:click="downloadLab(t.labID)">
-                Download
-              </div>
-            </div>
-            <div class="item" >
-              <i class="item-primary">build</i>
-              <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID)" >
-                Check Lab Work
-              </div>
-            </div>
-          </q-collapsible>
-        </div>
-        </div>
-    </div>
-  </div>
-
-
-
 </template>
 
 <script>
@@ -76,7 +68,7 @@
     import axios from 'axios';
     import {downloadLabCall} from '../../api';
     import nav from '../../nav';
-    
+
     export default {
 
         //Passed Properties

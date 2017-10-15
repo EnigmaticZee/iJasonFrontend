@@ -1,106 +1,102 @@
 <template>
-  <q-layout>
-    <div slot="header" class="toolbar">
-      <q-toolbar-title :padding="1">
-        <div>
-          <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
-            <i>menu</i>
-          </button>
+    <q-layout>
+        <div slot="header" class="toolbar">
+            <q-toolbar-title :padding="1">
+                <div>
+                    <button class="hide-on-drawer-visible" @click="$refs.leftDrawer.open()">
+                        <i>menu</i>
+                    </button>
 
-          <div class="mobile-hide">
-            <img src="~assets/ijason-logo.png">
-            <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
-          </div>
+                    <div class="mobile-hide">
+                        <img src="~assets/ijason-logo.png">
+                        <span class="mobile-hide">iJason Virtual Lab Supervisor</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div>
+                        <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}
+                    </div>
+
+                    <div>
+                        <span>&nbsp&nbsp|&nbsp&nbsp</span>
+                    </div>
+
+                    <div @click="performSignOut" class="primary cursor-pointer">
+                        <i class="fa fa-sign-in"></i>   Sign Out
+                    </div>
+              </div>
+            </q-toolbar-title>
+        </div>
+        <q-tabs slot="navigation">
+            <div>
+                <ul class="breadcrumb">
+                    <li @click="goToUnitPage">
+                        <a>
+                            <i>home</i> Units
+                        </a>
+                    </li>
+
+                    <li>
+                        <a>
+                            <i>mail</i> Labs - {{unitDetails.unitCode}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </q-tabs>
+
+        <div class="justify-center full-width row unitTitleStyle" slot="navigation">{{unitDetails.unitCode}} - {{unitDetails.unitName}} </div>
+
+        <q-drawer ref="leftDrawer">
+        <div class="toolbar light">
+            <q-toolbar-title :padding="1">
+                Semester Week
+            </q-toolbar-title>
         </div>
 
-        <div class="row">
-          <div>
-            <i class="fa fa-user" aria-hidden="true" ></i> {{userDetails.name}}
-          </div>
+        <div class="list no-border platform-delimiter">
+            <button
+              class="primary big  outline full-width"
+              icon="view_week"
+              v-for="week in weeks"
+              @click="loadWeeklyTask(week)">
 
-          <div>
-            <span>&nbsp&nbsp|&nbsp&nbsp</span>
-          </div>
-
-          <div @click="performSignOut" class="primary cursor-pointer">
-            <i class="fa fa-sign-in"></i>   Sign Out
-          </div>
+              <i class="on-left">view_week</i>  Week {{ week }}
+            </button>
         </div>
-      </q-toolbar-title>
-    </div>
+        </q-drawer>
 
-    <q-tabs slot="navigation">
-     <div>
-      <ul class="breadcrumb">
-        <li @click="goToUnitPage">
-          <a>
-            <i>home</i> Units
-          </a>
-        </li>
+        <router-view class="layout-view"></router-view>
 
-        <li>
-          <a >
-            <i>mail</i> Labs - {{unitDetails.unitCode}}
-          </a>
-        </li>
-      </ul>
-    </div>
-    </q-tabs>
+        <q-drawer right-side swipe-only ref="rightDrawer">
+            <div class="toolbar light">
+                <q-toolbar-title :padding="1">
+                Right-side Drawer
+                </q-toolbar-title>
+            </div>
+        </q-drawer>
 
-    <div class="justify-center full-width row unitTitleStyle" slot="navigation">{{unitDetails.unitCode}} - {{unitDetails.unitName}}
-    </div>
-
-    <q-drawer ref="leftDrawer">
-      <div class="toolbar light">
-        <q-toolbar-title :padding="1">
-            Semester Week
-        </q-toolbar-title>
-      </div>
-
-      <div class="list no-border platform-delimiter">
-        <button
-          class="primary big  outline full-width"
-          icon="view_week"
-          v-for="week in weeks"
-          @click="loadWeeklyTask(week)">
-
-          <i class="on-left">view_week</i>  Week {{ week }}
-        </button>
-     </div>
-    </q-drawer>
-
-    <router-view class="layout-view">
-
-    </router-view>
-
-    <q-drawer right-side swipe-only ref="rightDrawer">
-      <div class="toolbar light">
-        <q-toolbar-title :padding="1">
-            Right-side Drawer
-        </q-toolbar-title>
-      </div>
-    </q-drawer>
-
-    <labs
-      v-if="currentState=='STATE_SHOW_LAB'"
-      :practiceLabs="practiceLabs" :tutorialLabs="tutorialLabs"
-      @stateWasChanged="currentState = $event"
-      @chosenlabID="selectedLabID = $event" @chosenlabTitle="selectedLabName = $event"></labs>
+        <labs
+          v-if="currentState=='STATE_SHOW_LAB'"
+          :practiceLabs="practiceLabs" :tutorialLabs="tutorialLabs"
+          @stateWasChanged="currentState = $event"
+          @chosenlabID="selectedLabID = $event" @chosenlabTitle="selectedLabName = $event"></labs>
 
 
-    <labCollection v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" :labName="selectedLabName" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labCollection>
+          <labCollection v-else-if="currentState=='STATE_SHOW_ROOM'" :labID="selectedLabID" :labName="selectedLabName" @stateWasChanged="currentState = $event" @feedbacksWereCollected="feedbacks = $event"></labCollection>
 
-    <labFeedBack v-else  :labName="selectedLabName" :feedbacks="feedbacks"></labFeedBack>
+          <labFeedBack v-else  :labName="selectedLabName" :feedbacks="feedbacks"></labFeedBack>
 
-    <div slot="footer" class="toolbar">
-      <div class="auto flex justify-center within-iframe-hide">
-        iJason - Virtual Labs for Networking Students
-      </div>
-      <q-toolbar-title :padding="0" class="within-iframe-only">
-        Footer
-      </q-toolbar-title>
-    </div>
-  </q-layout>
+        <div slot="footer" class="toolbar">
+            <div class="auto flex justify-center within-iframe-hide">
+            iJason - Virtual Labs for Networking Students
+            </div>
+            <q-toolbar-title :padding="0" class="within-iframe-only">
+            Footer
+            </q-toolbar-title>
+        </div>
+    </q-layout>
 </template>
 
 <script>
@@ -112,8 +108,8 @@
     import {labsCall} from '../../api';
     import auth from '../../auth';
     import nav from '../../nav';
-  
-    
+
+
 
     export default {
         data: function() {
