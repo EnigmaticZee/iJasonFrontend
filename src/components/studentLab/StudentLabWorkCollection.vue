@@ -148,6 +148,7 @@
     import { Dialog } from 'quasar';
 
     export default {
+        //Passed Properties
         props:['labID','labName'],
         data: function() {
             return {
@@ -163,6 +164,11 @@
                 mappingStatus: 1
             }
         },
+
+        /* ---Populate Select Option Switch---
+           1. After downloading the booked devices from the API Call
+           Populate the switches to a local array of select options [Dropdown]
+           if the type is Switch*/
         computed: {
             populateSelectOptionSwitch() {
                 var bookedDev = [];
@@ -174,6 +180,10 @@
                 console.log('Booked Switches Array', bookedDev);
                 return bookedDev;
             },
+            /* ---Populate Select Option Router---
+               1. After downloading the booked devices from the API Call
+               Populate the switches to a local array of select options [Dropdown]
+               if the type is Router*/
             populateSelectOptionRouter()
             {
                 var bookedDev = [];
@@ -187,6 +197,20 @@
             }
         },
       methods: {
+          /* ---Construct Collect Request---
+            1. Prepare the object for Mapping,
+            2. Mapping Process
+                a) Clear the mappedDevices array
+                b) Go through the select options, and compare it to the ini devices.
+                c) If the select option is not empty, map the smartrack device into
+                the required ini file devices.
+                d) However, if it's empty, nickname is set to empty string
+            3. Return the object, containing
+                a) Credentials
+                b) LabID,
+                c) Room Number
+                d) Mapped Objects*/
+
         constructCollectRequest() {
           console.log(this._data);
           var mappedDevices=[];
@@ -196,8 +220,6 @@
             var devicemapping={};
             devicemapping.iniFileDevice=device.deviceName;
             devicemapping.deviceType=device.deviceType;
-            // console.log("bookeddevices",this.bookedDevices);
-            // console.log("selectoptions",this.selectOptions[i].value);
 
             if ( this.select[i] != null) {
               devicemapping.smartRackDeviceName=this.bookedDevices[this.select[i]].deviceName;
@@ -219,12 +241,6 @@
           };
           console.log(requestBody);
           return requestBody;
-          //                for (var i = 0; i < iniDevices.length; i++)
-          //                {
-          //                     var mappedDevice = {iniFileDevice: iniFileDevices[i].deviceName, deviceType: iniFileDevices[i].deviceType,
-          //                                         smartRackDeviceName: bookedDevices[i].deviceName, smartRackDeviceNickName: bookedDevice.deviceNickName };
-          //                }
-          //                deviceMapping.splice(index, 1, mappedDevice);
         },
         downloadDevices() {
           var iniURL = iniCall();

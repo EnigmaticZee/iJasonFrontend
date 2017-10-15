@@ -17,7 +17,7 @@
                 </button>
 
             </div>
-            <div v-if="feedback.length === 0"  class="card">
+            <div v-if="feedbacks.length === 0"  class="card">
                 <div class="card-title bg-red-5 text-white">
                     Complete!
                 </div>
