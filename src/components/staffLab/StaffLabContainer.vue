@@ -74,6 +74,7 @@
 </template>
 
 <script>
+//Import Libraries
 import StaffLabs from './StaffLabs.vue';
 import axios from 'axios';
 import {labsCall} from '../../api';
@@ -104,20 +105,36 @@ export default {
 					}
 				}
 			},
+
 			methods: {
+				/* ---Perform Signout---
+               1. Call the logout function inside auth */
 				performSignOut: function () {
 					auth.logout(this);
 				},
+
+				/* ---Load Weekly Task ---
+               1. Construct an request Object based on the chosen week
+               2. Send a POST request , and passes the Object as the parameter
+               3. Populate the local array based on the result (tasks) type
+                    a. If the Task is a regular, push it to the regular task array
+                    b. If the task is a practice, push it to the practice array
+               4. Finally changes the currentState to the STATE_SHOW_LAB */
 				loadWeeklyTask : function(aWeek) {
 					var labsURL = labsCall();
+					//Construct the request
 					var reqBody=this.constructLabRequest(aWeek);
 					var self = this;
 					this.chosenWeek = aWeek;
+					 //POST Request
 					axios.post(labsURL, reqBody)
 					.then(function(response){
 						console.log(response.data);
+						//Clear the Labs
 						self.tutorialLabs = [];
 						self.practiceLabs = [];
+						/*Loop through the response, and assign the
+                    	tutorialLabs / practiceLabs array based on the type*/
 						for (var i = 0; i<response.data.length; i++)
 						{
 							if (response.data[i].labType =='Regular')
@@ -135,9 +152,13 @@ export default {
 					.catch(function(error){
 						console.log(error);
 					})
-
+					//Change the currenState to STATE_SHOW_LAB
 					this.currentState = 'STATE_SHOW_LAB'
 				},
+				/* ---Construct Lab Request ---
+               1. Construct a request Object based on the chosen week
+               2. The Object should contain the unitCode and the week
+               3. Returns the constructed object */
 				constructLabRequest : function(aWeek)
 				{
 					var requestBody={
@@ -147,14 +168,18 @@ export default {
 					console.log(requestBody);
 					return requestBody;
 				},
+				/* ---Navigate to Unit page of Staff---
+               1. Call the to staff unit function in nav */
 				goToUnitPage: function()
 				{
 					nav.toStaffUnit(this);
 				},
 			},
+			//Component List
 			components: {
 				'labs':StaffLabs
 			},
+			//Load the weekly tasks for week 1 before showing the labs container to the user.
 			beforeMount () {
 				this.loadWeeklyTask(1);
 			}

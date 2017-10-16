@@ -198,7 +198,7 @@
             'labCollection': StudentLabCollection,
             'labFeedBack': StudentLabFeedback
         },
-
+        //Load the weekly tasks for week 1 before showing the labs container to the user.
         beforeMount () {
           this.loadWeeklyTask(1);
         }

@@ -127,6 +127,7 @@
 </template>
 
 <script>
+//Import Libraries
 import axios from 'axios'
 import {downloadLabCall} from '../../api'
 import nav from '../../nav'
@@ -134,6 +135,7 @@ import {addLab} from '../../api'
 import {editLab} from '../../api'
 import { required, maxLength, alpha, alphaNum } from 'vuelidate/lib/validators'
 export default {
+	//Passed Properties
 	props: ['practiceLabs', 'tutorialLabs', 'chosenWeek'],
 	data: function(){
 		return {
@@ -182,6 +184,11 @@ export default {
 		}
 	},
 	methods: {
+		/* ---Open Modal for Add/Edit Lab ---
+	       1. Check if the user wants to edit/add lab
+	       2. Edit - Fetch the lab details and assign it to the input fields 
+	       3. Add - Clear all the input fields
+	       4. Finally open the modal */
 		openModal (isEditValue, editData = {}) {
 			this.isEdit = isEditValue
 			if (this.isEdit) {
@@ -205,36 +212,44 @@ export default {
 			}
 			this.$refs.staffLabModal.open()
 		},
+		/* ---Submit for Add/Edit Lab ---
+	       1. Assign the api url based on whether the staff wants to edit or add lab
+	       2. Edit - Create a formadata object based on all the inputs (All the fields are optional to edit)
+	       3. Add - Create a formdata object based on all the inputs
+	       4. Send a POST request , and passes the form data Object as the parameter */
 		submitModal () {
 			console.log("Is it edit? ", this.isEdit)
 			var unitsURL =  this.isEdit ? editLab() : addLab();
-
+			// If it is edit lab
 			if (this.isEdit)
 			{
 				console.log("Editing a lab");
+				//New formdata object - Appending all the user inputs
 				var formData = new FormData();
 				formData.append('labID', this.labId);
 				formData.append('labName', this.Name);
 				formData.append('labType', this.checkedType);
 				//console.log ("Type of for labsheet", typeof this.labSheet)
 				//console.log ("Type of for IniFile", typeof this.iniFile)
-
+				//Appending the labsheet input only if the user wants to upload a new labsheet
 				if (typeof this.labSheet != 'string')
 				{
 					formData.append('labSheet',this.labSheet);
 				}
-
+				//Appending the iniFile input only if the user wants to upload a new INI file
 				if (typeof this.iniFile != 'string')
 				{
 					formData.append('INIFile', this.iniFile);
 				}
-
+				//Looping through the formdata object -Testing purpose
 				for (var pair of formData.entries()) {
 					console.log(pair[0]+ ', ' + pair[1]);
 				}
 			}
+			// If it is add lab
 			else {
 				console.log("Adding a lab");
+				//New formdata object - Appending all the user inputs
 				var formData = new FormData();
 				console.log("Week unit Data UNIT is ",this.unitDetails.unitCode);
 				console.log("Week unit Data WEEK is ", this.chosenWeek);
@@ -245,13 +260,14 @@ export default {
 				formData.append('INIFile', this.iniFile);
 				formData.append('labSheet',this.labSheet);
 
+				//Looping through the formdata object -Testing purpose
 				for (var pair of formData.entries()) {
 					console.log(pair[0]+ ', ' + pair[1]);
 				}
 
 			}
 			var self = this;
-
+			//POST Request
 			axios.post(unitsURL, formData)
 			.then(function(response){
 				console.log("Response from Editing/Adding lab", response.data);
@@ -260,10 +276,15 @@ export default {
 				console.log(error);
 				console.log(error.description);
 			})
+			//Clear the iniFile and Labsheet
 			this.iniFile = '';
 			this.labSheet = '';
+			//Close the modal
 			self.$refs.staffLabModal.close();
 		},
+		/* ---Adding User uploads to the labSheet and IniFile properties ---
+	       1. Checks the passed fieldname through parameter
+	       2. Based on the input (FieldName), adds the first object of the files array to its respective property (labSheet, iniFile)*/
 		fileAdded(fieldName, files)
 		{
 			if(fieldName == 'labSheet')
@@ -278,37 +299,10 @@ export default {
 				files = [];
 			}
 		},
-		onLabFileChange(e) {
-			var files = e.target.files || e.dataTransfer.files;
-			if (!files.length)
-				return;
-			this.LabSheet = files[0]
-		},
-		onIniFileChange(e) {
-			var files = e.target.files || e.dataTransfer.files;
-			if (!files.length)
-				return;
-			this.INIFile = files[0]
-		},
-		showDialog: function (event) {
-			return this.$refs.basicModal.open();
-		},
-		showRoom: function(labID,labTitle) {
-
-			this.$emit('stateWasChanged', 'STATE_SHOW_ROOM');
-			this.$emit('chosenlabID', labID);
-			this.$emit('chosenlabTitle', labTitle);
-		},
-		toggle: function(dropdownName) {
-			this.dropDowns[dropdownName].open = !this.dropDowns[dropdownName].open;
-		},
-		selectRoom: function(roomNum) {
-			this.roomNum = roomNum;
-			this.isShow = true;
-		},
-		getFeedback: function() {
-			return this.$refs.feedbackModal.open();
-		},
+		  /* Download Lab
+	         1. Get the lab id
+	         2. Append the lab id to the download lab api
+	         2. Open the response on a new window*/
 		downloadLab: function (labDownloadId)
 		{
 			var downloadLabUrl = downloadLabCall();

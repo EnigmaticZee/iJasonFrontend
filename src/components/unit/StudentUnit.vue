@@ -71,6 +71,7 @@
 </template>
 
 <script>
+//Import Libraries
 import axios from 'axios';
 import {unitsCall} from '../../api';
 import auth from '../../auth';
@@ -96,16 +97,45 @@ export default {
 		mountParticles('particles-background');
 	},
 	methods: {
+		/* ---Perform Signout---
+               1. Call the logout function inside auth */
 		performSignOut () {
 			auth.logout(this);
 
 		},
+		/* ---Navigate to labs page of student---
+               1. Call the unit to lab funtion in nav */
 		handleUnitClick (unit, title) {
 			console.log(unit);
 			nav.unitToLab(this, unit, title);
 		},
-		constructUnitsReqBody (){
+		/* ---Download units ---
+           1. Construct a request object
+       	   2. Send a POST request , and passes the Object as the parameter
+           3. Populate the local units array based on the response */
+		downloadUnits() {
 
+			var unitsURL = unitsCall();
+			var reqBody=this.constructUnitsReqBody();
+			var self = this;
+			 //POST Request
+			axios.post(unitsURL, reqBody)
+			.then(function(response){
+				console.log(response.data);
+				//Populate units array
+				self.units=response.data;
+				console.log(self.units[0].unitTitle);
+				console.log(self.units[0].unitCode);
+			})
+			.catch(function(error){
+				console.log(error);
+			})
+		},
+		/* ---Construct Unit Request ---
+               1. Construct a request Object 
+               2. The Object should contain the username, semester and year
+               3. Returns the constructed object */
+		constructUnitsReqBody (){
 			var requestBody={
 				username: auth.credentials.username,
 				semester:this.semester,
@@ -114,30 +144,18 @@ export default {
 
 			console.log(requestBody);
 			return requestBody;
-		},
-		downloadUnits() {
-
-			var unitsURL = unitsCall();
-			var reqBody=this.constructUnitsReqBody();
-			var self = this;
-
-			axios.post(unitsURL, reqBody)
-			.then(function(response){
-				console.log(response.data);
-				self.units=response.data;
-				console.log(self.units[0].unitTitle);
-				console.log(self.units[0].unitCode);
-			})
-			.catch(function(error){
-				console.log(error);
-			})
 		}
 	},
+	/*  1. Get the current month and year.
+		2. Set the studentUnitClicked to false in nav
+		3. Set the year and month properties to current year and month
+		4. Download the units 
+		5. Then display the units page to the student */
 	beforeMount () {
 		console.log("Student Unit Clicked" ,nav.studentUnitClicked);
 		nav.studentUnitClicked = false;
 		nav.staffUnitClicked = false;
-
+		//Get the year and month from moment wrapper
 		this.year = moment().year();
 		var month = moment().month();
 		
@@ -152,6 +170,7 @@ export default {
 		console.log("Year is ", this.year);
 		console.log("Semester ", this.semester);
 		console.log("Nav Object" , nav);
+		//download units
 		this.downloadUnits();
 	}
 }

@@ -82,6 +82,7 @@
 </template>
 
 <script>
+//Import Libraries
 import axios from 'axios';
 import {unitsCall, addUnit, editUnit } from '../../api';
 import auth from '../../auth';
@@ -125,31 +126,23 @@ export default {
 		mountParticles('particles-background');
 	},
 	methods: {
+		/* ---Perform Signout---
+               1. Call the logout function inside auth */
 		performSignOut () {
 			auth.logout(this);
 
 		},
-		dummy () {
-			var unitsURL = addUnit();
-			var reqBody = {
-				unitCode: 'Test1001',
-				unitName: 'Test Unit'
-			};
-
-			axios.post(unitsURL, reqBody)
-			.then(function(response){
-				console.log('Result Add: ',response.data);
-			})
-			.catch(function(error){
-				console.log(error);
-			})
-		},
+		/* ---Open Modal for Add/Edit Unit ---
+	       1. Check if the user wants to edit/add Unit
+	       2. Edit - Fetch the unit details and assign it to the input fields 
+	       3. Add - Clear all the input fields
+	       4. Finally open the modal */
 		openModal (isEditValue, editData = {}) {
 			this.isEdit = isEditValue
 			if (this.isEdit) {
-				this.modalTitle = 'Edit'
 				this.nameInput = editData.unitTitle
 				this.codeInput = editData.unitCode
+				this.modalTitle = 'Edit'
 			} else {
 				this.nameInput = ''
 				this.codeInput = ''
@@ -157,6 +150,10 @@ export default {
 			}
 			this.$refs.staffUnitModal.open()
 		},
+		/* ---Submit for Add/Edit Unit ---
+	       1. Assign the api url based on whether the staff wants to edit or add unit
+	       2. STILL IN PROGRESS */
+	      
 		submitModal () {
 			var unitsURL =  this.isEdit ? editUnit() : addUnit();
 			console.log("Units URL" , unitsURL);
@@ -176,10 +173,15 @@ export default {
 			})
 			self.$refs.staffUnitModal.close()
 		},
+		/* ---Navigate to labs page of STAFF---
+               1. Call the staff unit to lab funtion in nav */
 		handleUnitClick (unit, title) {
 			console.log(unit);
 			nav.staffUnitToLab(this, unit, title);
 		},
+		/* ---Download units ---
+       	   1. Send a GET request
+           2. Populate the local units array based on the response */
 		downloadUnits() {
 
 			var unitsURL = unitsCall();
@@ -197,6 +199,9 @@ export default {
 			})
 		}
 	},
+	/*  1. Set the studentUnitClicked to false in naV
+		2. Download the units 
+		3. Then display the units page to the student */
 	beforeMount () {
 		console.log("Staff Unit Clicked" ,nav.staffUnitClicked);
 		nav.studentUnitClicked = false;
