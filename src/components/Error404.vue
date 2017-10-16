@@ -52,6 +52,7 @@ export default {
 </script>
 
 <style lang="stylus">
+// Customize error message
 .error-page
   .error-code
     height 50vh

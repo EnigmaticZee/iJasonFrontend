@@ -206,6 +206,7 @@
 </script>
 
 <style lang="scss">
+  /* Logo */
   .logo-container {
     width:3px;
     perspective: 800px;
@@ -213,6 +214,7 @@
     margin-top: -260px;
   }
 
+ /* Bellow 560px menu starts from the left side */
  .toolbar-content .toolbar-title > div {
    @media(max-width: 560px) {
      align-items: flex-start !important;
@@ -242,12 +244,14 @@
     }
   }
 
+  // Container to display units
   .units-container {
     img  {
       width: 100px;
       height: 100px;
     }
 
+	  // Title
     .units-heading {
       text-align: center;
       width: 400px;
@@ -260,6 +264,7 @@
       padding: 10px 0;
     }
 
+	  // Container - for loop, for items
     .units-list {
       display: flex;
       justify-content: center;
@@ -267,6 +272,7 @@
       align-items: center;
     }
 
+	  // For loop - single unit
     .single-unit {
       display: flex;
       justify-content: left;
@@ -297,6 +303,7 @@
     }
   }
 
+  // Tabs
   .breadcrumb-container {
     display: flex;
     flex: 1 1 auto;
@@ -321,6 +328,7 @@
     }
   }
 
+  // Navigation
   .toolbar-content {
     img {
       max-width: 150%;
@@ -340,6 +348,7 @@
           justify-content: space-between;
         }
 
+			// Navigation - logo and project title parrent div
         > div:first-child {
           display: flex;
           align-items: center;
@@ -358,6 +367,7 @@
 
   }
 
+  // Unit code and unit name
   .unitTitleStyle {
     color: white;
     font-size: 1.4em;

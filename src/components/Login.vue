@@ -65,6 +65,7 @@
 </script>
 
 <style scoped>
+/* Used to align items in continer, horizontal - center */
 .container{
 	display: flex;
 	flex-direction: column;
@@ -72,6 +73,7 @@
 	justify-content: flex-start;
 	align-items: center;
 }
+ /* Form width, used to centering form */
 .children{
 	width:300px;
 }

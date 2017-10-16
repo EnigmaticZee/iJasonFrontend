@@ -415,22 +415,34 @@
         font-size: 1.5em;
         padding-left: 1em;
     }
+
+    /* Add space bellow text: Select Room */
     .rooms {
         padding:2em;
     }
+
+    /* Dialog buttons */
     .buttons {
         padding: 2em 0em 2em 0em;
     }
+
+    /* Collect and Cancel Device Button */
     .room {
       padding: 2em;
     }
+
+    /* Foor loop - add specing above */
     .booking {
       padding: 2em;
     }
+
+    /* Added padding around button image */
     .statusButton{
       padding: 1em;
     }
-     .feedbackTitleStyle {
+
+    /* Title: Feedback for {{labName}} */
+    .feedbackTitleStyle {
     color: white;
     font-size: 1.4em;
     padding: 0.5em;

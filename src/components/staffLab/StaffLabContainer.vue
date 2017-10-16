@@ -162,6 +162,7 @@ export default {
 </script>
 
 <style lang="scss">
+// Logo
 .logo-container {
 	width:3px;
 	perspective: 800px;
@@ -173,6 +174,8 @@ export default {
 		max-width: 100%;
 	}
 }
+
+// Used for text
 .units-selection-welcome-message {
 	display: flex;
 	flex-direction: column;
@@ -187,11 +190,15 @@ export default {
 		}
 	}
 }
+
+// Container to display units
 .units-container {
 	img  {
 		width: 100px;
 		height: 100px;
 	}
+
+	// Title
 	.units-heading {
 		text-align: center;
 		width: 400px;
@@ -203,12 +210,16 @@ export default {
 		color: #fff;
 		padding: 10px 0;
 	}
+
+	// Container - for loop, for items
 	.units-list {
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
 		align-items: center;
 	}
+
+	// For loop - single unit
 	.single-unit {
 		display: flex;
 		justify-content: left;
@@ -233,7 +244,10 @@ export default {
 		}
 	}
 }
+
+// Navigation
 .toolbar-content {
+	// Navigation - logo
 	img {
 		max-width: 150%;
 		width: 66.66665px;
@@ -245,6 +259,8 @@ export default {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			
+			// Navigation - logo and project title parrent div
 			> div:first-child {
 				display: flex;
 				align-items: center;
@@ -252,6 +268,8 @@ export default {
 		}
 	}
 }
+
+// Title: Semester Week
 .unitTitleStyle {
 	color: white;
 	font-size: 1.4em;
