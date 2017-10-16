@@ -2,7 +2,15 @@
     <div class="layout-view">
         <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>
 
-        <div class=" card feedback">
+         <div v-if="feedbacks.labName == null" class="card feedback">
+            <div class="card-title bg-green-5 text-white">
+                Complete!
+            </div>
+            <div class="card-content ">
+                You have successfully completed {{labName}}
+            </div>
+        </div>
+        <div v-else class="card feedback">
             <div class="row feedbackButtons">
                 <button class="primary full-width"  @click="downloadFeedback()">Download PDF
                     <i>file_download</i>
@@ -17,16 +25,9 @@
                 </button>
 
             </div>
-            <div v-if="feedbacks.length === 0"  class="card">
-                <div class="card-title bg-red-5 text-white">
-                    Complete!
-                </div>
-                <div v-for="detail in feedback.details" class="card-content ">
-                    You have successfully completed {{labName}}
-                </div>
-            </div>
+           
 
-            <div v-else  v-for="feedback in feedbacks.errors"  class="card">
+            <div  v-for="feedback in feedbacks.errors"  class="card">
                 <div class="card-title bg-red-5 text-white">
                     {{feedback.error}}
                 </div>
@@ -36,6 +37,9 @@
             </div>
 
         </div>
+
+        <div>
+        </div> 
     </div>
 </template>
 

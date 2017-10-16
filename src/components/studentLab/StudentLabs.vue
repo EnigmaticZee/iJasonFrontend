@@ -52,7 +52,7 @@
                         </div>
                             <div class="item" >
                                 <i class="item-primary">build</i>
-                                <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID)" >
+                                <div class="item-content cursor-pointer" v-on:click="showRoom(t.labID,t.labTitle)" >
                                     Check Lab Work
                                 </div>
                             </div>
