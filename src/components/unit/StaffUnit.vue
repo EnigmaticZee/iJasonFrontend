@@ -29,7 +29,7 @@
 			<br><br><br>
 			<div class="units-container col">
 				<div class="units-heading bg-secondary">
-					<span >Units You Teach</span>
+					<span>Units You Teach</span>
 					<span @click="openModal(false)" class="pull-right add"><i class="material-icons">&#xE145;</i> Add  </span>
 				</div>
 				<div class="units-list">
@@ -207,7 +207,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+// Logo
 .logo-container {
 	width:3px;
 	perspective: 800px;
@@ -219,6 +219,8 @@ export default {
 		max-width: 100%;
 	}
 }
+
+// Used for text
 .units-selection-welcome-message {
 	display: flex;
 	flex-direction: column;
@@ -232,11 +234,15 @@ export default {
 		}
 	}
 }
+
+// Container to display units
 .units-container {
 	img  {
 		width: 100px;
 		height: 100px;
 	}
+
+	// Title: Units You Teach
 	.units-heading {
 		text-align: center;
 		width: 400px;
@@ -256,6 +262,8 @@ export default {
 			z-index: 1;
 		}
 	}
+
+	// Container - for loop, for items
 	.units-list {
 		display: flex;
 		justify-content: center;
@@ -268,6 +276,8 @@ export default {
 			color: #fff;
 		}
 	}
+
+	// For loop - single unit
 	.single-unit {
 		display: flex;
 		justify-content: left;
@@ -287,6 +297,8 @@ export default {
 			font-size: 16px;
 			color: #ccc;
 		}
+
+		// Info about unit, title, unit code, semester
 		.single-unit-description {
 			padding-top: 10px;
 		}
@@ -299,19 +311,23 @@ export default {
 	}
 }
 
+// Navigation
 .toolbar-content {
+	// Navigation - logo
 	img {
 		max-width: 150%;
 		width: 66.66665px;
 		height: 50px;
 		margin-right: 5px;
 	}
+
 	.toolbar-title {
 		> div {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-
+			
+			// Navigation - logo and project title parrent div
 			> div:first-child {
 				display: flex;
 				align-items: center;
@@ -337,11 +353,16 @@ export default {
 		z-index: 0;
 	}
 }
+
+// Add/Edit lab modal 
 .staff-modal {
+
+	// Space between input fields
 	input {
 		margin-bottom: 20px;
 	}
 
+	// Close and submit buttons
 	.buttons {
 		margin-top: 20px;
 

@@ -106,12 +106,17 @@
 </script>
 
 <style>
-  .feedback {
+    /* Feedback container padding */
+    .feedback {
       padding: 2em;
     }
+
+    /* Padding bottom bellow Download PDF, Download Configuaration, Email */
     .feedbackButtons{
       padding-bottom: 1em;
     }
+
+    /* Feedback for x labName */
     .feedbackTitleStyle {
     color: white;
     font-size: 1.4em;

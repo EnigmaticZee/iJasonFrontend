@@ -131,10 +131,13 @@
 </script>
 
 <style>
+  /* Feedback modal container */
   #modal-content {
     height: 45vh;
     overflow-y: auto;
   }
+
+  /* Feedback modal header color */
   .modal-header {
     color: black;
   }
@@ -163,6 +166,7 @@
       display: block;
   }
 
+   /* Customize dropdown menu */
   .dropdown-menu {
       font-size: 0.9rem;
       position: absolute;
@@ -195,6 +199,8 @@
           color: green;
           background-color: #ccc;
   }
+
+  /* File image */
   .noLabs {
     margin: 10% 10% 2% 10%;
   }

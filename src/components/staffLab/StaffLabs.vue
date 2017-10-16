@@ -328,10 +328,13 @@ export default {
 </script>
 
 <style lang="scss">
+// Feedback modal container 
 #modal-content {
 	height: 45vh;
 	overflow-y: auto;
 }
+
+// Feedback modal header color
 .modal-header {
 	color: black;
 }
@@ -358,6 +361,8 @@ ul {
 .open .dropdown-menu {
 	display: block;
 }
+
+// Customize dropdown menu
 .dropdown-menu {
 	font-size: 0.9rem;
 	position: absolute;
@@ -394,10 +399,16 @@ ul {
 .add-container {
 	margin-top: 10px;
 }
+
+// Add/Edit lab modal 
 .staff-modal {
+	
+	// Space between input fields
 	input {
 		margin-bottom: 20px;
 	}
+
+	// Close and submit buttons
 	.buttons {
 		margin-top: 20px;
 		.secondary {
@@ -405,11 +416,15 @@ ul {
 		}
 	}
 }
+
+// Text: Please upload a lab for this week!
 .upload_image {
 	cursor: pointer;
 	margin-top: 1rem;
 	height: 8rem;
 }
+
+// Upload add lab icon
 .noLabs, .addLab {
 	margin: 10% 10% 2% 10%;
 }
