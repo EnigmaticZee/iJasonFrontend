@@ -75,7 +75,7 @@
         props: ['practiceLabs', 'tutorialLabs'],
         data: function() {
             return {
-                labTasks: [],
+                
                 dropDowns: {
                   ranking: { open: false}
                 },

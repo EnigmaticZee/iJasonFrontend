@@ -84,18 +84,14 @@ export default {
 	data() {
 		return {
 				//Constant
-				LAB_API_URL : '',
-				feedbacks:{},
 				currentState: 'STATE_SHOW_LAB',
 				weeks : 12,
 				selectedLabID: 1,
 				selectedLabName: null,
-				userCredentials:{username:'student', password: 'password'},
-				selectedTasks: [],
+				chosenWeek : 1,
 				practiceLabs: [],
 				tutorialLabs: [],
-				unitDetails: nav.unitsDetails,
-				chosenWeek : 1
+				unitDetails: nav.unitsDetails
 			}
 			},
 			computed: {

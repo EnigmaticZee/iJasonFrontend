@@ -152,22 +152,6 @@ export default {
 			options: {
 				paramName: 'file'
 			},
-			labTasks: [],
-			dropDowns: {
-				ranking: { open: false}
-			},
-			switches: [
-			{deviceName: 'Sw 1'},
-			{deviceName: 'Sw 2'},
-			{deviceName: 'Sw 3'}
-			],
-			routers: [
-			{deviceName: 'router 1'},
-			{deviceName: 'router 2'},
-			{deviceName: 'router 3'}
-			],
-			isShow: false,
-			roomNum: '',
 			unitDetails: nav.unitsDetails
 		}
 	},
