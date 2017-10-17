@@ -170,7 +170,7 @@
            Populate the switches to a local array of select options [Dropdown]
            if the type is Switch*/
         computed: {
-            populateSelectOptionSwitch() {
+            populateSelectOptionSwitch: function() {
                 var bookedDev = [];
                 for (var i = 0 ; i < this.bookedDevices.length ; i++) {
                     if (this.bookedDevices[i].deviceType === 'Switch') {
@@ -184,7 +184,7 @@
                1. After downloading the booked devices from the API Call
                Populate the switches to a local array of select options [Dropdown]
                if the type is Router*/
-            populateSelectOptionRouter()
+            populateSelectOptionRouter: function()
             {
                 var bookedDev = [];
                 for (var i = 0 ; i < this.bookedDevices.length ; i++) {
@@ -196,214 +196,223 @@
                 return bookedDev;
             }
         },
-      methods: {
-          /* ---Construct Collect Request---
-            1. Prepare the object for Mapping,
-            2. Mapping Process
-                a) Clear the mappedDevices array
-                b) Go through the select options, and compare it to the ini devices.
-                c) If the select option is not empty, map the smartrack device into
-                the required ini file devices.
-                d) However, if it's empty, nickname is set to empty string
-            3. Return the object, containing
-                a) Credentials
-                b) LabID,
-                c) Room Number
-                d) Mapped Objects*/
+        methods: {
+              /* ---Construct Collect Request---
+                1. Prepare the object for Mapping,
+                2. Mapping Process
+                    a) Clear the mappedDevices array
+                    b) Go through the select options, and compare it to the ini devices.
+                    c) If the select option is not empty, map the smartrack device into
+                    the required ini file devices.
+                    d) However, if it's empty, nickname is set to empty string
+                3. Return the object, containing
+                    a) Credentials
+                    b) LabID,
+                    c) Room Number
+                    d) Mapped Objects*/
+            constructCollectRequest: function() {
+                var mappedDevices = [];
+                console.log("Select has", this.select);
+                for (var i = 0; i < this.iniDevices.length; i++) {
+                    var device = this.iniDevices[i];
+                    var devicemapping = {};
+                    devicemapping.iniFileDevice = device.deviceName;
+                    devicemapping.deviceType = device.deviceType;
+                    if ( this.select[i] != null) {
+                        devicemapping.smartRackDeviceName = this.bookedDevices[this.select[i]].deviceName;
+                        devicemapping.smartRackDeviceNickName = this.bookedDevices[this.select[i]].deviceNickName;
+                    }
+                    else {
+                        devicemapping.smartRackDeviceName = "";
+                        devicemapping.smartRackDeviceNickName = "";
+                    }
+                    mappedDevices.push(devicemapping);
+              }
+              console.log('Mapped Devices', mappedDevices);
+              var cred = user.credentials;
+              var requestBody = {
+                  credentials: cred,
+                  labID:this.labID,
+                  roomNo:this.room,
+                  deviceMapping:mappedDevices
+                };
+              return requestBody;
+            },
 
-        constructCollectRequest() {
-          console.log(this._data);
-          var mappedDevices=[];
-           console.log("Select has", this.select);
-          for (var i = 0; i < this.iniDevices.length; i++) {
-            var device=this.iniDevices[i];
-            var devicemapping={};
-            devicemapping.iniFileDevice=device.deviceName;
-            devicemapping.deviceType=device.deviceType;
+            /* ---Download Devices---
+              1. Make a POST Request for downloading INI Devices
+              according to the labID
+              2. Make another POST Request for downloading
+              booked devices on SmartRack, according the room Number
+              and credentials
+              3. If there is no booked devices, a dialog would appear*/
 
-            if ( this.select[i] != null) {
-              devicemapping.smartRackDeviceName=this.bookedDevices[this.select[i]].deviceName;
-              devicemapping.smartRackDeviceNickName=this.bookedDevices[this.select[i]].deviceNickName;
-            } else {
-              devicemapping.smartRackDeviceName="";
-              devicemapping.smartRackDeviceNickName="";
-            }
-            mappedDevices.push(devicemapping);
-          }
-          console.log(mappedDevices);
+            downloadDevices: function() {
+                var iniURL = iniCall();
+                var bookedDevicesURL = bookedDevicesCall();
+                var self = this;
 
-          var cred=user.credentials;
-          var requestBody={
-            credentials: cred,
-            labID:this.labID,
-            roomNo:this.room,
-            deviceMapping:mappedDevices
-          };
-          console.log(requestBody);
-          return requestBody;
-        },
-        downloadDevices() {
-          var iniURL = iniCall();
-          var bookedDevicesURL = bookedDevicesCall();
-          var self = this;
-          axios.post(iniURL, {labID: this.labID})
-            .then(function(response){
-              console.log("Bookes Devices", response.data);
-              self.iniDevices=response.data;
-            })
-            .catch(function(error){
-              console.log(error);
-            })
-          axios.post(
-            bookedDevicesURL,
-            {
-              username: user.credentials.username,
-              password: user.credentials.password,
-              roomNo: this.room
-            }
-          )
-            .then(function(response){
-              console.log(response.data);
-              self.bookedDevices=response.data;
-              if (self.bookedDevices.length == 0)
+                //POST Request for getting INI Device List
+                axios.post(iniURL, {labID: this.labID})
+                .then(function(response) {
+                    console.log("INI Devices", response.data);
+                    self.iniDevices = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+                //POST Request for getting Booked Device List via Smartrack
+
+                axios.post(bookedDevicesURL,
                 {
-                  Dialog.create({
-                    title: 'No Bookings Found!',
-                    message: 'No bookings found in room ' + self.room + ' for your credentials',
-                    buttons: [
-                      'Cancel'
-                    ]
-                  })
+                  username: user.credentials.username,
+                  password: user.credentials.password,
+                  roomNo: this.room
+                })
+                .then(function(response) {
+                    console.log('Booked SmartRack Devices', response.data);
+                    self.bookedDevices = response.data;
+
+                    //If There is no Booked Devices , show a Dialog
+                    if (self.bookedDevices.length == 0) {
+                        Dialog.create({
+                            title: 'No Bookings Found!',
+                            message: 'No bookings found in room ' + self.room + ' for your credentials',
+                            buttons: [
+                                'Cancel'
+                            ]
+                        })
+                    }
+                })
+                .catch(function(error)  {
+                    console.log(error);
+                })
+            },
+
+            /* ---Collect Work---
+              1. Make an Object via constructRequestCall
+              2. Loop through the object, and check if the devices is mapped properly
+              3. If Object is not properly mapped, then show a Dialog
+              4. If Object is properly mapped then construct a POST Request , and begin
+              the collection */
+            collectWork: function() {
+                var reqBody = this.constructCollectRequest();
+                var collectURL = collectCall();
+                var self = this;
+                this.mappingStatus = 1;
+
+                for(var i = 0; i < reqBody.deviceMapping.length; i++) {
+                    if(reqBody.deviceMapping[i].smartRackDeviceName == "") {
+                        console.log("mapping status" , this.mappingStatus)
+                        this.mappingStatus = 0;
+                    }
                 }
-            })
-            .catch(function(error){
-              console.log(error);
-            })
-        },
-        downloadDev() {
-          this.bookedDevices = this.showBookedDevice();
-          this.iniDevices = this.showINIDevices();
-          this.populateSelectOptionSwitch();
-          this.populateSelectOptionRouter();
-        },
-        collectWork() {
-          var reqBody=this.constructCollectRequest();
-          console.log("Device Mapping" , reqBody.deviceMapping);
-          var collectURL = collectCall();
-          var self = this;
-          this.mappingStatus = 1;
+                if (this.mappingStatus == 0) {
+                    Dialog.create({
+                        title: 'Choose configured Lab Devices',
+                        message: 'Please choose your configured lab devices before collecting work',
+                        buttons: [
+                          'Cancel'
+                        ]})
+                    }
+                else {
+                    axios.post(collectURL, reqBody)
+                    .then(function(response) {
+                        console.log(response.data);
+                        self.work_collection_response = response.data;
 
-          for(var i = 0; i < reqBody.deviceMapping.length; i++)
-          {
-            if(reqBody.deviceMapping[i].smartRackDeviceName == "")
-            {
-                console.log("mapping status" , this.mappingStatus)
-              this.mappingStatus = 0;
-            }
-          }
-          if (this.mappingStatus == 0)
-          {
-              Dialog.create({
-                    title: 'Choose configured Lab Devices',
-                    message: 'Please choose your configured lab devices before collecting work',
-                    buttons: [
-                      'Cancel'
-                    ]
-                  })
-          }
-          else
-          {
+                        if (self.work_collection_response.result === 'Failure') {
+                            console.log("Collection Failure");
+                            return;
+                        }
+                        else {
+                            console.log("Collection success");
+                            self.$refs.collectWorkStatusModal.open();
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    })
+                }
+            },
+            /* ---Timer---
+            1. Interval functions (get called repeatedly) for updating
+            progress bar during collection*/
+            timer: function() {
+                var seconds = this.work_collection_response.duration;
+                setTimeout(this.checkStatus, seconds*1000);
+                this.timerInterval = setInterval(this.updateProgressBar,100);
+            },
+            /* ---Update Progress Bar---
+            1. Check the condition, if it met either Success, Pending , or Fail
+            it will clear the timer, and set the progress bar status to non-active
+            2. If it's still going, add the percentage based on the duration */
+            updateProgressBar: function () {
+                if (this.progressBarStatus.percentage >= 100 || this.progressBarStatus.seconds >= this.work_collection_response.duration ||
+                    this.work_collection_status_response.result == "Success" || this.work_collection_status_response.result == "Fail") {
+                        if (this.work_collection_status_response.result != "Pending") {
+                            this.progressBarStatus.active = 'no';
+                            clearInterval(this.timerInterval);
+                        }
+                    }
+                    else {
+                        console.log("Timer Going");
+                        this.progressBarStatus.active = 'yes';
+                        this.progressBarStatus.seconds+= 0.1;
+                        this.progressBarStatus.percentage = ((this.progressBarStatus.seconds) / this.work_collection_response.duration) * 100
+                    }
+                },
+            /* ---Check Status---
+            1. Check the Status of the collection, via POST request */
+            checkStatus: function() {
+                console.log("Checking Status");
+                var checkStatusURL = collectStatusCall();
+                var self = this;
+                var reqBody = {collectID:this.work_collection_response.collectID,username:user.credentials.username};
 
-            axios.post(collectURL, reqBody)
-            .then(function(response) {
-              console.log(response.data);
-              self.work_collection_response=response.data;
-              console.log("im here");
-
-              if (self.work_collection_response.result === 'Failure'){
-                  console.log("Collection Failure");
-                  return;
-              }
-              else{
-                console.log("Collection success");
-                 self.$refs.collectWorkStatusModal.open();
-              }
-            })
-            .catch(function(error) {
-              console.log(error);
-              //self.$refs.collectWorkStatusModal.open();
-            })
-          }
-
-
-        },
-        timer: function() {
-            console.log("here");
-            var seconds = this.work_collection_response.duration;
-            setTimeout(this.checkStatus, seconds*1000);
-            this.timerInterval = setInterval(this.updateProgressBar,100)
-        },
-        updateProgressBar: function ()  {
-          // console.log("test test ");
-          if (this.progressBarStatus.percentage >= 100 || this.progressBarStatus.seconds >= this.work_collection_response.duration || this.work_collection_status_response.result == "Success" || this.work_collection_status_response.result == "Fail")
-          {
-            if (this.work_collection_status_response.result != "Pending"){
-              console.log("clear timer");
-              this.progressBarStatus.active = 'no';
-              console.log("stats " + this.progressBarStatus.active);
-              clearInterval(this.timerInterval);
-            }
-
-          }
-          else
-          {
-            console.log("timer going");
-            this.progressBarStatus.active = 'yes';
-            this.progressBarStatus.seconds+= 0.1;
-            this.progressBarStatus.percentage = ((this.progressBarStatus.seconds) / this.work_collection_response.duration) * 100
-          }
-        },
-        checkStatus: function()
-          {
-              console.log("Checking status after a while!!");
-              var checkStatusURL = collectStatusCall();
-              var self = this;
-              var reqBody={collectID:this.work_collection_response.collectID,username:user.credentials.username};
-              axios.post(checkStatusURL, reqBody)
-                .then(function(response){
-                  console.log(response.data);
-                  self.work_collection_status_response=response.data;
-                 if(self.work_collection_status_response.result == "Pending")
-                  {
-                    setTimeout(self.checkStatus, 3000);
-                  }
+                //POST Request
+                axios.post(checkStatusURL, reqBody)
+                .then(function(response) {
+                    console.log(response.data);
+                    self.work_collection_status_response=response.data;
+                    if(self.work_collection_status_response.result == "Pending") {
+                        setTimeout(self.checkStatus, 3000);
+                    }
                 })
-                .catch(function(error){
-                  console.log(error);
+                .catch(function(error) {
+                    console.log(error);
                 })
-          },
-        cancelCollectWork: function(){
-          this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
-        },
-        getFeedback () {
-            var feedbackURL = feedbackCall();
-          var self = this;
-          axios.post(feedbackURL, {labID: self.labID, username: user.credentials.username})
-            .then(function(response){
-              console.log("feedback is", response.data);
-              self.feedbacks=response.data;
-              //State change will occur after the feedbacks is collected, since if we emit outside the callback,
-              //the feedbacks may not be collected yet , but we already changed the state.
-            self.$emit('feedbacksWereCollected' , self.feedbacks);
-            self.$emit('stateWasChanged', 'STATE_SHOW_FEEDBACK');
-            })
-            .catch(function(error){
-              console.log(error);
-            })
+            },
+            /* ---Cancel Collect Work---
+            1. Cancel the collection Process
+            and notify the parent component that the state is
+            changed back to STATE_SHOW_LAB */
+            cancelCollectWork: function() {
+                this.$emit('stateWasChanged', 'STATE_SHOW_LAB');
+            },
 
-          console.log('get feedback');
+            /* ---Get Feedback---
+            1. Make a POST Request, and notify the parent component
+            that the state is changed back to STATE_SHOW_FEEDBACK */
+            getFeedback: function() {
+                var feedbackURL = feedbackCall();
+                var self = this;
+                axios.post(feedbackURL, {labID: self.labID, username: user.credentials.username})
+                .then(function(response)
+                {
+                    console.log('Feedback:', response.data);
+                    self.feedbacks = response.data;
+
+                    //State change will occur after the feedbacks is collected, since if we emit outside the callback,
+                    //the feedbacks may not be collected yet , but we already changed the state.
+                    self.$emit('feedbacksWereCollected' , self.feedbacks);
+                    self.$emit('stateWasChanged', 'STATE_SHOW_FEEDBACK');
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+            }
         }
-      }
     }
 </script>
 
