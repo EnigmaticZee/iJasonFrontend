@@ -45,11 +45,20 @@
 					Semester Week
 				</q-toolbar-title>
 			</div>
-			<div class="list no-border platform-delimiter">
-				<button class="primary big  outline full-width" icon="view_week" v-for="week in weeks" @click="loadWeeklyTask(week)">
-					<i class="on-left">view_week</i>  Week {{ week }}
-				</button>
-			</div>
+		  	<div v-for="week in weeks" class="list no-border platform-delimiter">
+	            <button v-if="chosenWeek == week" 
+	              class="big text-white bg-primary outline full-width"
+	              icon="view_week" 
+	              @click="loadWeeklyTask(week)">
+	              <i class="on-left">view_week</i>  Week {{ week }}
+	            </button>
+	            <button v-else
+	              class="primary big  outline full-width"
+	              icon="view_week" 
+	              @click="loadWeeklyTask(week)">
+	              <i class="on-left">view_week</i>  Week {{ week }}
+	            </button>
+       	 	</div>
 		</q-drawer>
 
 		<router-view class="layout-view"></router-view>

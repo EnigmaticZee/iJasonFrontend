@@ -70,7 +70,7 @@
 				</div>
 			</div>
 		</div>
-		<q-modal class="staff-modal" ref="staffLabModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
+		<q-modal  noEscDismiss  noBackdropDismiss class="staff-modal" ref="staffLabModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
 			<h4>{{ modalTitle }} Lab</h4>
 			<input type="text" v-model="Name" class="full-width" placeholder="Name" @input="$v.Name.$touch()"/>
 			<p v-if="!$v.Name.required && $v.Name.$dirty" class="text-red">Field is required</p>
@@ -110,18 +110,6 @@
 			</div>
 			<br>
 			<p class="text-center">iJason Virtual Lab Supervisor</p>
-		</q-modal>
-		<q-modal  ref="feedbackModal" :content-css="{minWidth: '50vw', minHeight: '50vh', background:'#eeeeee'}">
-			<header class="modal-header">Feedback</header>
-			<div id="modal-content">
-				<div>iniFileDevice:"sw"</div>
-				<div>deviceType:"Switch"</div>
-				<div>smartRackDevice:"Enclosure"</div>
-				<div>smartRackDeviceNickName:"mySwi"</div>
-			</div>
-			<footer>
-				<button color="primary" @click="$refs.feedbackModal.close()">Close</button>
-			</footer>
 		</q-modal>
 	</div>
 </template>

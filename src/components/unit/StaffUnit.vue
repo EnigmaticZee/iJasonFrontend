@@ -60,7 +60,7 @@
 			</q-toolbar-title>
 		</div>
 
-		<q-modal class="staff-modal" ref="staffUnitModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
+		<q-modal  noEscDismiss  noBackdropDismiss class="staff-modal" ref="staffUnitModal" :content-css="{padding: '50px 50px 0 50px', minWidth: '50vw'}">
 			<h4>{{ modalTitle }} Unit</h4>
 			<input type="text" v-model="codeInput" class="full-width" @input="$v.codeInput.$touch()" placeholder="Code"/>
 			<p v-if="!$v.codeInput.required && $v.codeInput.$dirty" class="text-red">Field is required</p>
