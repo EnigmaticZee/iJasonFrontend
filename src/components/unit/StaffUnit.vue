@@ -43,7 +43,7 @@
 							<div class="row">{{ unit.unitCode}}</div>
 							<div v-if="unit.active == 0" class="row text-warning">Inactive Unit</div>
 						</div>
-						<div class="single-unit-edit" @click="openModal(true, { unitTitle: unit.unitTitle, unitCode: unit.unitCode })">
+						<div class="single-unit-edit" @click="openModal(true, { unitId: unit.unitID, unitTitle: unit.unitTitle, unitCode: unit.unitCode , unitActive: unit.active})">
 							<i class="material-icons">&#xE254;</i> Edit
 						</div>
 					</span>
@@ -70,11 +70,15 @@
 			<input type="text" v-model="nameInput" class="full-width" placeholder="Name" @input="$v.nameInput.$touch()"/>
 			<p v-if="!$v.nameInput.required && $v.nameInput.$dirty" class="text-red">Field is required</p>
 			<p v-if="!$v.nameInput.maxLength" class="text-red">Name can only have {{ $v.nameInput.$params.maxLength.max }} characters </p>
-
+			<span v-if="isEdit">
+			<input type="checkbox" id="checkbox" v-model="unitActiveInput">
+			<label for="checkbox">Active</label>
+			</span>
 			<div class="buttons text-right">
 				<button @click="$refs.staffUnitModal.close()" class="primary">Close</button>
 				<button @click="submitModal()" class="secondary" :disabled="$v.codeInput.$invalid || $v.nameInput.$invalid">Submit</button>
 			</div>
+			
 			<br>
 			<p class="text-center">iJason Virtual Lab Supervisor</p>
 		</q-modal>
@@ -96,8 +100,10 @@ export default {
 		return {
 			modalTitle: 'Add',
 			isEdit: false,
+			unitId: null,
 			codeInput: '',
 			nameInput: '',
+			unitActiveInput: false,
 			units: [ ]
 		}
 	},
@@ -140,14 +146,24 @@ export default {
 		openModal (isEditValue, editData = {}) {
 			this.isEdit = isEditValue
 			if (this.isEdit) {
+				console.log("Edit data is ", editData);
+				this.unitId = editData.unitId
 				this.nameInput = editData.unitTitle
 				this.codeInput = editData.unitCode
+				if(editData.unitActive == 0 )
+				{
+					this.unitActiveInput = false;
+				}
+				else {
+					this.unitActiveInput = true;
+				}
 				this.modalTitle = 'Edit'
 			} else {
 				this.nameInput = ''
 				this.codeInput = ''
 				this.modalTitle = 'Add'
 			}
+			
 			this.$refs.staffUnitModal.open()
 		},
 		/* ---Submit for Add/Edit Unit ---
@@ -157,20 +173,56 @@ export default {
 		submitModal () {
 			var unitsURL =  this.isEdit ? editUnit() : addUnit();
 			console.log("Units URL" , unitsURL);
-			var reqBody= {
+			var active;
+			if(this.unitActiveInput == false)
+			{
+				active = 0;
+			}
+			else 
+			{
+				active = 1;
+			}
+			if(this.isEdit)
+			{
+				var reqBody= {
+				unitID: this.unitId,
+				unitCode: this.codeInput,
+				unitName: this.nameInput,
+				unitActive: active
+				}
+
+				console.log("Edit unit data is ", reqBody);
+				var self = this;
+
+				axios.put(unitsURL, reqBody)
+				.then(function(response){
+					console.log(response.data);
+					self.downloadUnits();
+				})
+				.catch(function(error){
+					console.log(error);
+				})
+
+			}
+			else {
+
+				var reqBody= {
 				unitCode: this.codeInput,
 				unitName: this.nameInput
-			}
-			var self = this;
+				}
+				var self = this;
 
-			axios.post(unitsURL, reqBody)
-			.then(function(response){
-				console.log(response.data);
-				self.downloadUnits();
-			})
-			.catch(function(error){
-				console.log(error);
-			})
+				axios.post(unitsURL, reqBody)
+				.then(function(response){
+					console.log(response.data);
+					self.downloadUnits();
+				})
+				.catch(function(error){
+					console.log(error);
+				})
+
+			}
+			
 			self.$refs.staffUnitModal.close()
 		},
 		/* ---Navigate to labs page of STAFF---
@@ -193,6 +245,7 @@ export default {
 				self.units=response.data;
 				console.log(self.units[0].unitTitle);
 				console.log(self.units[0].unitCode);
+				console.log(self.units[0].active);
 			})
 			.catch(function(error){
 				console.log(error);

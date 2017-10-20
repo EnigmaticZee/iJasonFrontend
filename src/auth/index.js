@@ -17,10 +17,12 @@ export default {
 	   2. After succesfully connected , assign the User Details,
 	role and authentication status to the properties. */
 	login: function(context, credentials) {
+		console.log("Inside Login function");
 		var self = this;
 		 //POST Request
 		 axios.post(LOGIN_URL, credentials)
 		 .then(function(response) {
+		 	console.log("Response is", response.data[0].result);
 			if(response.data[0].result === "Success"){
 				//Updating the credentials
 				self.credentials.username = credentials.username;
