@@ -34,12 +34,15 @@ Vue.use(Vuelidate) // Vue Validation Framework
 
 router.beforeResolve(function(to,from,next){
 	//If the user is not authenticated and tries to access any page of iJason - they are redirected to login
-	if (!auth.user.authenticated && to.path !== "/login")
+	if (to.path === "/contributors")
+	{
+		next();
+	}else if (!auth.user.authenticated && to.path !== "/login")
 	{
 		next('/login');
 	}
 	//If user is authenticated, they are taken to the page they have entered (Provided the below routing checks are satisfied)
-	else
+	else 
 	{
 		next();
 	}

@@ -53,7 +53,6 @@ export default new VueRouter({
 	{ path: '/login', component: load('Login') },
 
 	//Contributions Page
-	{ path: '/', component: load('contributors') },
 	{ path: '/contributors', component: load('contributors') },
 
 	//Loading the units components for student and staff

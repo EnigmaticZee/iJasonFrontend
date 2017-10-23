@@ -67,7 +67,7 @@
          </div>
          <div class="at-column">
             <div class="at-user">
-               <div class="at-user__avatar"><img :src="pic_1"/></div>
+               <div class="at-user__avatar"><img :src="pic_5"/></div>
                <div class="at-user__name">Srisaiyeegharan Kidnapillai</div>
                <div class="at-user__title"></div>
             </div>
@@ -89,7 +89,8 @@ export default {
       return {
          logo: require('../assets/logo-lowres.jpg'),
          pic_1: require('../contributors/ibi.png'),
-         pic_6: require('../contributors/ant.png')
+         pic_6: require('../contributors/ant.png'),
+         pic_5: require('../contributors/sri.jpg')
       }
    }
 }
@@ -241,8 +242,8 @@ export default {
   text-align: center;
 }
 .at-user__avatar {
-  width: 98px;
-  height: 98px;
+  width: 200px;
+  height: 200px;
   border-radius: 100%;
   margin: 0 auto 20px;
   overflow: hidden;
