@@ -1,3 +1,18 @@
+ <!--==========================================================================
+ |       Component: Components/Error404.vue
+ |
+ |=Authors=====================================================================
+ |
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |       Zaid Shakil
+ |
+ |=History=====================================================================
+ |
+ |       Created: Aug 10, 2017
+ |       Updated: Oct 16, 2017
+ *==========================================================================-->
+
 <template>
 <q-layout>
 	<div class="error-page window-height window-width bg-light column items-center">

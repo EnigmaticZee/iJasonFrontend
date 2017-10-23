@@ -1,3 +1,18 @@
+ /*==========================================================================
+ |       Component: auth/index.js
+ |
+ |=Authors===================================================================
+ |
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |       Zaid Shakil
+ |
+ |=History===================================================================
+ |
+ |       Created: Sep 2, 2017
+ |       Updated: Oct 20, 2017
+ *=========================================================================*/
+
 //Import Libraries
 import {router} from '../router'
 import axios from 'axios'

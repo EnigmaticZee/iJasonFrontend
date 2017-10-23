@@ -1,3 +1,18 @@
+ <!--==========================================================================
+ |       Component: Components/studentLab/StudentLabWorkCollection.vue
+ |
+ |=Authors=====================================================================
+ |
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |       Zaid Shakil
+ |
+ |=History=====================================================================
+ |
+ |       Created: Oct 13, 2017
+ |       Updated: Oct 17, 2017
+ *==========================================================================-->
+
 <template>
     <div class="layout-view">
     <!-- Select Room (Radio Button) -->

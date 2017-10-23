@@ -1,3 +1,18 @@
+ <!--==========================================================================
+ |       Component: Components/unit/StudentUnit.vue
+ |
+ |=Authors=====================================================================
+ |
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |       Zaid Shakil
+ |
+ |=History=====================================================================
+ |
+ |       Created: Oct 13, 2017
+ |       Updated: Oct 17, 2017
+ *==========================================================================-->
+
 <template>
 	<q-layout id="particles-background" class="background">
 		<div slot="header" class="toolbar">

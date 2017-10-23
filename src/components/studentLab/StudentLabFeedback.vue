@@ -1,3 +1,18 @@
+ <!--==========================================================================
+ |       Component: Components/studentLab/StudentLabFeedback.vue
+ |
+ |=Authors=====================================================================
+ |
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |       Zaid Shakil
+ |
+ |=History=====================================================================
+ |
+ |       Created: Oct 13, 2017
+ |       Updated: Oct 16, 2017
+ *==========================================================================-->
+
 <template>
     <div class="layout-view">
         <div class="bg-primary justify-center full-width row feedbackTitleStyle" >Feedback for {{labName}}</div>

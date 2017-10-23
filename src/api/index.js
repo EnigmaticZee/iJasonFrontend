@@ -1,3 +1,18 @@
+ /*==========================================================================
+ |       Component: api/index.js
+ |
+ |=Authors===================================================================
+ |
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |       Zaid Shakil
+ |
+ |=History===================================================================
+ |
+ |       Created: Sep 2, 2017
+ |       Updated: Oct 17, 2017
+ *=========================================================================*/
+
 /* API calls on Student side */
 
 //API call which gets the required devices for the lab

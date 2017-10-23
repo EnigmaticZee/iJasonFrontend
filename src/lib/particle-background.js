@@ -1,3 +1,22 @@
+ /*==========================================================================
+ |       Component: lib/particle-background.js
+ |
+ |=Authors===================================================================
+ |
+ |       Vincent Garreau
+ |       Github: https://github.com/VincentGarreau/particles.js/
+ |
+ |       Modified for use with iJason Virtual Lab Supervisor
+ |       Zaid Shakil
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |
+ |=History===================================================================
+ |
+ |       Created: Aug 8, 2017
+ |       Updated: Aug 8, 2017
+ *=========================================================================*/
+
 import particles from 'particles.js';
 
 export function mountParticles(id = 'particles-background') {

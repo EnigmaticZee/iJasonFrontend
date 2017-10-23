@@ -1,3 +1,18 @@
+ <!--==========================================================================
+ |       Component: Components/staffLab/StaffLabContainer.vue
+ |
+ |=Authors=====================================================================
+ |
+ |       Ian Adrian
+ |       Srisaiyeegharan Kidnapillai
+ |       Zaid Shakil
+ |
+ |=History=====================================================================
+ |
+ |       Created: Oct 13, 2017
+ |       Updated: Oct 19, 2017
+ *==========================================================================-->
+
 <template>
 	<q-layout>
 		<div slot="header" class="toolbar">
