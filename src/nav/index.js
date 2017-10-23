@@ -10,7 +10,7 @@
  |=History===================================================================
  |
  |       Created: Oct 17, 2017
- |       Updated: Oct 1, 2017
+ |       Updated: Oct 23, 2017
  *=========================================================================*/
 
 import {router} from '../router'
@@ -61,5 +61,14 @@ export default {
 		console.log("Going to unit page");
 		var self = context;
 		self.$router.replace('/staff-units');
-	}
+	},
+
+	/* ---Login to Contributors navigation ---
+	       1. Routes to the contributions page. */
+	toContributors(context)
+	{
+		console.log("Going to contributors page");
+		var self = context;
+		self.$router.replace('/contributors');
+	},
 }

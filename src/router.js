@@ -10,7 +10,7 @@
  |=History===================================================================
  |
  |       Created: Aug 10, 2017
- |       Updated: Oct 20, 2017
+ |       Updated: Oct 23, 2017
  *=========================================================================*/
 
 import Vue from 'vue'
@@ -51,6 +51,10 @@ export default new VueRouter({
 	//Loading the login component
 	{ path: '/', component: load('Login') }, // Default
 	{ path: '/login', component: load('Login') },
+
+	//Contributions Page
+	{ path: '/', component: load('contributors') },
+	{ path: '/contributors', component: load('contributors') },
 
 	//Loading the units components for student and staff
 	{ path: '/units', component: loadUnitComponents('StudentUnit') },
