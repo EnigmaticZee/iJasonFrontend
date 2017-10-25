@@ -46,21 +46,21 @@
          </div>
          <div class="at-column">
             <div class="at-user">
-               <div class="at-user__avatar"><img :src="pic_1"/></div>
+               <div class="at-user__avatar"><img :src="pic_2"/></div>
                <div class="at-user__name">Ian Adrian</div>
                <div class="at-user__title"></div>
             </div>
          </div>
          <div class="at-column">
             <div class="at-user">
-               <div class="at-user__avatar"><img :src="pic_1"/></div>
+               <div class="at-user__avatar"><img :src="pic_3"/></div>
                <div class="at-user__name">Zaid Shakil</div>
                <div class="at-user__title"></div>
             </div>
          </div>
          <div class="at-column">
             <div class="at-user">
-               <div class="at-user__avatar"><img :src="pic_1"/></div>
+               <div class="at-user__avatar"><img :src="pic_4"/></div>
                <div class="at-user__name">Awais Ghafoor</div>
                <div class="at-user__title"></div>
             </div>
@@ -89,8 +89,12 @@ export default {
       return {
          logo: require('../assets/logo-lowres.jpg'),
          pic_1: require('../contributors/ibi.png'),
-         pic_6: require('../contributors/ant.png'),
-         pic_5: require('../contributors/sri.jpg')
+         pic_2: require('../contributors/ian.png'),
+         pic_3: require('../contributors/zee.png'),
+         pic_4: require('../contributors/awi.jpg'),
+         pic_5: require('../contributors/sri.jpg'),
+         pic_6: require('../contributors/ant.png')
+         
       }
    }
 }
